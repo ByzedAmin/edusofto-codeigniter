@@ -1,0 +1,14 @@
+/application/config/database.php
+/uploads/images/student/*
+/uploads/images/parent/*
+/uploads/images/staff/*
+/uploads/images/whatsapp_agent/*
+/uploads/online_ad_documents/*
+/**/*.zip
+
+!/uploads/images/student/index.html
+!/uploads/images/parent/index.html
+!/uploads/images/staff/index.html
+!/uploads/images/whatsapp_agent/index.html
+!/uploads/images/**/index.html
+!/uploads/online_ad_documents/index.html

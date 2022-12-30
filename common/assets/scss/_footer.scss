@@ -1,0 +1,30 @@
+.footer-area-sec {
+  padding: 10px;
+  background-color: #0082cf;
+}
+.copyright-text {
+  font-size: 16px;
+}
+.social-links {
+  li {
+    padding: 0 8px;
+    a {
+        &:hover{
+            i{
+                transform: rotate(360deg);
+                transition: all 0.3s;
+            }
+        }
+      i {
+        width: 33px;
+        height: 33px;
+        font-size: 16px;
+        font-weight: 300;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 33px;
+        background: #3987e6;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+/************************/
+/* 
+* Project Name   :  School Management
+* File           :  CSS Base
+* Version        :  1.0.0
+* Project Start  :  23 Oct 2022
+* Developer		 :	Imran Hosain
+*/
+/************************/
+
+// template global settings
+@import "variable";
+@import "reset";
+@import "responsive";
+
+// component settings
+@import "backtotop";
+@import "blog";
+@import "corner";
+@import "fonts";
+@import "footer";
+@import "header";
+@import "sidebar";
+@import "template";

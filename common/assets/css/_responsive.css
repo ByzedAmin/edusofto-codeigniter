@@ -1,0 +1,68 @@
+/************************/
+/* 
+* Project Name   :  School Management
+* File           :  Responsive CSS Base
+* Version        :  1.0.0
+* Project Start  :  23 Oct 2022
+* Developer		 :	Imran Hosain
+*/
+/************************/
+/* ================================================== 
+*	  media screen and (max-width: 1200px)
+*	  media screen and (max-width: 992px)
+*	  media screen and (max-width: 575px)
+*/
+/* ================================================== */
+/* media screen and (max-width: 1200px) - start */
+@media screen and (max-width: 1199.98px) {
+  .student-info-content ul,
+.ebook-info-content ul,
+.download-info-cont ul,
+.notice-info-cont ul {
+    padding-left: 40px !important;
+  }
+}
+/* media screen and (max-width: 992px) - start */
+@media screen and (max-width: 991.98px) {
+  .facebook-area {
+    margin-bottom: 20px;
+  }
+
+  .notice-item-groups .notice-title i {
+    font-size: 15px !important;
+    padding: 6px 7px !important;
+  }
+
+  .notice-item-groups .notice-title a {
+    font-size: 15px !important;
+    padding: 5px !important;
+  }
+
+  .blog-item-thumb {
+    max-width: 100% !important;
+    margin-right: 0px;
+    margin-bottom: 8px;
+  }
+
+  .blog-item-text h4 {
+    font-size: 20px !important;
+  }
+}
+/* media screen and (max-width: 576px) - start */
+@media screen and (max-width: 575.98px) {
+  .notice-item-groups .notice-title i {
+    padding: 4px 5px !important;
+  }
+
+  .notice-item-groups .notice-title a {
+    background: transparent !important;
+  }
+
+  .blog-details-title {
+    font-size: 18px !important;
+  }
+
+  .blog-details-desc p {
+    font-size: 14px;
+  }
+}

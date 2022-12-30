@@ -1,0 +1,56 @@
+// navbar area style
+.navbar-content-wrapper {
+  .navbar {
+    background-color: #1c69b5;
+  }
+  .navbar-toggler:focus {
+    outline: 0;
+    box-shadow: none!important;
+}
+  .navbar-nav {
+    li {
+      &:not(:last-child){
+        border-right: 1px solid #ccc;
+      }
+      a {
+        font-size: 16px;
+        padding: 7px 17px !important;
+      }
+      &:hover {
+        background-color: #034f72;
+      }
+    }
+    .active {
+      background-color: #74010d;
+    }
+  }
+  .dropdown-menu {
+    border: none;
+    border-radius: 0rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    padding: 0rem!important;
+    overflow: hidden;
+    > li {
+      background-color: #034f72 !important;
+      &:hover {
+        a {
+          color: $black !important;
+          transform: translateX(5px);
+        }
+      }
+    }
+  }
+}
+
+// banner area style
+.banner-area-wrapper {
+  background: #f1f1f1 !important;
+}
+.banner-area-wrapper {
+  .carousel-item {
+    a {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

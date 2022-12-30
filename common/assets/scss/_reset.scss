@@ -1,0 +1,58 @@
+// global reset start
+body{
+    line-height: 1.6;
+    font-family:"SolaimanLipiNormal" !important;
+    text-rendering: optimizelegibility;
+}
+
+a:focus,
+a:active,
+input,
+input:hover,
+input:focus,
+input:active,
+textarea,
+textarea:hover,
+textarea:focus,
+textarea:active {
+    outline: none!important;
+    outline: 0px!important;
+}
+img:not([draggable]),
+embed,
+object,
+video {
+    height: auto;
+    max-width: 100%;
+}
+img {
+    border: none;
+    height: auto;
+    max-width: 100%;
+    user-select: none;
+    vertical-align: middle;
+}
+a {
+    outline: 0;
+    text-decoration: none;
+    transition: $default-transition;
+    &:active,
+    &:focus,
+    &:hover,
+    &:visited {
+        outline: 0;
+        text-decoration: none;
+    }
+}
+*:focus {
+    outline: none;
+}
+.site-main{
+ box-shadow: 3px 3px 30px 7px rgb(0 0 0 / 10%);
+}
+a.read-more {
+    font-size: 14px;
+    padding: 4px 6px;
+    background: #138fde;
+    border-radius: 3px;
+}
