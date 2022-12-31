@@ -141,6 +141,9 @@
 								data-original-title="<?=translate('quick_view')?>">
 									<i class="fas fa-qrcode"></i>
 								</a>
+                                <a href="<?php echo base_url('student/print/' . $row['student_id']);?>" class="btn btn-default icon btn-circle" data-toggle="tooltip" data-original-title="<?=translate('print')?>">
+                                    <i class="fas fa-print"></i>
+                                </a>
 							<?php if (get_permission('student', 'is_edit')): ?>
 								<!-- update link -->
 								<a href="<?php echo base_url('student/profile/' . $row['student_id']);?>" class="btn btn-default btn-circle icon" data-toggle="tooltip"
