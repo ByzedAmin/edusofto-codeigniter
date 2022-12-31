@@ -17,6 +17,7 @@ class School_settings extends Admin_Controller
     {
         parent::__construct();
         $this->load->model('school_model');
+        $this->load->library('sms_balance');
     }
 
     public function index()
@@ -168,6 +169,43 @@ class School_settings extends Admin_Controller
         $this->load->view('layout/index', $this->data);
     }
 
+    public function smsbalance()
+    {
+        if (!get_permission('sms_settings', 'is_view')) {
+            access_denied();
+        }
+
+        $branchID = $this->school_model->getBranchID();
+        $this->data['branch_id'] = $branchID;
+        $this->data['api'] = $this->school_model->getSmsConfig($branchID);
+        $this->data['title'] = translate('sms_settings');
+        $this->data['sub_page'] = 'school_settings/smsbalance';
+        $this->data['main_menu'] = 'school_m';
+        $this->load->view('layout/index', $this->data);
+    }
+
+    public function check_sms_balance()
+    {
+        if (!get_permission('sms_settings', 'is_view')) {
+            access_denied();
+        }
+
+        $branchID = $this->school_model->getBranchID();
+        $providerID = $this->input->post('sms_service_provider');
+
+        $branch = $this->school_model->get('branch', array('id' => $branchID), true);
+
+        $balance = $this->sms_balance->get_balance($branchID, $providerID);
+
+        if (!is_null($balance)) {
+            $array = array('status' => 'success', 'message' => 'Your current SMS balance is ' . $balance . ' '. $branch['symbol'] ?? '');
+        } else {
+            $array = array('status' => 'success', 'message' => translate('SMS provider may not be configured properly'));
+        }
+
+        echo json_encode($array);
+    }
+
     public function smsconfig()
     {
         if (!get_permission('sms_settings', 'is_view')) {
@@ -193,11 +231,11 @@ class School_settings extends Admin_Controller
         $this->db->where('branch_id', $branchID)->update('sms_credential', array('is_active' => 0));
         $this->db->where(array('sms_api_id' => $providerID,'branch_id' => $branchID))->update('sms_credential', array('is_active' => 1));
         if ($this->db->affected_rows() > 0) {
-           $message = translate('information_has_been_saved_successfully'); 
+           $message = translate('information_has_been_saved_successfully');
         }else{
-            $message = translate("SMS configuration not found"); 
+            $message = translate("SMS configuration not found");
         }
-        $array = array('status' => 'success', 'message' => $message);
+        $array = array('status' => 'error', 'message' => $message);
         echo json_encode($array);
     }
 

@@ -14,7 +14,7 @@ if ($this->input->get('branch_id')) {
         <?php } if(get_permission('payment_settings', 'is_view')){ ?>
             <li <?=$sub_page == 'school_settings/payment_gateway' ? 'class="active"' : '';?>><a href="<?=base_url('school_settings/payment' . $url)?>"><i class="fas fa-dollar-sign"></i> <?=translate('payment_settings')?></a></li>
         <?php } if(get_permission('sms_settings', 'is_view')){ ?> 
-            <li <?=$sub_page == 'school_settings/smsconfig' || $sub_page == 'school_settings/smstemplate' ? 'class="active"' : '';?>><a href="<?=base_url('school_settings/smsconfig' . $url)?>"><i class="far fa-comment-alt"></i> <?=translate('sms_settings')?></a></li>
+            <li <?=$sub_page == 'school_settings/smsconfig' || $sub_page == 'school_settings/smstemplate' || $sub_page == 'school_settings/smsbalance' ? 'class="active"' : '';?>><a href="<?=base_url('school_settings/smsconfig' . $url)?>"><i class="far fa-comment-alt"></i> <?=translate('sms_settings')?></a></li>
         <?php } if(get_permission('email_settings', 'is_view')){  ?>
             <li <?=$sub_page == 'school_settings/emailconfig' || $sub_page == 'school_settings/emailtemplate' ? 'class="active"' : '';?>><a href="<?=base_url('school_settings/emailconfig' . $url)?>"><i class="far fa-envelope"></i> <?=translate('email_settings')?></a></li>
         <?php } if (get_permission('accounting_links', 'is_view')) {?>
