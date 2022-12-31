@@ -31,7 +31,7 @@ class Student extends Admin_Controller
     }
 
     /* student form validation rules */
-    protected function student_validation()
+    protected function student_validation($roll,$class_id,$section_id)
     {
         $branchID = $this->application_model->get_branch_id();
         $getBranch = $this->getBranchDetails();
@@ -62,11 +62,24 @@ class Student extends Admin_Controller
                 $this->form_validation->set_rules('user_photo', translate('profile_picture'), 'required');
             }
         }
-        if (isset($validArr['roll'])) {
-            $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required|callback_unique_roll');
+        $this->db->where(array('roll' => $roll,'section_id' => $section_id,'class_id' => $class_id, 'branch_id' => $branchID,'session_id'=>get_session_id()));
+        $roll_row = $this->db->get('enroll')->num_rows();
+        // print_r($roll_row);
+        if ($roll_row == 0) {
+            if (isset($validArr['roll'])) {
+                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required');
+            } else {
+                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric');
+            }
         } else {
-            $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+            if (isset($validArr['roll'])) {
+                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required|callback_unique_roll');
+            } else {
+                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+            }
         }
+        
+        
         if (isset($validArr['last_name'])) {
             $this->form_validation->set_rules('last_name', translate('last_name'), 'trim|required');
         }
@@ -172,7 +185,11 @@ class Student extends Admin_Controller
             $getBranch = $this->getBranchDetails();
             $branchID = $this->application_model->get_branch_id();
         
-            $this->student_validation();
+            $roll = $this->input->post('roll');
+            $class_id = $this->input->post('class_id');
+            $class_id = $this->input->post('class_id');
+            $section_id = $this->input->post('section_id');
+            $this->student_validation($roll,$class_id,$section_id);
             if (!isset($_POST['guardian_chk'])) {
 
                 // system fields validation rules
@@ -527,7 +544,10 @@ class Student extends Admin_Controller
         if (isset($_POST['update'])) {
             $this->session->set_flashdata('profile_tab', 1);
             $this->data['branch_id'] = $this->application_model->get_branch_id();
-            $this->student_validation();
+            $roll = $this->input->post('roll');
+            $class_id = $this->input->post('class_id');
+            $section_id = $this->input->post('section_id');
+            $this->student_validation($roll,$class_id,$section_id);
             $this->form_validation->set_rules('parent_id', translate('guardian'), 'required');
             if ($this->form_validation->run() == true) {
                 $post = $this->input->post();

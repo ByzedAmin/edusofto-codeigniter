@@ -33,16 +33,16 @@ class Parents extends Admin_Controller
         if (is_superadmin_loggedin()) {
             $this->form_validation->set_rules('branch_id', translate('branch'), 'trim|required');
         }
-        $this->form_validation->set_rules('name', translate('name'), 'trim|required');
-        $this->form_validation->set_rules('relation', translate('relation'), 'trim|required');
-        $this->form_validation->set_rules('occupation', translate('occupation'), 'trim|required');
-        $this->form_validation->set_rules('income', translate('income'), 'trim|numeric');
-        $this->form_validation->set_rules('mobileno', translate('mobile_no'), 'trim|required');
-        $this->form_validation->set_rules('email', translate('email'), 'trim|valid_email');
-        $this->form_validation->set_rules('user_photo', translate('profile_picture'), 'callback_photoHandleUpload[user_photo]');
-        $this->form_validation->set_rules('facebook', 'Facebook', 'valid_url');
-        $this->form_validation->set_rules('twitter', 'Twitter', 'valid_url');
-        $this->form_validation->set_rules('linkedin', 'Linkedin', 'valid_url');
+        // $this->form_validation->set_rules('name', translate('name'), 'trim|required');
+        // $this->form_validation->set_rules('relation', translate('relation'), 'trim|required');
+        // $this->form_validation->set_rules('occupation', translate('occupation'), 'trim|required');
+        // $this->form_validation->set_rules('income', translate('income'), 'trim|numeric');
+        // $this->form_validation->set_rules('mobileno', translate('mobile_no'), 'trim|required');
+        // $this->form_validation->set_rules('email', translate('email'), 'trim|valid_email');
+        // $this->form_validation->set_rules('user_photo', translate('profile_picture'), 'callback_photoHandleUpload[user_photo]');
+        // $this->form_validation->set_rules('facebook', 'Facebook', 'valid_url');
+        // $this->form_validation->set_rules('twitter', 'Twitter', 'valid_url');
+        // $this->form_validation->set_rules('linkedin', 'Linkedin', 'valid_url');
         if ($getBranch['grd_generate'] == 0 || isset($_POST['parent_id'])) {
             $this->form_validation->set_rules('username', translate('username'), 'trim|required|callback_unique_username');
             if (!isset($_POST['parent_id'])) {
