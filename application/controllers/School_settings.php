@@ -176,34 +176,18 @@ class School_settings extends Admin_Controller
         }
 
         $branchID = $this->school_model->getBranchID();
+        $providerID = $this->application_model->smsServiceProvider($branchID);
+        $branch = $this->school_model->get('branch', array('id' => $branchID), true);
+        $balance = $this->sms_balance->get_balance($branchID, $providerID);
+
+        $this->data['balance'] = $balance;
+        $this->data['branch'] = $branch;
         $this->data['branch_id'] = $branchID;
         $this->data['api'] = $this->school_model->getSmsConfig($branchID);
         $this->data['title'] = translate('sms_settings');
         $this->data['sub_page'] = 'school_settings/smsbalance';
         $this->data['main_menu'] = 'school_m';
         $this->load->view('layout/index', $this->data);
-    }
-
-    public function check_sms_balance()
-    {
-        if (!get_permission('sms_settings', 'is_view')) {
-            access_denied();
-        }
-
-        $branchID = $this->school_model->getBranchID();
-        $providerID = $this->input->post('sms_service_provider');
-
-        $branch = $this->school_model->get('branch', array('id' => $branchID), true);
-
-        $balance = $this->sms_balance->get_balance($branchID, $providerID);
-
-        if (!is_null($balance)) {
-            $array = array('status' => 'success', 'message' => 'Your current SMS balance is ' . $balance . ' '. $branch['symbol'] ?? '');
-        } else {
-            $array = array('status' => 'success', 'message' => translate('SMS provider may not be configured properly'));
-        }
-
-        echo json_encode($array);
     }
 
     public function smsconfig()
