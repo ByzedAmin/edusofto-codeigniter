@@ -71,20 +71,18 @@
                         </style>
                         <?php $getSchool = $this->db->where(array('id' => $student['branch_id']))->get('branch')->row_array(); ?>
                         <div class="mark-container">
-                            <div class="container">
-                                <table class="table no-border" style="margin-top: 20px; height: 100px;">
-                                    <tbody>
-                                    <tr style="text-align: center">
-                                        <td style="vertical-align: top; text-align: center">
-                                            <img style="max-width:100%;" src="<?=base_url('uploads/app_image/'.$getSchool['report_card'])?>">
-                                        </td>
-                                        <td style="width: 15%; text-align: left">
-                                            <img src="/uploads/images/student/<?= $student['student_photo'] ?>" alt="" class="img-thumbnail" style="max-height: 100px">
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-condensed no-border" style="margin-top: 30px;">
+                                <tbody>
+                                <tr style="text-align: center">
+                                    <td style="vertical-align: top; text-align: center">
+                                        <img style="max-width:100%;" src="<?=base_url('uploads/app_image/'.$getSchool['report_card'])?>">
+                                    </td>
+                                    <td style="width: 15%; text-align: left">
+                                        <img src="/uploads/images/student/<?= $student['photo'] ?>" alt="" class="img-thumbnail" style="max-height: 100px">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                             <div style="text-align: center; margin-top: 50px">
                                 <span style="font-weight: 900; border: 1px solid rgba(0,0,0,0.75); border-radius: 50px; padding: 5px 10px; box-shadow: 5px 5px 5px 0 rgba(0,0,0,0.75); -webkit-box-shadow: 5px 5px 5px 0 rgba(0,0,0,0.75); -moz-box-shadow: 5px 5px 5px 0 rgba(0,0,0,0.75);">
                                     <?=(empty($page_data['title'])) ? translate('admission_form') : $page_data['title'] ?>
