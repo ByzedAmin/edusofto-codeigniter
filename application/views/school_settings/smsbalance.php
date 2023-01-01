@@ -18,42 +18,13 @@
 				</ul>
 				<div class="tab-content">
 					<div id="sms_balance" class="tab-pane active">
-                        <section class="panel panel-custom">
-                            <?php echo form_open('school_settings/check_sms_balance' . $url, array( 'class' => 'frm-submit-msg')); ?>
-                            <input type="hidden" name="branch_id" value="<?=$branch_id?>">
-                            <div class="panel-body panel-body-custom">
-                                <div class="row">
-                                    <div class="col-md-offset-3 col-md-6 mb-sm">
-                                        <label class="control-label"><?=translate('activated_sms_gateway')?> <span class="required">*</span></label>
-                                        <?php
-                                        $sms_service_provider = $this->application_model->smsServiceProvider($branch_id);
-                                        $arraySMS = array(
-                                            "1" 		=> "Twilio",
-                                            "2" 		=> "Clickatell",
-                                            "3" 		=> "Msg91",
-                                            "4" 		=> "MyDokani",
-                                            "5" 		=> "Textlocal",
-                                            "6" 		=> "SMS country",
-                                            "7" 		=> "Bulksmsbd.net",
-                                        );
-                                        echo form_dropdown("sms_service_provider", $arraySMS, set_value('sms_service', $sms_service_provider), "class='form-control'
-												data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
-                                        ?>
-                                        <span class="error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <footer class="panel-footer panel-footer-custom">
-                                <div class="row">
-                                    <div class="col-md-offset-3 col-md-2">
-                                        <button type="submit" class="btn btn-default btn-block" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
-                                            <i class="fas fa-bars-progress"></i> <?=translate('Check')?>
-                                        </button>
-                                    </div>
-                                </div>
-                            </footer>
-                            <?php echo form_close();?>
-                        </section>
+                        <?php
+                        if (!is_null($balance)){
+                            echo '<div class="alert alert-success">' . translate('your_sms_balance_is') . ' : ' . $balance . ' '. $branch['symbol'] ?? null .'</div>';
+                        } else {
+                            echo '<div class="alert alert-danger">' . translate('your_sms_balance_is') . ' : ' . translate('not_available') . '</div>';
+                        }
+                        ?>
 					</div>
 				</div>
 			</div>
