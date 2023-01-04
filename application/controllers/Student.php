@@ -64,7 +64,6 @@ class Student extends Admin_Controller
         }
         $this->db->where(array('roll' => $roll,'section_id' => $section_id,'class_id' => $class_id, 'branch_id' => $branchID,'session_id'=>get_session_id()));
         $roll_row = $this->db->get('enroll')->num_rows();
-        // print_r($roll_row);
         if ($roll_row == 0) {
             if (isset($validArr['roll'])) {
                 $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required');
