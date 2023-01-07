@@ -526,15 +526,15 @@ if (count($student_array)) {
 					<td valign="top" colspan="<?=$colspan?>"><?=$grand_obtain_marks+$grand_obtain_marksOp . '/' . $grand_full_marks; ?>, Average : <?php $percentage = ($totalmark * 100) / $grand_full_marks; echo number_format($percentage, 2, '.', '')?>%</td>
 				</tr>
 			<?php if ($extINTL == true) { ?>
-				<tr class="text-weight-semibold">
+				<!-- <tr class="text-weight-semibold">
 					<td valign="top" >GRAND TOTAL IN WORDS :</td>
 					<td valign="top" colspan="<?=$colspan?>">
 						<?php
-						$f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-						echo ucwords($f->format($totalmark));
+						// $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+						// echo ucwords($f->format($totalmark));
 						?>
 					</td>
-				</tr>
+				</tr> -->
 			<?php } ?>
 			<?php 
 			if($result_statusOp==1){
