@@ -363,14 +363,7 @@
 			$grade_total_point = $total2_grade_point+$t1_grade_point;
 			
 			?>
-			<tr>
-				<td>GPA</td>
-				<?php if($result_status == 1) { ?>
-					<td  valign="middle" colspan="7"><?=number_format(($grade_total_point / $count_list), 2, '.', '')?></td>
-				<?php }else {?>
-					<td  valign="middle" colspan="7">0.00</td>
-				<?php }?>
-			</tr>
+
 			
 			</tbody>
 			<tbody>
@@ -459,22 +452,22 @@
 				</tr>
 			<?php } ?>
 			<?php } ?>
-			<?php if ($getExam['type_id'] == 1 || $getExam['type_id'] == 3) { ?>
+			<?php if (isset($getExam['type_id']) == 1 || isset($getExam['type_id']) == 3) { ?>
 				<tr class="text-weight-semibold">
 					<td valign="top" >GRAND TOTAL :</td>
 					<?php $totalmark = $grand_obtain_marks+$grand_obtain_marksOp;
 					?>
 					<td valign="top" colspan="<?=$colspan?>"><?=$totalmark . '/' . $grand_full_marks; ?>, Average : <?php $percentage = ($totalmark * 100) / $grand_full_marks; echo number_format($percentage, 2, '.', '')?>%</td>
 				</tr>
-				<tr class="text-weight-semibold">
+				<!-- <tr class="text-weight-semibold">
 					<td valign="top" >GRAND TOTAL IN WORDS :</td>
 					<td valign="top" colspan="<?=$colspan?>">
 						<?php
-						$f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-						echo ucwords($f->format($totalmark));
+						// $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+						// echo ucwords($f->format($totalmark));
 						?>
 					</td>
-				</tr>
+				</tr> -->
 				<?php 
 				if($result_statusOp==1){
 					$optionalPoint = $total_grade_pointOp-$rowOp['cut_point'];

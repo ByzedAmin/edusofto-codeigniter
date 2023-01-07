@@ -88,6 +88,14 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 <?php if ($widget1 > 0) { ?>
 	<div class="row">
 		<div class="col-md-12 col-lg-12 col-sm-12">
+				    <!-- event calendar -->
+		<div class="col-md-<?php echo $div3 ?>">
+			<section class="panel">
+				<div class="panel-body">
+					<div id="event_calendar"></div>
+				</div>
+			</section>
+		</div>
 			<div class="panel">
 				<div class="row widget-row-in">
 				<?php if (get_permission('employee_count_widget', 'is_view')) { ?>
@@ -178,32 +186,7 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 		</div>
 	</div>
 <?php } ?>
-	<!-- student quantity chart -->
-	<div class="row">
-<?php if (get_permission('student_quantity_pie_chart', 'is_view')) { ?>
-		<div class="<?php echo get_permission('weekend_attendance_inspection_chart', 'is_view') ? 'col-md-12 col-lg-4 col-xl-3' : 'col-md-12'; ?>">
-			<section class="panel pg-fw">
-				<div class="panel-body">
-					<h4 class="chart-title mb-xs"><?=translate('student_quantity')?></h4>
-					<div id="student_strength"></div>
-					<div class="round-overlap"><i class="fas fa-school"></i></div>
-				</div>
-			</section>
-		</div>
-<?php } ?>
-<?php if (get_permission('weekend_attendance_inspection_chart', 'is_view')) { ?>
-		<div class="<?php echo get_permission('student_quantity_pie_chart', 'is_view') ? 'col-md-12 col-lg-8 col-xl-9' : 'col-md-12'; ?>">
-			<section class="panel">
-				<div class="panel-body">
-					<h4 class="chart-title mb-md"><?=translate('weekend_attendance_inspection')?></h4>
-					<div class="pg-fw">
-						<canvas id="weekend_attendance" style="height: 340px;"></canvas>
-					</div>
-				</div>
-			</section>
-		</div>
-<?php } ?>
-	</div>
+
 <?php if ($widget2 > 0) { ?>
 	<div class="row">
 		<div class="col-md-12 col-lg-12 col-sm-12">
@@ -292,79 +275,6 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 		</div>
 	</div>
 <?php } ?>
-	<div class="row">
-	    <!-- event calendar -->
-		<div class="col-md-<?php echo $div3 ?>">
-			<section class="panel">
-				<div class="panel-body">
-					<div id="event_calendar"></div>
-				</div>
-			</section>
-		</div>
-	<?php if ($div3 == 9) { ?>
-		<div class="col-md-3">
-			<div class="panel">
-				<div class="row widget-row-in">
-				<?php if (get_permission('student_birthday_widget', 'is_view')) { ?>
-					<div class="col-xs-12">
-						<div class="panel-body">
-							<div class="widget-col-in row">
-								<div class="col-md-6 col-sm-6 col-xs-6"> <a href="<?php echo base_url('birthday/student') ?>" data-toggle="tooltip" data-original-title="<?=translate('view') . " " . translate('list')?>"><i class="fas fa-birthday-cake" ></i></a>
-									<h5 class="text-muted"><?=translate('student')?></h5></div>
-								<div class="col-md-6 col-sm-6 col-xs-6">
-									<h3 class="counter text-right mt-md text-primary"><?php
-										$this->db->select('student.id');
-										$this->db->from('student');
-										$this->db->join('enroll', 'enroll.student_id = student.id', 'inner');
-										$this->db->where("enroll.session_id", get_session_id());
-										if (!empty($school_id))
-											$this->db->where('branch_id', $school_id);
-										$this->db->where("MONTH(student.birthday)", date('m'));
-										$this->db->where("DAY(student.birthday)", date('d'));
-										$this->db->group_by('student.id'); 
-										$stuTodayBirthday = $this->db->get()->result();
-										echo(count($stuTodayBirthday));
-										?></h3>
-								</div>
-								<div class="col-md-12 col-sm-12 col-xs-12">
-									<div class="box-top-line line-color-primary">
-										<span class="text-muted text-uppercase"><?=translate('today_birthday')?></span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				<?php } if (get_permission('staff_birthday_widget', 'is_view')) { ?>
-					<div class="col-xs-12">
-						<div class="panel-body">
-							<div class="widget-col-in row">
-								<div class="col-md-6 col-sm-6 col-xs-6"> <a href="<?php echo base_url('birthday/staff') ?>" data-toggle="tooltip" data-original-title="<?=translate('view') . " " . translate('list')?>"><i class="fas fa-birthday-cake" ></i></a>
-									<h5 class="text-muted"><?=translate('employee')?></h5></div>
-								<div class="col-md-6 col-sm-6 col-xs-6">
-									<h3 class="counter text-right mt-md text-primary"><?php
-										$this->db->select('id');
-										if (!empty($school_id))
-											$this->db->where('branch_id', $school_id);
-										$this->db->where("MONTH(birthday)", date('m'));
-										$this->db->where("DAY(birthday)", date('d'));
-										$emyTodayBirthday = $this->db->get('staff')->result();
-										echo(count($emyTodayBirthday));
-										?></h3>
-								</div>
-								<div class="col-md-12 col-sm-12 col-xs-12">
-									<div class="box-top-line line-color-primary">
-										<span class="text-muted text-uppercase"><?=translate('today_birthday')?></span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				<?php } ?>
-				</div>
-			</div>
-		</div>
-	<?php } ?>
-	</div>
 </div>
 
 <div class="zoom-anim-dialog modal-block modal-block-primary mfp-hide" id="modal">
@@ -538,10 +448,7 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 	var ctx = document.getElementById('fees_graph').getContext('2d');
 	window.myLine =new Chart(ctx, feesGraph);
 <?php } ?>
-<?php if (get_permission('weekend_attendance_inspection_chart', 'is_view')) { ?>
-	var ctx2 = document.getElementById('weekend_attendance').getContext('2d');
-	window.myLine =new Chart(ctx2, weekendAttendanceChart);
-<?php } ?>
+
 <?php if (get_permission('monthly_income_vs_expense_chart', 'is_view')) { ?>
 	// monthly income vs expense chart
 	var cash_book_transaction = document.getElementById("cash_book_transaction");
