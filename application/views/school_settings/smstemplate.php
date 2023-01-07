@@ -12,6 +12,10 @@
 					<li class="active">
 						<a href="#email_triggers" data-toggle="tab"><i class="fas fa-sitemap"></i> <?=translate('sms_triggers')?></a>
 					</li>
+
+                    <li>
+                        <a href="<?=base_url('school_settings/smsbalance' . $url)?>"><i class="fas fa-money-bill"></i> <?=translate('Smsbalance')?></a>
+                    </li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="email_triggers">

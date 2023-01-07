@@ -26,6 +26,9 @@ function smsIsarray($array)
 					<li>
 						<a href="<?=base_url('school_settings/smstemplate' . $url)?>"><i class="fas fa-sitemap"></i> <?=translate('sms_triggers')?></a>
 					</li>
+					<li>
+						<a href="<?=base_url('school_settings/smsbalance' . $url)?>"><i class="fas fa-money-bill"></i> <?=translate('Smsbalance')?></a>
+					</li>
 				</ul>
 				<div class="tab-content">
 					<div id="sms_config" class="tab-pane active">

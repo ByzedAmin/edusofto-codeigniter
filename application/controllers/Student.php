@@ -589,6 +589,20 @@ class Student extends Admin_Controller
         $this->load->view('layout/index', $this->data);
     }
 
+    public function print($id = '')
+    {
+        $getStudent = $this->student_model->getSingleStudent($id);
+
+       /* print_r($getStudent);
+        die();*/
+
+        $this->data['title'] = $getStudent['first_name'] ?? null . ' ' . $getStudent['last_name'] ?? null;
+        $this->data['student'] = $getStudent;
+        $this->data['sub_page'] = 'student/print';
+        $this->data['main_menu'] = 'student';
+        $this->load->view('layout/index', $this->data);
+    }
+
     /* student information delete here */
     public function delete_data($eid = '', $sid = '')
     {
