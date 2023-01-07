@@ -36,25 +36,24 @@ if ($div2 == 0) {
 }else{
 	$widget2 = 12 / $div2;
 }
-
-$div3 = 12;
-if (get_permission('student_birthday_widget', 'is_view') || get_permission('staff_birthday_widget', 'is_view')) {
-	$div3 = 9;	
-}
 ?>
-<?php if ($sqlMode == true) { ?>
-    <div class="alert alert-danger">
-        <i class="fas fa-exclamation-triangle"></i> This School management system may not work properly because "ONLY_FULL_GROUP_BY" is enabled, <strong>Strongly recommended</strong> - consult with your hosting provider to disable "ONLY_FULL_GROUP_BY" in sql_mode configuration.
-    </div>
-<?php } ?>
 <div class="dashboard-page">
+	<?php if ($widget1 > 0) { ?>
+		<div class="row">
+			<div class="col-md-12 col-lg-12 col-sm-12">
+				<div class="panel">
+					<img src="<?php echo base_url('assets/images/bg_img.jpg'); ?>" alt="" width="100%">
+				</div>
+			</div>
+		</div>
+	<?php } ?>
 	<div class="row">
 <?php if (get_permission('monthly_income_vs_expense_chart', 'is_view')) { ?>
 		<!-- monthly cash book transaction -->
 		<div class="<?php echo get_permission('annual_student_fees_summary_chart', 'is_view') ? 'col-md-12 col-lg-4 col-xl-3' : 'col-md-12'; ?>">
 			<section class="panel pg-fw">
 				<div class="panel-body">
-					<h4 class="chart-title mb-xs"><?=translate('income_vs_expense_of') . " " . translate(strtolower(date('F')))?></h4>
+					<h4 class="chart-title mb-xs"><?=translate('income_vs_expense_of') . " " . date('F')?></h4>
 					<div id="cash_book_transaction"></div>
 					<div class="round-overlap"><i class="fab fa-sellcast"></i></div>
 					<div class="text-center">
@@ -88,14 +87,6 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 <?php if ($widget1 > 0) { ?>
 	<div class="row">
 		<div class="col-md-12 col-lg-12 col-sm-12">
-				    <!-- event calendar -->
-		<div class="col-md-<?php echo $div3 ?>">
-			<section class="panel">
-				<div class="panel-body">
-					<div id="event_calendar"></div>
-				</div>
-			</section>
-		</div>
 			<div class="panel">
 				<div class="row widget-row-in">
 				<?php if (get_permission('employee_count_widget', 'is_view')) { ?>
@@ -186,7 +177,32 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 		</div>
 	</div>
 <?php } ?>
-
+	<!-- student quantity chart -->
+	<div class="row">
+<?php if (get_permission('student_quantity_pie_chart', 'is_view')) { ?>
+		<div class="<?php echo get_permission('weekend_attendance_inspection_chart', 'is_view') ? 'col-md-12 col-lg-4 col-xl-3' : 'col-md-12'; ?>">
+			<section class="panel pg-fw">
+				<div class="panel-body">
+					<h4 class="chart-title mb-xs"><?=translate('student_quantity')?></h4>
+					<div id="student_strength"></div>
+					<div class="round-overlap"><i class="fas fa-school"></i></div>
+				</div>
+			</section>
+		</div>
+<?php } ?>
+<?php if (get_permission('weekend_attendance_inspection_chart', 'is_view')) { ?>
+		<div class="<?php echo get_permission('student_quantity_pie_chart', 'is_view') ? 'col-md-12 col-lg-8 col-xl-9' : 'col-md-12'; ?>">
+			<section class="panel">
+				<div class="panel-body">
+					<h4 class="chart-title mb-md"><?=translate('weekend_attendance_inspection')?></h4>
+					<div class="pg-fw">
+						<canvas id="weekend_attendance" style="height: 340px;"></canvas>
+					</div>
+				</div>
+			</section>
+		</div>
+<?php } ?>
+	</div>
 <?php if ($widget2 > 0) { ?>
 	<div class="row">
 		<div class="col-md-12 col-lg-12 col-sm-12">
@@ -275,6 +291,16 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 		</div>
 	</div>
 <?php } ?>
+	<div class="row">
+	    <!-- event calendar -->
+		<div class="col-md-12">
+			<section class="panel">
+				<div class="panel-body">
+					<div id="event_calendar"></div>
+				</div>
+			</section>
+		</div>
+	</div>
 </div>
 
 <div class="zoom-anim-dialog modal-block modal-block-primary mfp-hide" id="modal">
@@ -318,12 +344,16 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 		height: 720,
 		droppable: false,
 		editable: true,
-		timezone: 'UTC',
-		lang: '<?php echo $language ?>',
 		events: {
 			url: "<?=base_url('event/get_events_list/'. $school_id)?>"
 		},
-		
+		buttonText: {
+			today:    'Today',
+			month:    'Month',
+			week:     'Week',
+			day:      'Day',
+			list:     'List'
+		},
 		eventRender: function(event, element) {
 			$(element).on("click", function() {
 				viewEvent(event.id);
@@ -448,7 +478,10 @@ if (get_permission('student_birthday_widget', 'is_view') || get_permission('staf
 	var ctx = document.getElementById('fees_graph').getContext('2d');
 	window.myLine =new Chart(ctx, feesGraph);
 <?php } ?>
-
+<?php if (get_permission('weekend_attendance_inspection_chart', 'is_view')) { ?>
+	var ctx2 = document.getElementById('weekend_attendance').getContext('2d');
+	window.myLine =new Chart(ctx2, weekendAttendanceChart);
+<?php } ?>
 <?php if (get_permission('monthly_income_vs_expense_chart', 'is_view')) { ?>
 	// monthly income vs expense chart
 	var cash_book_transaction = document.getElementById("cash_book_transaction");
