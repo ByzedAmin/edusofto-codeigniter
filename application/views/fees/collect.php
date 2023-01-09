@@ -26,11 +26,11 @@ if ($extINTL == true) {
 					<a href="#fully_paid" data-toggle="tab"><i class="far fa-credit-card"></i> Fully Paid</a>
 				</li>
 			<?php endif; ?>
-			<!-- <?php if (get_permission('collect_fees', 'is_add') && $invoice['status'] != 'total'): ?>
+			<?php if (get_permission('collect_fees', 'is_add') && $invoice['status'] != 'total'): ?>
 				<li>
 					<a href="#onetime_payment" data-toggle="tab"><i class="far fa-credit-card"></i> Onetime Payment</a>
 				</li>
-			<?php endif; ?> -->
+			<?php endif; ?>
 
 		</ul>
 		<div class="tab-content">
@@ -138,6 +138,7 @@ if ($extINTL == true) {
 										$total_balance = 0;
 										$total_amount = 0;
 										$typeData = array('' => translate('select'));
+										
 										$allocations = $this->fees_model->getInvoiceDetails($basic['id']);
 										foreach ($allocations as $row) {
 											$deposit = $this->fees_model->getStudentFeeDeposit($row['allocation_id'], $row['fee_type_id']);
@@ -416,6 +417,7 @@ if ($extINTL == true) {
 							<label class="col-md-3 control-label"><?=translate('fees_type')?> <span class="required">*</span></label>
 							<div class="col-md-6">
 							<?php
+							
 								echo form_dropdown("fees_type", $typeData, set_value('fees_type'), "class='form-control' id='fees_type'
 								data-plugin-selectTwo data-width='100%' ");
 							?>
@@ -582,6 +584,16 @@ if ($extINTL == true) {
 			<?php if($invoice['status'] != 'total'): ?>
 				<div id="onetime_payment" class="tab-pane">
 					<?php echo form_open('fees/ontime_payment', array('class' => 'form-horizontal frm-submit' )); ?>
+						<div class="form-group">
+							<label class="col-md-3 control-label"><?=translate('fees_type')?> <span class="required">*</span></label>
+							<div class="col-md-6">
+							<?php
+								echo form_dropdown("fees_type", $categorylist, set_value('fees_type'), "class='form-control' id='fees_type'
+								data-plugin-selectTwo data-width='100%' ");
+							?>
+							<span class="error"></span>
+							</div>
+						</div>
 						<div class="form-group">
 							<label class="col-md-3 control-label"><?=translate('date')?> <span class="required">*</span></label>
 							<div class="col-md-6">

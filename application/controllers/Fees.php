@@ -26,12 +26,18 @@ class Fees extends Admin_Controller
     }
 
     /* fees type form validation rules */
-    protected function type_validation()
+    protected function type_validation($ontime_type_name)
     {
         if (is_superadmin_loggedin()) {
             $this->form_validation->set_rules('branch_id', translate('branch'), 'required');
         }
-        $this->form_validation->set_rules('type_name', translate('name'), 'trim|required|callback_unique_type');
+        
+        if($ontime_type_name){
+            $this->form_validation->set_rules('ontime_type_name', translate('name'), 'trim|required|callback_unique_type');
+        }else{
+            $this->form_validation->set_rules('type_name', translate('name'), 'trim|required|callback_unique_type');
+        }
+        
     }
 
     /* fees type control */
@@ -44,7 +50,8 @@ class Fees extends Admin_Controller
             if (!get_permission('fees_type', 'is_add')) {
                 ajax_access_denied();
             }
-            $this->type_validation();
+            $ontime_type_name = $this->input->post('ontime_type_name');
+            $this->type_validation($ontime_type_name);
             if ($this->form_validation->run() !== false) {
                 $post = $this->input->post();
                 $this->fees_model->typeSave($post);
@@ -58,6 +65,7 @@ class Fees extends Admin_Controller
             exit();
         }
         $this->data['categorylist'] = $this->app_lib->getTable('fees_type', array('system' => 0));
+        $this->data['ontimecategorylist'] = $this->app_lib->getTable('fees_type_ontime', array('system' => 0));
         $this->data['title'] = translate('fees_type');
         $this->data['sub_page'] = 'fees/type';
         $this->data['main_menu'] = 'fees';
@@ -71,7 +79,8 @@ class Fees extends Admin_Controller
         }
 
         if ($_POST) {
-            $this->type_validation();
+            $ontime_type_name = $this->input->post('ontime_type_name');
+            $this->type_validation($ontime_type_name);
             if ($this->form_validation->run() !== false) {
                 $post = $this->input->post();
                 $this->fees_model->typeSave($post);
@@ -88,6 +97,35 @@ class Fees extends Admin_Controller
         $this->data['category'] = $this->app_lib->getTable('fees_type', array('t.id' => $id), true);
         $this->data['title'] = translate('fees_type');
         $this->data['sub_page'] = 'fees/type_edit';
+        $this->data['main_menu'] = 'fees';
+        $this->load->view('layout/index', $this->data);
+    }
+
+    public function ontime_type_edit($id = '')
+    {
+        if (!get_permission('fees_type', 'is_edit')) {
+            access_denied();
+        }
+
+        if ($_POST) {
+            $ontime_type_name = $this->input->post('ontime_type_name');
+            $this->type_validation($ontime_type_name);
+            if ($this->form_validation->run() !== false) {
+                $post = $this->input->post();
+                $this->fees_model->typeSave($post);
+                set_alert('success', translate('information_has_been_updated_successfully'));
+                $url = base_url('fees/type');
+                $array = array('status' => 'success', 'url' => $url);
+            } else {
+                $error = $this->form_validation->error_array();
+                $array = array('status' => 'fail', 'error' => $error);
+            }
+            echo json_encode($array);
+            exit();
+        }
+        $this->data['category'] = $this->app_lib->getTable('fees_type_ontime', array('t.id' => $id), true);
+        $this->data['title'] = translate('fees_type');
+        $this->data['sub_page'] = 'fees/ontime_type_edit';
         $this->data['main_menu'] = 'fees';
         $this->load->view('layout/index', $this->data);
     }
@@ -534,6 +572,7 @@ class Fees extends Admin_Controller
             redirect(base_url('dashboard'));
         $this->data['invoice'] = $this->fees_model->getInvoiceStatus($id);
         $this->data['basic'] = $this->fees_model->getInvoiceBasic($id);
+        $this->data['categorylist'] = $this->app_lib->getTable('fees_type_ontime', array('system' => 0));
         $this->data['title'] = translate('invoice_history');
         $this->data['main_menu'] = 'fees';
         $this->data['sub_page'] = 'fees/collect';
@@ -630,6 +669,66 @@ class Fees extends Admin_Controller
         }
         echo json_encode($array);
     }
+    // ontime_payment start
+    public function ontime_payment()
+    {
+        if (!get_permission('collect_fees', 'is_add')) {
+            ajax_access_denied();
+        }
+        $this->form_validation->set_rules('fees_type', translate('fees_type'), 'trim|required');
+        $this->form_validation->set_rules('date', translate('date'), 'trim|required');
+        $this->form_validation->set_rules('amount', translate('amount'), array('trim', 'required', 'numeric', 'greater_than[0]', array('deposit_verify', array($this->fees_model, 'depositAmountVerify'))));
+        $this->form_validation->set_rules('discount_amount', translate('discount'), array('trim', 'numeric', array('deposit_verify', array($this->fees_model, 'depositAmountVerify'))));
+        $this->form_validation->set_rules('pay_via', translate('payment_method'), 'trim|required');
+        if ($this->form_validation->run() !== false) {
+            $feesType = explode("|", $this->input->post('fees_type'));
+            $amount = $this->input->post('amount');
+            $fineAmount = $this->input->post('fine_amount');
+            $discountAmount = $this->input->post('discount_amount');
+            $date = $this->input->post('date');
+            $payVia = $this->input->post('pay_via');
+            $arrayFees = array(
+                'allocation_id' => $feesType[0],
+                'type_id' => $feesType[1],
+                'collect_by' => get_loggedin_user_id(),
+                'amount' => ($amount - $discountAmount),
+                'discount' => $discountAmount,
+                'fine' => $fineAmount,
+                'pay_via' => $payVia,
+                'remarks' => $this->input->post('remarks'),
+                'date' => $date,
+            );
+            $this->db->insert('fee_payment_history', $arrayFees);
+
+            // transaction voucher save function
+            if (isset($_POST['account_id'])) {
+                $arrayTransaction = array(
+                    'account_id' => $this->input->post('account_id'),
+                    'amount' => ($amount + $fineAmount) - $discountAmount,
+                    'date' => $date,
+                );
+                $this->fees_model->saveTransaction($arrayTransaction);
+            }
+
+            // send payment confirmation sms
+            if (isset($_POST['guardian_sms'])) {
+                $arrayData = array(
+                    'student_id' => $this->input->post('student_id'),
+                    'amount' => ($amount + $fineAmount) - $discountAmount,
+                    'paid_date' => _d($date),
+                );
+                $this->sms_model->send_sms($arrayData, 2);
+            }
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $array = array('status' => 'success');
+        } else {
+            $error = $this->form_validation->error_array();
+            $array = array('status' => 'fail', 'url' => '', 'error' => $error);
+        }
+        echo json_encode($array);
+    }
+
+    // ontime_payment end
 
     public function getBalanceByType()
     {

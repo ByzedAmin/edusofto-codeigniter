@@ -5,16 +5,16 @@
 			<li class="active">
 				<a href="#list" data-toggle="tab"><i class="fas fa-list-ul"></i> <?php echo translate('fees_type') . " " . translate('list'); ?></a>
 			</li>
-			<!-- <li class="active">
+			<li>
 				<a href="#ontimelist" data-toggle="tab"><i class="fas fa-list-ul"></i> <?php echo translate('ontime_payment_type') . " " . translate('list'); ?></a>
-			</li> -->
+			</li>
 <?php if (get_permission('fees_type', 'is_add')){ ?>
 			<li>
 				<a href="#create" data-toggle="tab"><i class="far fa-edit"></i> <?php echo translate('add') . " " . translate('fees_type'); ?></a>
 			</li>
-			<!-- <li>
-				<a href="#create" data-toggle="tab"><i class="far fa-edit"></i> <?php echo translate('add') . " " . translate('ontime_payment_type'); ?></a>
-			</li> -->
+			<li>
+				<a href="#ontime_create" data-toggle="tab"><i class="far fa-edit"></i> <?php echo translate('add') . " " . translate('ontime_payment_type'); ?></a>
+			</li>
 <?php } ?>
 		</ul>
 		<div class="tab-content">
@@ -77,7 +77,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php $count = 1; foreach ($categorylist as $row): ?>
+							<?php $count = 1; foreach ($ontimecategorylist as $row): ?>
 							<tr>
 								<td><?php echo $count++; ?></td>
 							<?php if (is_superadmin_loggedin()): ?>
@@ -88,13 +88,13 @@
 								<td><?php echo $row['description']; ?></td>
 								<td>
 									<?php if (get_permission('fees_type', 'is_edit')): ?>
-										<a href="<?php echo base_url('fees/type_edit/' . $row['id']); ?>" class="btn btn-circle btn-default icon"
+										<a href="<?php echo base_url('fees/ontime_type_edit/' . $row['id']); ?>" class="btn btn-circle btn-default icon"
 										data-toggle="tooltip" data-original-title="<?php echo translate('edit'); ?>"> 
 											<i class="fas fa-pen-nib"></i>
 										</a>
-									<?php endif; if (get_permission('fees_type', 'is_delete')): ?>
+									<!-- <?php endif; if (get_permission('fees_type', 'is_delete')): ?>
 										<?php echo btn_delete('fees/type_delete/' . $row['id']); ?>
-									<?php endif; ?>
+									<?php endif; ?> -->
 								</td>
 							</tr>
 							<?php endforeach; ?>
@@ -130,6 +130,46 @@
 						<label class="col-md-3 control-label"><?php echo translate('description'); ?></label>
 						<div class="col-md-6 mb-md">
 							<textarea class="form-control" id="description" name="description" placeholder="" rows="3" ></textarea>
+						</div>
+					</div>
+					<footer class="panel-footer">
+						<div class="row">
+							<div class="col-md-2 col-md-offset-3">
+								<button type="submit" class="btn btn-default btn-block" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+									<i class="fas fa-plus-circle"></i> <?php echo translate('save'); ?>
+								</button>
+							</div>
+						</div>	
+					</footer>
+				<?php echo form_close(); ?>
+			</div>
+			<div class="tab-pane" id="ontime_create">
+				<?php echo form_open($this->uri->uri_string(), array('class' => 'form-horizontal form-bordered frm-submit')); ?>
+				<input type="hidden" name="voucher_type" value="expense">
+					<?php if (is_superadmin_loggedin() ): ?>
+					<div class="form-group">
+						<label class="control-label col-md-3"><?=translate('branch')?> <span class="required">*</span></label>
+						<div class="col-md-6">
+							<?php
+								$arrayBranch = $this->app_lib->getSelectList('branch');
+								echo form_dropdown("branch_id", $arrayBranch, set_value('branch_id'), "class='form-control' id='branch_id'
+								data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
+							?>
+							<span class="error"></span>
+						</div>
+					</div>
+					<?php endif; ?>
+					<div class="form-group">
+						<label class="col-md-3 control-label"><?php echo translate('ontime_name'); ?> <span class="required">*</span></label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" name="ontime_type_name" value="<?=set_value('ontime_type_name')?>" />
+							<span class="error"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label"><?php echo translate('description'); ?></label>
+						<div class="col-md-6 mb-md">
+							<textarea class="form-control" id="ontime_description" name="ontime_description" placeholder="" rows="3" ></textarea>
 						</div>
 					</div>
 					<footer class="panel-footer">

@@ -156,18 +156,34 @@ class Fees_model extends MY_Model
 
     public function typeSave($data = array())
     {
-        $arrayData = array(
-            'branch_id' => $this->application_model->get_branch_id(),
-            'name' => $data['type_name'],
-            'fee_code' => strtolower(str_replace(' ', '-', $data['type_name'])),
-            'description' => $data['description'],
-        );
-        if (!isset($data['type_id'])) {
-            $this->db->insert('fees_type', $arrayData);
-        } else {
-            $this->db->where('id', $data['type_id']);
-            $this->db->update('fees_type', $arrayData);
+        if($data['type_name']){
+            $arrayData = array(
+                'branch_id' => $this->application_model->get_branch_id(),
+                'name' => $data['type_name'],
+                'fee_code' => strtolower(str_replace(' ', '-', $data['type_name'])),
+                'description' => $data['description'],
+            );
+            if (!isset($data['type_id'])) {
+                $this->db->insert('fees_type', $arrayData);
+            } else {
+                $this->db->where('id', $data['type_id']);
+                $this->db->update('fees_type', $arrayData);
+            }
+        }else{
+            $arrayData = array(
+                'branch_id' => $this->application_model->get_branch_id(),
+                'name' => $data['ontime_type_name'],
+                'fee_code' => strtolower(str_replace(' ', '-', $data['ontime_type_name'])),
+                'description' => $data['ontime_description'],
+            );
+            if (!isset($data['type_id'])) {
+                $this->db->insert('fees_type_ontime', $arrayData);
+            } else {
+                $this->db->where('id', $data['type_id']);
+                $this->db->update('fees_type_ontime', $arrayData);
+            }
         }
+        
     }
 
     // add partly of the fee
