@@ -127,13 +127,15 @@ class Fees_model extends MY_Model
     public function getInvoiceBasic($studentID = '')
     {
         $sessionID = get_session_id();
-        $this->db->select('s.id,e.branch_id,s.first_name,s.last_name,s.email as student_email,s.current_address as student_address,c.name as class_name,b.school_name,b.email as school_email,b.mobileno as school_mobileno,b.address as school_address');
+        $this->db->select('s.id,e.branch_id,e.roll,login.username,login.role,s.first_name,s.last_name,s.email as student_email,s.current_address as student_address,c.name as class_name,b.school_name,b.email as school_email,b.mobileno as school_mobileno,b.address as school_address');
         $this->db->from('enroll as e');
         $this->db->join('student as s', 's.id = e.student_id', 'inner');
         $this->db->join('class as c', 'c.id = e.class_id', 'left');
         $this->db->join('branch as b', 'b.id = e.branch_id', 'left');
+        $this->db->join('login_credential as login', 'login.user_id = e.student_id', 'left');
         $this->db->where('e.student_id', $studentID);
         $this->db->where('e.session_id', $sessionID);
+        $this->db->where('login.role', 7);
         return $this->db->get()->row_array();
     }
 

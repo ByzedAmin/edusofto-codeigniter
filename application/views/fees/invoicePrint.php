@@ -59,8 +59,10 @@ if (count($student_array)) {
 					<address>
 						<?php 
 						echo $basic['first_name'] . ' ' . $basic['last_name'] . '<br>';
+						echo translate('username') . ' : ' . $basic['username'] . '<br>';
 						echo $basic['student_address'] . '<br>';
 						echo translate('class') . ' : ' . $basic['class_name'] . '<br>';
+						echo translate('Roll') . ' : ' . $basic['roll'] . '<br>';
 						echo translate('email') . ' : ' . $basic['student_email']; 
 						?>
 					</address>

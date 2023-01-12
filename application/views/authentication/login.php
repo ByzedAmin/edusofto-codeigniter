@@ -20,6 +20,12 @@
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="<?php echo base_url('login_asset/assets/css/style.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('login_asset/assets/css/skins/default.css');?>">
+    	<!-- sweetalert js/css -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/vendor/sweetalert/sweetalert-custom.css');?>">
+	<script src="<?php echo base_url('assets/vendor/sweetalert/sweetalert.min.js');?>"></script>
+    <script type="text/javascript">
+		var base_url = '<?php echo base_url() ?>';
+	</script>
 </head>
 <?php 
 
@@ -49,7 +55,7 @@ $global_config = $this->db->where('id',1)->get('global_settings')->row_array();
                         <?php echo form_open($this->uri->uri_string()); ?>
                             <div class="form-group <?php if (form_error('email')) echo 'has-error'; ?> clearfix">
                                 <div class="form-box">
-                                    <input name="email" type="email" class="form-control" id="first_field" value="<?php echo set_value('email');?>" placeholder="<?php echo translate('username');?>">
+                                    <input name="email" type="text" class="form-control" id="first_field" value="<?php echo set_value('email');?>" placeholder="<?php echo translate('username');?>">
                                     <i class="flaticon-mail-2"></i>
                                     <span class="error"><?php echo form_error('email'); ?></span>
                                 </div>
@@ -122,5 +128,29 @@ $global_config = $this->db->where('id',1)->get('global_settings')->row_array();
 <script src="<?php echo base_url('login_asset/assets/js/bootstrap.bundle.min.js');?>"></script>
 <script src="<?php echo base_url('login_asset/assets/js/app.js');?>"></script>
 <!-- Custom JS Script -->
+<?php
+		$alertclass = "";
+		if($this->session->flashdata('alert-message-success')){
+			$alertclass = "success";
+		} else if ($this->session->flashdata('alert-message-error')){
+			$alertclass = "error";
+		} else if ($this->session->flashdata('alert-message-info')){
+			$alertclass = "info";
+		}
+		if($alertclass != ''):
+			$alert_message = $this->session->flashdata('alert-message-'. $alertclass);
+		?>
+			<script type="text/javascript">
+				swal({
+					toast: true,
+					position: 'top-end',
+					type: '<?php echo $alertclass;?>',
+					title: '<?php echo $alert_message;?>',
+					confirmButtonClass: 'btn btn-default',
+					buttonsStyling: false,
+					timer: 8000
+				})
+			</script>
+		<?php endif; ?>
 </body>
 </html>

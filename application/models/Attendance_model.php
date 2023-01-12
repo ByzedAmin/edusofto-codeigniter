@@ -18,7 +18,7 @@ class Attendance_model extends MY_Model
         student.id = enroll.student_id LEFT JOIN student_attendance ON student_attendance.student_id = student.id AND
         student_attendance.date = " . $this->db->escape($date) . " WHERE enroll.class_id = " . $this->db->escape($classID) .
         " AND enroll.section_id = " . $this->db->escape($sectionID) . " AND enroll.branch_id = " .
-        $this->db->escape($branchID) . " AND enroll.session_id = " . $this->db->escape(get_session_id());
+        $this->db->escape($branchID) . " AND enroll.session_id = " . $this->db->escape(get_session_id()). "ORDER BY roll ASC";
         return $this->db->query($sql)->result_array();
     }
 
