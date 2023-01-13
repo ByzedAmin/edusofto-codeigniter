@@ -18,7 +18,7 @@ if (count($student_array)) {
 		$basic = $this->fees_model->getInvoiceBasic($value);
 ?>
 <div class="invoice">
-	<header class="clearfix">
+	<header class="clearfix" style="height: 75px;">
 		<div class="row">
 			<div class="col-xs-6">
 				<div class="ib">
@@ -26,7 +26,7 @@ if (count($student_array)) {
 				</div>
 			</div>
 			<div class="col-md-6 text-right">
-				<h4 class="mt-none mb-none text-dark">Invoice No #<?=$invoice['invoice_no']?></h4>
+				<h4 class="mt-none mb-none text-dark" style="font-size: 13px;">Invoice No #<?=$invoice['invoice_no']?></h4>
 				<p class="mb-none">
 					<span class="text-dark"><?=translate('date')?> : </span>
 					<span class="value"><?=_d(date('Y-m-d'))?></span>
@@ -51,7 +51,7 @@ if (count($student_array)) {
 			</div>
 		</div>
 	</header>
-	<div class="bill-info">
+	<div class="bill-info" style="font-size: 10px !important;">
 		<div class="row">
 			<div class="col-xs-6">
 				<div class="bill-data">
@@ -84,7 +84,7 @@ if (count($student_array)) {
 		</div>
 	</div>
 
-	<div class="table-responsive br-none">
+	<div class="table-responsive br-none" style="font-size: 9px;">
 		<table class="table invoice-items table-hover mb-none">
 			<thead>
 				<tr class="text-dark">
@@ -153,7 +153,7 @@ if (count($student_array)) {
 			</tbody>
 		</table>
 	</div>
-	<div class="invoice-summary text-right mt-lg">
+	<div class="invoice-summary text-right mt-lg" style="margin:-2px !important;">
 		<div class="row">
 			<div class="col-lg-5 pull-right">
 				<ul class="amounts">
