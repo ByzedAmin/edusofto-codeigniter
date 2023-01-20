@@ -106,11 +106,17 @@ endif;
 				$category = $this->student_fields_model->getStatus('category', $branch_id);
                 $v = (2 + floatval($category['status']));
                 $div = floatval(12 / $v);
+
+				$result = $this->db->select('id,name')
+						->where(array('branch_id' => $branch_id, 'session_id' => get_session_id(), 'system' => 0))
+						->get('fee_groups')->result_array();
+					
 				?>
 				<div class="row mb-md">
 					<?php if (is_superadmin_loggedin()): ?>
 						<input type="hidden" name="branch_id" value="<?php echo $branch_id ?>">
 					<?php endif; ?>
+					
 					<div class="col-md-<?php echo $div; ?> mb-sm">
 						<div class="form-group">
 							<label class="control-label"><?=translate('class')?> <span class="required">*</span></label>
@@ -146,6 +152,19 @@ endif;
 						</div>
 					</div>
 					<?php } ?>
+					<div class="col-md-<?php echo $div; ?> mb-sm">
+						<div class="form-group">
+							<label class="control-label"><?=translate('Group')?> <span class="required">*</span></label>
+							<select name="group_id" id="group_id" class="form-control" required>
+								<option value=""><?=translate('select')?></option>
+								<?php foreach ($result as $row) {?>
+									<option value="<?php echo $row['id' ]?>"><?php echo $row['name' ]?></option>
+								<?php } ?>
+							</select>
+							<span class="error"></span>
+						</div>
+					</div>
+					
 				</div>
 
 				<!-- student details -->
@@ -735,3 +754,4 @@ endif;
 	</div>
 </div>
 <?php endif; ?>
+

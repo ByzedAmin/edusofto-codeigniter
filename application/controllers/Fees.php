@@ -677,19 +677,25 @@ class Fees extends Admin_Controller
         }
         $this->form_validation->set_rules('fees_type', translate('fees_type'), 'trim|required');
         $this->form_validation->set_rules('date', translate('date'), 'trim|required');
-        $this->form_validation->set_rules('amount', translate('amount'), array('trim', 'required', 'numeric', 'greater_than[0]', array('deposit_verify', array($this->fees_model, 'depositAmountVerify'))));
-        $this->form_validation->set_rules('discount_amount', translate('discount'), array('trim', 'numeric', array('deposit_verify', array($this->fees_model, 'depositAmountVerify'))));
+        $this->form_validation->set_rules('amount', translate('amount'), array('trim', 'required', 'numeric', 'greater_than[0]'));
+        $this->form_validation->set_rules('discount_amount', translate('discount'), array('trim', 'numeric'));
         $this->form_validation->set_rules('pay_via', translate('payment_method'), 'trim|required');
+        
         if ($this->form_validation->run() !== false) {
-            $feesType = explode("|", $this->input->post('fees_type'));
+            $feesType = $this->input->post('fees_type');
             $amount = $this->input->post('amount');
             $fineAmount = $this->input->post('fine_amount');
             $discountAmount = $this->input->post('discount_amount');
             $date = $this->input->post('date');
             $payVia = $this->input->post('pay_via');
+            $branch_id = $this->input->post('branch_id');
+            $student_id = $this->input->post('student_id');
+            $session_id = $this->input->post('session_id');
             $arrayFees = array(
-                'allocation_id' => $feesType[0],
-                'type_id' => $feesType[1],
+                'branch_id' => $branch_id,
+                'student_id' => $student_id,
+                'session_id' => $session_id,
+                'type_id' => $feesType,
                 'collect_by' => get_loggedin_user_id(),
                 'amount' => ($amount - $discountAmount),
                 'discount' => $discountAmount,
@@ -698,7 +704,7 @@ class Fees extends Admin_Controller
                 'remarks' => $this->input->post('remarks'),
                 'date' => $date,
             );
-            $this->db->insert('fee_payment_history', $arrayFees);
+            $this->db->insert('ontime_fee_payment_history', $arrayFees);
 
             // transaction voucher save function
             if (isset($_POST['account_id'])) {
@@ -707,7 +713,7 @@ class Fees extends Admin_Controller
                     'amount' => ($amount + $fineAmount) - $discountAmount,
                     'date' => $date,
                 );
-                $this->fees_model->saveTransaction($arrayTransaction);
+                $this->fees_model->saveOntimeTransaction($arrayTransaction);
             }
 
             // send payment confirmation sms
@@ -719,7 +725,7 @@ class Fees extends Admin_Controller
                 );
                 $this->sms_model->send_sms($arrayData, 2);
             }
-            set_alert('success', translate('information_has_been_saved_successfully'));
+            set_alert('success', translate('ontime_information_has_been_saved_successfully'));
             $array = array('status' => 'success');
         } else {
             $error = $this->form_validation->error_array();
@@ -941,6 +947,36 @@ class Fees extends Admin_Controller
         $this->data['branch_id'] = $branchID;
         $this->data['title'] = translate('fees_payment_history');
         $this->data['sub_page'] = 'fees/payment_history';
+        $this->data['main_menu'] = 'fees_repots';
+        $this->data['headerelements'] = array(
+            'css' => array(
+                'vendor/daterangepicker/daterangepicker.css',
+            ),
+            'js' => array(
+                'vendor/moment/moment.js',
+                'vendor/daterangepicker/daterangepicker.js',
+            ),
+        );
+        $this->load->view('layout/index', $this->data);
+    }
+
+    public function all_receipts_report()
+    {
+        if (!get_permission('fees_reports', 'is_view')) {
+            access_denied();
+        }
+        $branchID = $this->application_model->get_branch_id();
+        if ($this->input->post('search')) {
+            $classID = $this->input->post('class_id');
+            $paymentVia = $this->input->post('payment_via');
+            $daterange = explode(' - ', $this->input->post('daterange'));
+            $start = date("Y-m-d", strtotime($daterange[0]));
+            $end = date("Y-m-d", strtotime($daterange[1]));
+            $this->data['invoicelist'] = $this->fees_model->getStuPaymentHistory($classID, "", $paymentVia, $start, $end, $branchID);
+        }
+        $this->data['branch_id'] = $branchID;
+        $this->data['title'] = translate('all_receipts_report');
+        $this->data['sub_page'] = 'fees/all_receipts_report';
         $this->data['main_menu'] = 'fees_repots';
         $this->data['headerelements'] = array(
             'css' => array(

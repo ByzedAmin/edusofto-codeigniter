@@ -103,6 +103,13 @@ if (empty($student['previous_details'])) {
 							</div>
 						</div>
 
+						<?php 
+						$result = $this->db->select('id,name')
+									->where(array('branch_id' => $student['branch_id'], 'session_id' => get_session_id(), 'system' => 0))
+									->get('fee_groups')->result_array();
+						$st_group = $this->db->where('student_id',$student['id'])->where('branch_id',$student['branch_id'])->get('fee_allocation')->row_array();
+						?>
+
 						<div class="row mb-md">
 							<?php if (is_superadmin_loggedin()): ?>
 							<div class="col-md-<?php echo $widget; ?> mb-sm">
@@ -150,6 +157,18 @@ if (empty($student['previous_details'])) {
 									<span class="error"><?=form_error('category_id')?></span>
 								</div>
 							</div>
+							<div class="col-md-<?php echo $widget; ?> mb-sm">
+								<div class="form-group">
+										<label class="control-label"><?=translate('Group')?> <span class="required">*</span></label>
+										<select name="group_id" id="group_id" class="form-control" required>
+											<option value=""><?=translate('select')?></option>
+											<?php foreach ($result as $row) {?>
+												<option value="<?php echo $row['id' ]?>" <?php if($st_group['group_id']==$row['id' ]){ ?> selected <?php } ?>><?php echo $row['name' ]?></option>
+											<?php } ?>
+										</select>
+										<span class="error"></span>
+									</div>
+								</div>
 						</div>
 						
 						<!-- student details -->
@@ -680,11 +699,14 @@ if (empty($student['previous_details'])) {
 					<div class="panel-body">
 						<?php 
 						$studentID = $student['id'];
-						$this->db->where('class_id', $student['class_id']);
+						$student_data = $this->db->where('class_id', $student['class_id'])->get('timetable_exam')->row_array();
+						if(!empty($student_data)){
+						      $this->db->where('class_id', $student['class_id']);
 						$this->db->where('section_id', $student['section_id']);
 						$this->db->where('session_id', get_session_id());
 						$this->db->group_by('exam_id');
 						$variable = $this->db->get('timetable_exam')->result_array();
+						
 						foreach ($variable as  $erow) {
 							$examID = $erow['exam_id'];
 						?>
@@ -695,6 +717,7 @@ if (empty($student['previous_details'])) {
 					            <div class="panel-body">
 									<?php
 									$result = $this->exam_model->getStudentReportCard($studentID, $examID, get_session_id());
+									print_r($result);
 									if (!empty($result['exam'])) {
 									$getMarksList = $result['exam'];
 									$getExam = $this->db->where(array('id' => $examID))->get('exam')->row_array();
@@ -840,7 +863,9 @@ if (empty($student['previous_details'])) {
 							    <?php } ?>
 					            </div>
 					        </section>
-						<?php } ?>
+						<?php }
+						}
+						 ?>
 					</div>
 				</div>
 			</div>
@@ -1125,4 +1150,31 @@ if (empty($student['previous_details'])) {
 
 <script type="text/javascript">
 	var authenStatus = "<?=$student['active']?>";
+</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#branch_id').on('change', function(){
+			var branchID = $(this).val();
+		    $.ajax({
+		        url: base_url + 'fees/getGroupByBranch',
+		        type: 'POST',
+		        data: {
+		            'branch_id' : branchID
+		        },
+		        success: function (data) {
+		            $('#groupID').html(data);
+		        }
+		    });
+		});
+
+		$('#groupID').on('change', function(){
+			var groupID = $(this).val();
+			getTypeByGroup(groupID);
+		});
+		var groupID = "<?=$fine['group_id']?>"
+		var typeID = "<?=$fine['type_id']?>"
+		getTypeByGroup(groupID, typeID);
+	});
+
+
 </script>

@@ -1284,6 +1284,9 @@
                                     <li class="<?php if ($sub_page == 'fees/payment_history') echo 'nav-active';?>">
                                         <a href="<?=base_url('fees/payment_history')?>"><?=translate('receipts_report')?></a>
                                     </li>
+                                    <li class="<?php if ($sub_page == 'fees/all_receipts_report') echo 'nav-active';?>">
+                                        <a href="<?=base_url('fees/all_receipts_report')?>"><?=translate('Daily Receipt')?></a>
+                                    </li>
                                     <li class="<?php if ($sub_page == 'fees/due_report') echo 'nav-active';?>">
                                         <a href="<?=base_url('fees/due_report')?>"><?=translate('due_fees_report')?></a>
                                     </li>

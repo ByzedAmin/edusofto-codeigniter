@@ -127,9 +127,10 @@ class Fees_model extends MY_Model
     public function getInvoiceBasic($studentID = '')
     {
         $sessionID = get_session_id();
-        $this->db->select('s.id,e.branch_id,e.roll,login.username,login.role,s.first_name,s.last_name,s.email as student_email,s.current_address as student_address,c.name as class_name,b.school_name,b.email as school_email,b.mobileno as school_mobileno,b.address as school_address');
+        $this->db->select('s.id,e.branch_id,e.session_id,p.father_name,e.roll,login.username,login.role,s.first_name,s.last_name,s.email as student_email,s.current_address as student_address,c.name as class_name,b.school_name,b.email as school_email,b.mobileno as school_mobileno,b.address as school_address');
         $this->db->from('enroll as e');
         $this->db->join('student as s', 's.id = e.student_id', 'inner');
+        $this->db->join('parent as p', 'p.id = s.parent_id', 'left');
         $this->db->join('class as c', 'c.id = e.class_id', 'left');
         $this->db->join('branch as b', 'b.id = e.branch_id', 'left');
         $this->db->join('login_credential as login', 'login.user_id = e.student_id', 'left');
@@ -530,6 +531,64 @@ class Fees_model extends MY_Model
         $this->db->update('accounts', array('balance' => $bal));
     }
 
+    // ontime fees transaction
+    public function saveOntimeTransaction($data = array())
+    {
+        $branchID = $this->application_model->get_branch_id();
+        $accountID = $data['account_id'];
+        $date = $data['date'];
+        $amount = $data['amount'];
+
+        // get the current balance of the selected account
+        $qbal = $this->app_lib->get_table('accounts', $accountID, true);
+        $cbal = $qbal['balance'];
+        $bal = $cbal + $amount;
+        // query system voucher head / insert
+        $arrayHead = array(
+            'name' => 'Student Ontime Fees Collection',
+            'type' => 'income',
+            'system' => 1,
+            'branch_id' => $branchID,
+        );
+        $this->db->where($arrayHead);
+        $query = $this->db->get('voucher_head');
+        if ($query->num_rows() > 0) {
+            $voucher_headID = $query->row()->id;
+        } else {
+            $this->db->insert('voucher_head', $arrayHead);
+            $voucher_headID = $this->db->insert_id();
+        }
+        // query system transactions / insert
+        $arrayTransactions = array(
+            'account_id' => $accountID,
+            'voucher_head_id' => $voucher_headID,
+            'type' => 'deposit',
+            'system' => 1,
+            'date' => date("Y-m-d", strtotime($date)),
+            'branch_id' => $branchID,
+        );
+        $this->db->where($arrayTransactions);
+        $query = $this->db->get('transactions');
+        if ($query->num_rows() == 1) {
+            $this->db->set('amount', 'amount+' . $amount, false);
+            $this->db->set('cr', 'cr+' . $amount, false);
+            $this->db->set('bal', $bal);
+            $this->db->where('id', $query->row()->id);
+            $this->db->update('transactions');
+        } else {
+            $arrayTransactions['ref'] = '';
+            $arrayTransactions['amount'] = $amount;
+            $arrayTransactions['dr'] = 0;
+            $arrayTransactions['cr'] = $amount;
+            $arrayTransactions['bal'] = $bal;
+            $arrayTransactions['pay_via'] = 5;
+            $arrayTransactions['description'] = date("d-M-Y", strtotime($date)) . " Total Fees Collection";
+            $this->db->insert('transactions', $arrayTransactions);
+        }
+
+        $this->db->where('id', $accountID);
+        $this->db->update('accounts', array('balance' => $bal));
+    }
     public function carryForwardDue($data = array())
     {
         $type_name = "Previous Session Balance";

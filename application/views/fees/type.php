@@ -5,16 +5,16 @@
 			<li class="active">
 				<a href="#list" data-toggle="tab"><i class="fas fa-list-ul"></i> <?php echo translate('fees_type') . " " . translate('list'); ?></a>
 			</li>
-			<li>
+			<!-- <li>
 				<a href="#ontimelist" data-toggle="tab"><i class="fas fa-list-ul"></i> <?php echo translate('ontime_payment_type') . " " . translate('list'); ?></a>
-			</li>
+			</li> -->
 <?php if (get_permission('fees_type', 'is_add')){ ?>
 			<li>
 				<a href="#create" data-toggle="tab"><i class="far fa-edit"></i> <?php echo translate('add') . " " . translate('fees_type'); ?></a>
 			</li>
-			<li>
+			<!-- <li>
 				<a href="#ontime_create" data-toggle="tab"><i class="far fa-edit"></i> <?php echo translate('add') . " " . translate('ontime_payment_type'); ?></a>
-			</li>
+			</li> -->
 <?php } ?>
 		</ul>
 		<div class="tab-content">

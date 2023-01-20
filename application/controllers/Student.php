@@ -188,6 +188,7 @@ class Student extends Admin_Controller
             $class_id = $this->input->post('class_id');
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
+            $group_id = $this->input->post('group_id');
             $this->student_validation($roll,$class_id,$section_id);
             if (!isset($_POST['guardian_chk'])) {
 
@@ -272,6 +273,21 @@ class Student extends Admin_Controller
                 if (!empty($customField)) {
                     saveCustomFields($customField, $studentID);
                 }
+
+                if(!empty($group_id)){
+                    $arrayData = array(
+                        'student_id' => $studentID,
+                        'group_id' => $group_id,
+                        'session_id' => get_session_id(),
+                        'branch_id' => $branchID,
+                    );
+                    $this->db->where($arrayData);
+                    $q = $this->db->get('fee_allocation');
+                    if ($q->num_rows() == 0) {
+                        $this->db->insert('fee_allocation', $arrayData);
+                    }
+                }
+
 
                 // send student admission email
                 $this->email_model->studentAdmission($studentData);
@@ -546,6 +562,7 @@ class Student extends Admin_Controller
             $roll = $this->input->post('roll');
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
+            $group_id = $this->input->post('group_id');
             $this->student_validation($roll,$class_id,$section_id);
             $this->form_validation->set_rules('parent_id', translate('guardian'), 'required');
             if ($this->form_validation->run() == true) {
@@ -562,6 +579,36 @@ class Student extends Admin_Controller
                 );
                 $this->db->where('id', $getStudent['enrollid']);
                 $this->db->update('enroll', $arrayEnroll);
+
+                
+                
+                if(!empty($group_id)){
+                    $st_group = $this->db->where('student_id',$getStudent['enrollid'] )->where('branch_id',$this->application_model->get_branch_id())->get('fee_allocation')->row_array();
+                    if(empty($st_group)){
+                        $arrayData = array(
+                            'student_id' => $getStudent['enrollid'],
+                            'group_id' => $group_id,
+                            'session_id' => $this->input->post('year_id'),
+                            'branch_id' => $this->application_model->get_branch_id(),
+                        );
+                        $this->db->where($arrayData);
+                        $q = $this->db->get('fee_allocation');
+                        if ($q->num_rows() == 0) {
+                            $this->db->insert('fee_allocation', $arrayData);
+                        }
+                    }else{
+                        $arrayData = array(
+                            'student_id' => $getStudent['enrollid'],
+                            'group_id' => $group_id,
+                            'session_id' => $this->input->post('year_id'),
+                            'branch_id' => $this->application_model->get_branch_id(),
+                        );
+
+                        $this->db->where('student_id', $getStudent['enrollid']);
+                        $this->db->update('fee_allocation', $arrayData);
+                    }
+                    
+                }
 
                 // handle custom fields data
                 $class_slug = $this->router->fetch_class();

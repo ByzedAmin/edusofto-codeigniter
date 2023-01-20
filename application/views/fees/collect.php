@@ -27,10 +27,12 @@ if ($extINTL == true) {
 				</li>
 			<?php endif; ?>
 			<?php if (get_permission('collect_fees', 'is_add') && $invoice['status'] != 'total'): ?>
-				<li>
+				<!-- <li>
 					<a href="#onetime_payment" data-toggle="tab"><i class="far fa-credit-card"></i> Onetime Payment</a>
-				</li>
-			<?php endif; ?>
+				</li> -->
+			<?php endif; 
+			$branch_img = $this->db->where('id',$basic['branch_id'])->get('branch')->row_array();
+			?>
 
 		</ul>
 		<div class="tab-content">
@@ -41,7 +43,7 @@ if ($extINTL == true) {
 							<div class="row">
 								<div class="col-xs-6">
 									<div class="ib">
-										<img src="<?=$this->application_model->getBranchImage($basic['branch_id'], 'printing-logo')?>" alt="RamomCoder Img" />
+										<img src="<?=base_url('uploads/app_image/'.$branch_img['logo_file'])?>" alt="Img" />
 									</div>
 								</div>
 								<div class="col-md-6 text-right">
@@ -75,12 +77,13 @@ if ($extINTL == true) {
 									<div class="bill-data">
 										<p class="h5 mb-xs text-dark text-weight-semibold">Invoice To :</p>
 										<address>
-											<?php 
+										<?php 
 											echo $basic['first_name'] . ' ' . $basic['last_name'] . '<br>';
-											echo (empty($basic['student_address']) ? "" : nl2br($basic['student_address']) . '<br>');
+											echo translate('username') . ' : ' . $basic['username'] .' ;'. translate('father_name') . ' : ' . $basic['father_name'] . '<br>';
+											echo $basic['student_address'] . '<br>';
 											echo translate('class') . ' : ' . $basic['class_name'] . '<br>';
-											echo translate('email') . ' : ' . $basic['student_email']; 
-											?>
+											echo translate('Roll') . ' : ' . $basic['roll'] .' ;'. translate('printed_by') . ' : ' . $this->session->userdata('name'); 
+										?>
 										</address>
 									</div>
 								</div>
@@ -587,16 +590,21 @@ if ($extINTL == true) {
 						<div class="form-group">
 							<label class="col-md-3 control-label"><?=translate('fees_type')?> <span class="required">*</span></label>
 							<div class="col-md-6">
-							<?php
-								echo form_dropdown("fees_type", $categorylist, set_value('fees_type'), "class='form-control' id='fees_type'
-								data-plugin-selectTwo data-width='100%' ");
-							?>
+							<select name="fees_type" id="fees_type" class="form-control">
+								<option value="" disabled selected>--Select--</option>
+							<?php foreach ($categorylist as $row): ?>
+								<option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
+								<?php endforeach; ?>
+							</select>
 							<span class="error"></span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-3 control-label"><?=translate('date')?> <span class="required">*</span></label>
 							<div class="col-md-6">
+							<input type="hidden" name="session_id" value="<?=$basic['session_id']?>">
+							<input type="hidden" name="branch_id" value="<?=$basic['branch_id']?>">
+							<input type="hidden" name="student_id" value="<?=$basic['id']?>">
 								<input type="text" class="form-control" data-plugin-datepicker
 								data-plugin-options='{"todayHighlight" : true, "endDate":"today"}' name="date" value="<?=date('Y-m-d')?>" autocomplete="off" />
 								<span class="error"></span>
@@ -612,7 +620,7 @@ if ($extINTL == true) {
 						<div class="form-group">
 							<label class="col-md-3 control-label"><?=translate('fine')?></label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="fine_amount" id="fineAmount" autocomplete="off" />
+								<input type="text" class="form-control" value="0" name="fine_amount" id="fineAmount" autocomplete="off" />
 								<span class="error"></span>
 							</div>
 						</div>
@@ -629,6 +637,7 @@ if ($extINTL == true) {
 						</div>
                         <?php
                         $links = $this->fees_model->get('transactions_links', array('branch_id' => $basic['branch_id']), true);
+						// print_r($links);
                         if ($links['status'] == 1) {
                         ?>
                             <div class="form-group">

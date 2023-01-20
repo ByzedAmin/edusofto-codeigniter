@@ -22,7 +22,7 @@ if (count($student_array)) {
 		<div class="row">
 			<div class="col-xs-6">
 				<div class="ib">
-					<img src="<?=base_url('uploads/frontend/images/'.$global_config['print_file'])?>" alt="RamomCoder Img" />
+					<img src="<?=base_url('uploads/frontend/images/'.$global_config['print_file'])?>" alt=" Img" />
 				</div>
 			</div>
 			<div class="col-md-6 text-right">
@@ -51,7 +51,7 @@ if (count($student_array)) {
 			</div>
 		</div>
 	</header>
-	<div class="bill-info" style="font-size: 10px !important;">
+	<div class="bill-info" style="font-size: 10px !important;margin-top:-5px ;">
 		<div class="row">
 			<div class="col-xs-6">
 				<div class="bill-data">
@@ -59,11 +59,10 @@ if (count($student_array)) {
 					<address>
 						<?php 
 						echo $basic['first_name'] . ' ' . $basic['last_name'] . '<br>';
-						echo translate('username') . ' : ' . $basic['username'] . '<br>';
+						echo translate('username') . ' : ' . $basic['username'] .' ;'. translate('father_name') . ' : ' . $basic['father_name'] . '<br>';
 						echo $basic['student_address'] . '<br>';
 						echo translate('class') . ' : ' . $basic['class_name'] . '<br>';
-						echo translate('Roll') . ' : ' . $basic['roll'] . '<br>';
-						echo translate('email') . ' : ' . $basic['student_email']; 
+						echo translate('Roll') . ' : ' . $basic['roll'] .' ;'. translate('printed_by') . ' : ' . $this->session->userdata('name'); 
 						?>
 					</address>
 				</div>
