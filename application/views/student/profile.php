@@ -717,7 +717,6 @@ if (empty($student['previous_details'])) {
 					            <div class="panel-body">
 									<?php
 									$result = $this->exam_model->getStudentReportCard($studentID, $examID, get_session_id());
-									print_r($result);
 									if (!empty($result['exam'])) {
 									$getMarksList = $result['exam'];
 									$getExam = $this->db->where(array('id' => $examID))->get('exam')->row_array();

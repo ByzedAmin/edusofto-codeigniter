@@ -143,11 +143,32 @@ class Online_admission extends Admin_Controller
                     $this->form_validation->set_rules('student_photo', translate('profile_picture'), 'required');
                 }
             }
-            if (isset($validArr['roll'])) {
-                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required|callback_unique_roll');
+            $branchID = $this->application_model->get_branch_id();
+        
+            $roll = $this->input->post('roll');
+            $class_id = $this->input->post('class_id');
+            $class_id = $this->input->post('class_id');
+            $section_id = $this->input->post('section_id');
+            $this->db->where(array('roll' => $roll,'section_id' => $section_id,'class_id' => $class_id, 'branch_id' => $branchID,'session_id'=>get_session_id()));
+            $roll_row = $this->db->get('enroll')->num_rows();
+            if ($roll_row == 0) {
+                if (isset($validArr['roll'])) {
+                    $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required');
+                } else {
+                    $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric');
+                }
             } else {
-                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+                if (isset($validArr['roll'])) {
+                    $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required|callback_unique_roll');
+                } else {
+                    $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+                }
             }
+            // if (isset($validArr['roll'])) {
+            //     $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required|callback_unique_roll');
+            // } else {
+            //     $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+            // }
             if (isset($validArr['last_name'])) {
                 $this->form_validation->set_rules('last_name', translate('last_name'), 'trim|required');
             }

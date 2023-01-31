@@ -68,22 +68,42 @@ class Online_admission_model extends MY_Model
 
         // add new guardian all information in db
         if (!empty($data['grd_name']) || !empty($data['father_name'])) {
-            $arrayParent = array(
-                'name' => $this->input->post('grd_name'),
-                'relation' => $this->input->post('grd_relation'),
-                'father_name' => $this->input->post('father_name'),
-                'mother_name' => $this->input->post('mother_name'),
-                'occupation' => $this->input->post('grd_occupation'),
-                'income' => $this->input->post('grd_income'),
-                'education' => $this->input->post('grd_education'),
-                'email' => $this->input->post('grd_email'),
-                'mobileno' => $this->input->post('grd_mobileno'),
-                'address' => $this->input->post('grd_address'),
-                'city' => $this->input->post('grd_city'),
-                'state' => $this->input->post('grd_state'),
-                'branch_id' => $getBranch['id'],
-                'photo' => $guardianPhoto,
-            );
+            if(!empty($this->input->post('grd_address'))){
+                $arrayParent = array(
+                    'name' => $this->input->post('grd_name'),
+                    'relation' => $this->input->post('grd_relation'),
+                    'father_name' => $this->input->post('father_name'),
+                    'mother_name' => $this->input->post('mother_name'),
+                    'occupation' => $this->input->post('grd_occupation'),
+                    'income' => $this->input->post('grd_income'),
+                    'education' => $this->input->post('grd_education'),
+                    'email' => $this->input->post('grd_email'),
+                    'mobileno' => $this->input->post('grd_mobileno'),
+                    'address' => $this->input->post('grd_address'),
+                    'city' => $this->input->post('grd_city'),
+                    'state' => $this->input->post('grd_state'),
+                    'branch_id' => $getBranch['id'],
+                    'photo' => $guardianPhoto,
+                );
+            }else{
+                $arrayParent = array(
+                    'name' => $this->input->post('grd_name'),
+                    'relation' => $this->input->post('grd_relation'),
+                    'father_name' => $this->input->post('father_name'),
+                    'mother_name' => $this->input->post('mother_name'),
+                    'occupation' => $this->input->post('grd_occupation'),
+                    'income' => $this->input->post('grd_income'),
+                    'education' => $this->input->post('grd_education'),
+                    'email' => $this->input->post('grd_email'),
+                    'mobileno' => $this->input->post('grd_mobileno'),
+                    'address' => 'null',
+                    'city' => $this->input->post('grd_city'),
+                    'state' => $this->input->post('grd_state'),
+                    'branch_id' => $getBranch['id'],
+                    'photo' => $guardianPhoto,
+                );
+            }
+           
             $this->db->insert('parent', $arrayParent);
             $parentID = $this->db->insert_id();
             // save guardian login credential information in the database

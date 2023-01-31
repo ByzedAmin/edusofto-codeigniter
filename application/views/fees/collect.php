@@ -43,7 +43,7 @@ if ($extINTL == true) {
 							<div class="row">
 								<div class="col-xs-6">
 									<div class="ib">
-										<img src="<?=base_url('uploads/app_image/'.$branch_img['logo_file'])?>" alt="Img" />
+										<img src="<?=base_url('uploads/app_image/'.$branch_img['logo_file'])?>" alt="Img" style="width: 59px;"/>
 									</div>
 								</div>
 								<div class="col-md-6 text-right">

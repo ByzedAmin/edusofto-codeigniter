@@ -65,7 +65,7 @@ class Fees extends Admin_Controller
             exit();
         }
         $this->data['categorylist'] = $this->app_lib->getTable('fees_type', array('system' => 0));
-        $this->data['ontimecategorylist'] = $this->app_lib->getTable('fees_type_ontime', array('system' => 0));
+        // $this->data['ontimecategorylist'] = $this->app_lib->getTable('fees_type_ontime', array('system' => 0));
         $this->data['title'] = translate('fees_type');
         $this->data['sub_page'] = 'fees/type';
         $this->data['main_menu'] = 'fees';
@@ -572,7 +572,7 @@ class Fees extends Admin_Controller
             redirect(base_url('dashboard'));
         $this->data['invoice'] = $this->fees_model->getInvoiceStatus($id);
         $this->data['basic'] = $this->fees_model->getInvoiceBasic($id);
-        $this->data['categorylist'] = $this->app_lib->getTable('fees_type_ontime', array('system' => 0));
+        // $this->data['categorylist'] = $this->app_lib->getTable('fees_type_ontime', array('system' => 0));
         $this->data['title'] = translate('invoice_history');
         $this->data['main_menu'] = 'fees';
         $this->data['sub_page'] = 'fees/collect';

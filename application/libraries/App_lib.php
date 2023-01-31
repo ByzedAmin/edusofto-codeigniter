@@ -64,7 +64,7 @@ class App_lib
         if ($single == TRUE) {
             $method = "row_array";
         } else {
-            $this->CI->db->order_by("id", "asc");
+            $this->CI->db->order_by("id", "desc");
             $method = "result_array";
         }
         $this->CI->db->select("t.*,b.name as branch_name");

@@ -127,7 +127,9 @@ class Student extends Admin_Controller
         }
 
         if ($getBranch['stu_generate'] == 0 || isset($_POST['student_id'])) {
-            $this->form_validation->set_rules('username', translate('username'), 'trim|required|callback_unique_username');
+            if(empty($_POST['student_id'])){
+                $this->form_validation->set_rules('username', translate('username'), 'trim|required|callback_unique_username');
+            }
             if (!isset($_POST['student_id'])) {
                 $this->form_validation->set_rules('password', translate('password'), 'trim|required|min_length[4]');
                 $this->form_validation->set_rules('retype_password', translate('retype_password'), 'trim|required|matches[password]');
