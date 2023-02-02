@@ -61,10 +61,7 @@
 						<td><?php echo $row->email;?></td>
 						<td class="min-w-c">
 						<?php if (get_permission('student', 'is_edit')): ?>
-							<!-- update link -->
-							<a href="<?php echo base_url('student/profile/' . $row->student_id);?>" class="btn btn-default icon btn-circle" data-toggle="tooltip" data-original-title="<?=translate('details')?>">
-								<i class="far fa-arrow-alt-circle-right"></i> <?=translate('details')?>
-							</a>
+							
 							<!-- pay fees -->
 							<!-- collect payment -->
 							<?php if (get_permission('collect_fees', 'is_add')) { ?>
@@ -72,6 +69,10 @@
 									<i class="far fa-arrow-alt-circle-right"></i> <?=translate('collect')?>
 								</a>
 							<?php } ?>
+							<!-- update link -->
+							<a href="<?php echo base_url('student/profile/' . $row->student_id);?>" class="btn btn-default icon btn-circle" data-toggle="tooltip" data-original-title="<?=translate('details')?>">
+								<i class="far fa-arrow-alt-circle-right"></i> <?=translate('details')?>
+							</a>
 							<!-- delete link -->
 						<!-- <?php endif; if (get_permission('student', 'is_delete')): ?>
 							<?php echo btn_delete('student/delete_data/' . $row->id . '/' . $row->student_id);?>

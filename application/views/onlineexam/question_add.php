@@ -209,6 +209,12 @@
 							       </div>
 							   </div>
 							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('note')?> </label>
+								<div class="col-md-6">
+									<textarea name="note" class="question_note"></textarea>
+								</div>
+							</div>
 							<footer class="panel-footer">
 								<div class="row">
 									<div class="col-md-offset-3 col-md-2">
@@ -309,6 +315,12 @@
 							      </div>
 							   </div>
 							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('note')?> </label>
+								<div class="col-md-6">
+									<textarea name="note" class="question_note"></textarea>
+								</div>
+							</div>
 							<footer class="panel-footer">
 								<div class="row">
 									<div class="col-md-offset-3 col-md-2">
@@ -377,6 +389,12 @@
 							      <span class="error"></span>
 							   </div>
 							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('note')?> </label>
+								<div class="col-md-6">
+									<textarea name="note" class="question_note"></textarea>
+								</div>
+							</div>
 							<footer class="panel-footer">
 								<div class="row">
 									<div class="col-md-offset-3 col-md-2">
@@ -434,6 +452,12 @@
 								<div class="col-md-6 mb-md">
 									<textarea name="answer" rows="4" class="form-control"></textarea>
 									<span class="error"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('note')?> </label>
+								<div class="col-md-6">
+									<textarea name="note" class="question_note"></textarea>
 								</div>
 							</div>
 							<footer class="panel-footer">

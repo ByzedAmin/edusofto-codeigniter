@@ -127,13 +127,13 @@ $atten = $this->attendance_model->get_attendance_by_date($studentID, $date);
 <?php if (!empty($atten)) { ?>
 								<span data-toggle="popover" data-trigger="hover" data-placement="top" data-trigger="hover" data-content="<?php echo $atten['remark']; ?>">
 <?php if ($atten['status'] == 'A') { $total_absent++; ?>
-									<i class="far fa-times-circle text-danger"></i><span class="visible-print">A</span>
+									<i class="far fa-times-circle text-danger"></i><span class="visible-print">A<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } if ($atten['status'] == 'P') { $total_present++; ?>
-									<i class="far fa-check-circle text-success"></i><span class="visible-print">P</span>
+									<i class="far fa-check-circle text-success"></i><span class="visible-print">P<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } if ($atten['status'] == 'L') { $total_late++; ?>
-									<i class="far fa-clock text-info"></i><span class="visible-print">L</span>
+									<i class="far fa-clock text-info"></i><span class="visible-print">L<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } if ($atten['status'] == 'H'){ ?>
-									<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H</span>
+									<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } ?>
 								</span>
 <?php } ?>

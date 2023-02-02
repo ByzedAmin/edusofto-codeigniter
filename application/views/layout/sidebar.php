@@ -1173,9 +1173,9 @@
                                 <a href="<?=base_url('fees/fine_setup')?>"><span><i class="fas fa-caret-right"></i><?=translate('fine_setup')?></span></a>
                             </li>
                             <?php } if(get_permission('fees_allocation', 'is_view')) { ?>
-                            <li class="<?php if ($sub_page == 'fees/allocation') echo 'nav-active';?>">
+                            <!-- <li class="<?php if ($sub_page == 'fees/allocation') echo 'nav-active';?>">
                                 <a href="<?=base_url('fees/allocation')?>"><span><i class="fas fa-caret-right"></i><?=translate('fees_allocation')?></span></a>
-                            </li>
+                            </li> -->
                             <?php } if(get_permission('invoice', 'is_view')) { ?>
                             <li class="<?php if ($sub_page == 'fees/invoice_list' || $sub_page == 'fees/collect') echo 'nav-active';?>">
                                 <a href="<?=base_url('fees/invoice_list')?>"><span><i class="fas fa-caret-right"></i><?=translate('payments_history')?></span></a>

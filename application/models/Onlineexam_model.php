@@ -249,6 +249,7 @@ class Onlineexam_model extends MY_Model
         $sectionID = $this->input->post('section_id');
         $subjectID = $this->input->post('subject_id');
         $groupID = $this->input->post('group_id');
+        $note = $this->input->post('note');
 
         $questionsExam = array(
             'type' => $questionType,
@@ -260,6 +261,7 @@ class Onlineexam_model extends MY_Model
             'opt_3' => $this->tagRemove($this->input->post('option3', false)),
             'opt_4' => $this->tagRemove($this->input->post('option4', false)),
             'answer' => $answer,
+            'note' => $note,
             'mark' => $this->input->post('mark'),
         );
 

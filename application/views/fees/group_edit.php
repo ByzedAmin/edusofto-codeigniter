@@ -38,6 +38,7 @@
 									</div>
 								</th>
 								<th><?php echo translate('fees_type'); ?> <span class="required">*</span></th>
+								<th><?php echo translate('start_date'); ?> <span class="required">*</span></th>
 								<th><?php echo translate('due_date'); ?> <span class="required">*</span></th>
 								<th><?php echo translate('amount'); ?> <span class="required">*</span></th>
 							</thead>
@@ -66,6 +67,13 @@
 									</td>
 									<td class="min-w-lg">
 										<div class="form-group"><?php echo $row['name']; ?></div>
+									</td>
+									<td class="min-w-sm">
+										<div class="form-group">
+											<input type="text" class="form-control" name="elem[<?php echo $key; ?>][start_date]" value="<?=$details['start_date']?>" data-plugin-datepicker
+											data-plugin-options='{"startView": 1}' autocomplete="off" />
+											<span class="error"></span>
+										</div>
 									</td>
 									<td class="min-w-sm">
 										<div class="form-group">

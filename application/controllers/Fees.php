@@ -177,6 +177,7 @@ class Fees extends Admin_Controller
                 foreach ($elems as $key => $value) {
                     if (isset($value['fees_type_id'])) {
                         $sel++;
+                        $this->form_validation->set_rules('elem[' . $key . '][start_date]', translate('start_date'), 'trim|required');
                         $this->form_validation->set_rules('elem[' . $key . '][due_date]', translate('due_date'), 'trim|required');
                         $this->form_validation->set_rules('elem[' . $key . '][amount]', translate('amount'), 'trim|required|greater_than[0]');
                     }
@@ -197,6 +198,7 @@ class Fees extends Admin_Controller
                             $arrayData = array(
                                 'fee_groups_id' => $groupID,
                                 'fee_type_id' => $row['fees_type_id'],
+                                'start_date' => date("Y-m-d", strtotime($row['start_date'])),
                                 'due_date' => date("Y-m-d", strtotime($row['due_date'])),
                                 'amount' => $row['amount'],
                             );
@@ -241,6 +243,7 @@ class Fees extends Admin_Controller
                 foreach ($elems as $key => $value) {
                     if (isset($value['fees_type_id'])) {
                         $sel[] = $value['fees_type_id'];
+                        $this->form_validation->set_rules('elem[' . $key . '][start_date]', translate('start_date'), 'trim|required');
                         $this->form_validation->set_rules('elem[' . $key . '][due_date]', translate('due_date'), 'trim|required');
                         $this->form_validation->set_rules('elem[' . $key . '][amount]', translate('amount'), 'trim|required|greater_than[0]');
                     }
@@ -261,6 +264,7 @@ class Fees extends Admin_Controller
                                 'fee_groups_id' => $groupID,
                                 'fee_type_id' => $row['fees_type_id'],
                                 'due_date' => date("Y-m-d", strtotime($row['due_date'])),
+                                'start_date' => date("Y-m-d", strtotime($row['start_date'])),
                                 'amount' => $row['amount'],
                             );
                             $this->db->where(array('fee_groups_id' => $groupID, 'fee_type_id' => $row['fees_type_id']));
@@ -1352,7 +1356,15 @@ class Fees extends Admin_Controller
                     'remarks' => $value['remarks'],
                     'date' => $date,
                 );
-                $this->db->insert('fee_payment_history', $arrayFees);
+                $discount = $this->db->where(['allocation_id'=>$value['allocation_id'],'type_id'=>$value['type_id']])->get('fee_payment_history')->row_array();
+                // dd($discount);
+                if($discount){
+                    $this->db->where('id', $discount['id']);
+                    $this->db->update('fee_payment_history', $arrayFees);
+                }else{
+                    $this->db->insert('fee_payment_history', $arrayFees);
+                }
+                
 
                 // transaction voucher save function
                 // if (isset($value['account_id'])) {

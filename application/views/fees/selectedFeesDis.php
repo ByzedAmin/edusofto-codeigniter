@@ -19,6 +19,7 @@ $count = 0;
 foreach ($record_array as $key => $value) {
 	$b = $this->fees_model->getBalance($value->allocationID, $value->feeTypeID);
 	$balance = $b['balance'];
+	$discount = $b['discount'];
 	if ($balance != 0) {
 	$count++;
 	$fine = $this->fees_model->feeFineCalculation($value->allocationID, $value->feeTypeID);
@@ -47,7 +48,7 @@ foreach ($record_array as $key => $value) {
 		</td>
 		<td class="fee-modal">
 			<div class="form-group">
-				<input type="text" class="form-control" name="collect_fees[<?php echo $key ?>][discount_amount]" value="0" autocomplete="off" />
+				<input type="text" class="form-control" name="collect_fees[<?php echo $key ?>][discount_amount]" value="<?=number_format($discount, 2, '.', '')?>" autocomplete="off" />
 				<span class="error"></span>
 			</div>
 		</td>

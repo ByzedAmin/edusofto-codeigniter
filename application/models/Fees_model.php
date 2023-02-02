@@ -468,9 +468,11 @@ class Fees_model extends MY_Model
         $this->db->where('p.allocation_id', $allocationID);
         $this->db->where('p.type_id', $typeID);
         $paid = $this->db->get()->row_array();
-        $balance = $totalAmount - ($paid['total_amount'] + $paid['total_discount']);
+        // $balance = $totalAmount - ($paid['total_amount'] + $paid['total_discount']);
+        $balance = $totalAmount - ($paid['total_amount']);
         $total_fine = $paid['total_fine'];
-        return array('balance' => $balance, 'fine' => $total_fine);
+        $discount = $paid['total_discount'];
+        return array('balance' => $balance, 'fine' => $total_fine,'discount'=>$discount);
     }
 
     // voucher transaction save function

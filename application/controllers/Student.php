@@ -31,7 +31,7 @@ class Student extends Admin_Controller
     }
 
     /* student form validation rules */
-    protected function student_validation($roll,$class_id,$section_id)
+    protected function student_validation($roll,$class_id,$section_id,$year_id)
     {
         $branchID = $this->application_model->get_branch_id();
         $getBranch = $this->getBranchDetails();
@@ -62,7 +62,7 @@ class Student extends Admin_Controller
                 $this->form_validation->set_rules('user_photo', translate('profile_picture'), 'required');
             }
         }
-        $this->db->where(array('roll' => $roll,'section_id' => $section_id,'class_id' => $class_id, 'branch_id' => $branchID,'session_id'=>get_session_id()));
+        $this->db->where(array('roll' => $roll,'section_id' => $section_id,'class_id' => $class_id, 'branch_id' => $branchID,'session_id'=>$year_id));
         $roll_row = $this->db->get('enroll')->num_rows();
         if ($roll_row == 0) {
             if (isset($validArr['roll'])) {
@@ -191,7 +191,8 @@ class Student extends Admin_Controller
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
             $group_id = $this->input->post('group_id');
-            $this->student_validation($roll,$class_id,$section_id);
+            $year_id = $this->input->post('year_id');
+            $this->student_validation($roll,$class_id,$section_id,$year_id);
             if (!isset($_POST['guardian_chk'])) {
 
                 // system fields validation rules
@@ -565,7 +566,8 @@ class Student extends Admin_Controller
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
             $group_id = $this->input->post('group_id');
-            $this->student_validation($roll,$class_id,$section_id);
+            $year_id = $this->input->post('year_id');
+            $this->student_validation($roll,$class_id,$section_id,$year_id);
             $this->form_validation->set_rules('parent_id', translate('guardian'), 'required');
             if ($this->form_validation->run() == true) {
                 $post = $this->input->post();

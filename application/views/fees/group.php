@@ -103,6 +103,7 @@
 									</div>
 								</th>
 								<th><?=translate('fees_type')?></th>
+								<th><?=translate('start_date')?> <span class="required">*</span></th>
 								<th><?=translate('due_date')?> <span class="required">*</span></th>
 								<th><?=translate('amount')?> <span class="required">*</span></th>
 							</thead>
@@ -126,6 +127,13 @@
 										</div>
 									</td>
 									<td class="min-w-lg"><?=$value['name']?></td>
+									<td class="min-w-sm">
+										<div class="form-group">
+											<input type="text" class="form-control" name="elem[<?=$key?>][start_date]" value="" data-plugin-datepicker
+											data-plugin-options='{"startView": 1}' autocomplete="off" />
+											<span class="error"></span>
+										</div>
+									</td>
 									<td class="min-w-sm">
 										<div class="form-group">
 											<input type="text" class="form-control" name="elem[<?=$key?>][due_date]" value="" data-plugin-datepicker

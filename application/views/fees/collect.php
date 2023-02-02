@@ -80,7 +80,9 @@ if ($extINTL == true) {
 										<?php 
 											echo $basic['first_name'] . ' ' . $basic['last_name'] . '<br>';
 											echo translate('username') . ' : ' . $basic['username'] .' ;'. translate('father_name') . ' : ' . $basic['father_name'] . '<br>';
-											echo $basic['student_address'] . '<br>';
+											if($basic['student_address']){
+												echo $basic['student_address'] . '<br>';
+											}		
 											echo translate('class') . ' : ' . $basic['class_name'] . '<br>';
 											echo translate('Roll') . ' : ' . $basic['roll'] .' ;'. translate('printed_by') . ' : ' . $this->session->userdata('name'); 
 										?>
@@ -107,7 +109,7 @@ if ($extINTL == true) {
 							<i class="fas fa-coins fa-fw"></i> Selected Fees Collect
 						</button>
 						<button type="button" class="btn btn-default btn-sm mb-sm hidden-print" id="giveDiscount" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
-							<i class="fas fa-coins fa-fw"></i> Selected Give Discount
+							<i class="fas fa-coins fa-fw"></i> Selected Online Discount
 						</button>
 					<?php } ?>
 						<div class="table-responsive br-none">
@@ -260,7 +262,7 @@ if ($extINTL == true) {
 							<div class="row">
 								<div class="col-xs-6">
 									<div class="ib">
-										<img src="<?=$this->application_model->getBranchImage($basic['branch_id'], 'printing-logo')?>" alt="RamomCoder Img" />
+										<img src="<?=base_url('uploads/app_image/'.$branch_img['logo_file'])?>" alt="Img" style="width: 59px;"/>
 									</div>
 								</div>
 								<div class="col-md-6 text-right">
@@ -735,7 +737,7 @@ if ($extINTL == true) {
 		<footer class="panel-footer">
 			<div class="row">
 				<div class="col-md-12 text-right">
-					<button type="submit" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">Fee Payment</button>
+					<button type="submit" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">Online Discount</button>
 				</div>
 			</div>
 		</footer>
