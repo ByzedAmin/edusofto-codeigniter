@@ -306,7 +306,7 @@ class Student_model extends MY_Model
 
     public function getSearchStudentList($search_text)
     {
-        $this->db->select('e.*,s.photo,s.first_name,s.last_name,s.register_no,s.parent_id,s.email,s.blood_group,s.birthday,c.name as class_name,se.name as section_name,sp.name as parent_name');
+        $this->db->select('e.*,s.photo,s.first_name,s.last_name,s.mobileno,s.register_no,s.parent_id,s.email,s.blood_group,s.birthday,c.name as class_name,se.name as section_name,sp.name as parent_name,sp.father_name,sp.mother_name');
         $this->db->from('enroll as e');
         $this->db->join('student as s', 'e.student_id = s.id', 'left');
         $this->db->join('class as c', 'e.class_id = c.id', 'left');

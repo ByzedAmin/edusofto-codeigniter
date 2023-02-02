@@ -88,7 +88,7 @@ class Application_model extends CI_Model
 
     public function getStudentListByClassSection($classID = '', $sectionID = '', $branchID = '', $deactivate = false, $rollOrder = false)
     {
-        $sql = "SELECT `e`.*, `s`.`photo`, CONCAT_WS(' ',`s`.`first_name`, `s`.`last_name`) as `fullname`, `s`.`register_no`,`par`.`father_name`, `s`.`parent_id`, `s`.`email`, `s`.`mobileno`, `s`.`blood_group`, `s`.`birthday`, `s`.`admission_date`, `l`.`active`, `c`.`name` as `class_name`, `se`.`name` as `section_name`, `sc`.`name` as `category` FROM `enroll` as `e` INNER JOIN `student` as `s` ON `e`.`student_id` = `s`.`id` INNER JOIN `login_credential` as `l` ON `l`.`user_id` = `s`.`id` and `l`.`role` = 7 LEFT JOIN `class` as `c` ON `e`.`class_id` = `c`.`id` LEFT JOIN `section` as `se` ON `e`.`section_id`=`se`.`id` LEFT JOIN `student_category` as `sc` ON `sc`.`id` = `s`.`category_id` LEFT JOIN `parent` as `par` ON `par`.`id` = `s`.`parent_id` WHERE `e`.`class_id` = " . $this->db->escape($classID) . " AND `e`.`branch_id` = " . $this->db->escape($branchID) . " AND `e`.`session_id` = " . $this->db->escape(get_session_id());
+        $sql = "SELECT `e`.*, `s`.`photo`, CONCAT_WS(' ',`s`.`first_name`, `s`.`last_name`) as `fullname`, `s`.`register_no`,`par`.`father_name`,`par`.`mother_name`, `s`.`parent_id`, `s`.`email`, `s`.`mobileno`, `s`.`blood_group`, `s`.`birthday`, `s`.`admission_date`, `l`.`active`, `c`.`name` as `class_name`, `se`.`name` as `section_name`, `sc`.`name` as `category` FROM `enroll` as `e` INNER JOIN `student` as `s` ON `e`.`student_id` = `s`.`id` INNER JOIN `login_credential` as `l` ON `l`.`user_id` = `s`.`id` and `l`.`role` = 7 LEFT JOIN `class` as `c` ON `e`.`class_id` = `c`.`id` LEFT JOIN `section` as `se` ON `e`.`section_id`=`se`.`id` LEFT JOIN `student_category` as `sc` ON `sc`.`id` = `s`.`category_id` LEFT JOIN `parent` as `par` ON `par`.`id` = `s`.`parent_id` WHERE `e`.`class_id` = " . $this->db->escape($classID) . " AND `e`.`branch_id` = " . $this->db->escape($branchID) . " AND `e`.`session_id` = " . $this->db->escape(get_session_id());
         if ($sectionID != 'all') {
             $sql .= " AND `e`.`section_id` = " . $this->db->escape($sectionID);
         }
@@ -105,7 +105,7 @@ class Application_model extends CI_Model
 
     public function getStudentDetails($id)
     {
-        $this->db->select('s.*,e.class_id,e.section_id,e.id as enrollid,e.roll,e.branch_id,e.session_id,c.name as class_name,se.name as section_name,sc.name as category_name','par.father_name');
+        $this->db->select('s.*,e.class_id,e.section_id,e.id as enrollid,e.roll,e.branch_id,e.session_id,c.name as class_name,se.name as section_name,sc.name as category_name','par.father_name','par.mother_name');
         $this->db->from('enroll as e');
         $this->db->join('student as s', 'e.student_id = s.id', 'left');
         $this->db->join('class as c', 'e.class_id = c.id', 'left');

@@ -1301,6 +1301,85 @@ class Fees extends Admin_Controller
         echo json_encode($array);
     }
 
+    public function selectedFeesDiscount()
+    {
+        if (!get_permission('collect_fees', 'is_add')) {
+            ajax_access_denied();
+        }
+
+        $items = $this->input->post('collect_fees');
+        foreach ($items as $key => $value) {
+            $this->form_validation->set_rules('collect_fees[' . $key . '][date]', translate('date'), 'trim|required');
+            $this->form_validation->set_rules('collect_fees[' . $key . '][amount]', translate('amount'), 'trim|required|numeric|greater_than[0]');
+            $this->form_validation->set_rules('collect_fees[' . $key . '][discount_amount]', translate('discount'), 'trim|numeric');
+            $this->form_validation->set_rules('collect_fees[' . $key . '][fine_amount]', translate('fine'), 'trim|numeric');
+            if (isset($value['account_id'])) {
+                $this->form_validation->set_rules('collect_fees[' . $key . '][account_id]', translate('account'), 'trim|required');
+            }
+            $remainAmount = $this->fees_model->getBalance($value['allocation_id'], $value['type_id']);
+            if ($remainAmount['balance'] < $value['amount']) {
+                $error = array('collect_fees[' . $key . '][amount]' => 'Amount cannot be greater than the remaining.');
+                $array = array('status' => 'fail', 'error' => $error);
+                echo json_encode($array);
+                exit;
+            }
+
+            $remainAmount = $this->fees_model->getBalance($value['allocation_id'], $value['type_id']);
+            if ($remainAmount['balance'] < $value['discount_amount']) {
+                $error = array('collect_fees[' . $key . '][discount_amount]' => 'Amount cannot be greater than the remaining.');
+                $array = array('status' => 'fail', 'error' => $error);
+                echo json_encode($array);
+                exit;
+            }
+        }
+
+        if ($this->form_validation->run() !== false) {
+            $studentID = $this->input->post('student_id');
+            foreach ($items as $key => $value) {
+                $amount = $value['amount'];
+                $fineAmount = $value['fine_amount'];
+                $discountAmount = $value['discount_amount'];
+                $date = $value['date'];
+                $payVia = 1;
+                $arrayFees = array(
+                    'allocation_id' => $value['allocation_id'],
+                    'type_id' => $value['type_id'],
+                    'collect_by' => get_loggedin_user_id(),
+                    'amount' => 0,
+                    'discount' => $discountAmount,
+                    'fine' => $fineAmount,
+                    'pay_via' => $payVia,
+                    'remarks' => $value['remarks'],
+                    'date' => $date,
+                );
+                $this->db->insert('fee_payment_history', $arrayFees);
+
+                // transaction voucher save function
+                // if (isset($value['account_id'])) {
+                //     $arrayTransaction = array(
+                //         'account_id' => $value['account_id'],
+                //         'amount' => ($amount + $fineAmount) - $discountAmount,
+                //         'date' => $date,
+                //     );
+                //     $this->fees_model->saveTransaction($arrayTransaction);
+                // }
+                // send payment confirmation sms
+                // $arrayData = array(
+                //     'student_id' => $studentID,
+                //     'amount' => ($amount + $fineAmount) - $discountAmount,
+                //     'paid_date' => _d($date),
+                // );
+                // $this->sms_model->send_sms($arrayData, 2);
+            }
+            set_alert('success', translate('information_has_been_saved_successfully'));
+            $array = array('status' => 'success');
+        } else {
+            $error = $this->form_validation->error_array();
+            $array = array('status' => 'fail', 'error' => $error);
+        }
+        echo json_encode($array);
+    }
+
     public function selectedFeesCollect()
     {
         if ($_POST) {
@@ -1310,6 +1389,17 @@ class Fees extends Admin_Controller
             $this->data['branch_id'] = $this->application_model->get_branch_id();
             $this->data['record_array'] = $record_array;
             $this->load->view('fees/selectedFeesCollect', $this->data);
+        }
+    }
+    public function selectedFeesCollectDis()
+    {
+        if ($_POST) {
+            $record = $this->input->post('data');
+            $record_array = json_decode($record);
+            $this->data['student_id'] = $this->input->post('student_id');
+            $this->data['branch_id'] = $this->application_model->get_branch_id();
+            $this->data['record_array'] = $record_array;
+            $this->load->view('fees/selectedFeesDis', $this->data);
         }
     }
 

@@ -81,6 +81,7 @@
 							<th width="80"><?=translate('roll')?></th>
 							<th><?=translate('age')?></th>
 							<th><?=translate('father_name')?></th>
+							<th><?=translate('mother_name')?></th>
 							<th><?=translate('mobile_no')?></th>
 						<?php
 						$show_custom_fields = custom_form_table('student', $branch_id);
@@ -126,6 +127,7 @@
 							</td>
 							<!-- <td><?php echo (!empty($row['parent_id']) ? get_type_name_by_id('parent', $row['parent_id']) : 'N/A');?></td> -->
 							<td><?php echo $row['father_name'];?></td>
+							<td><?php echo $row['mother_name'];?></td>
 							<td><?php echo $row['mobileno'];?></td>
 						<?php
 						if (count($show_custom_fields)) {

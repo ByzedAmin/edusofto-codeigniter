@@ -106,6 +106,9 @@ if ($extINTL == true) {
 						<button type="button" class="btn btn-default btn-sm mb-sm hidden-print" id="collectFees" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
 							<i class="fas fa-coins fa-fw"></i> Selected Fees Collect
 						</button>
+						<button type="button" class="btn btn-default btn-sm mb-sm hidden-print" id="giveDiscount" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+							<i class="fas fa-coins fa-fw"></i> Selected Give Discount
+						</button>
 					<?php } ?>
 						<div class="table-responsive br-none">
 							<table class="table invoice-items table-hover mb-none" id="invoiceSummary">
@@ -710,6 +713,36 @@ if ($extINTL == true) {
 	</section>
 </div>
 
+<div class="zoom-anim-dialog modal-block mfp-hide modal-block-full" id="Discountmodal">
+	<section class="panel">
+		<header class="panel-heading">
+			<h4 class="panel-title"><i class="fas fa-coins fa-fw"></i> <?=translate('Give Discount')?>
+				<button type="button" class="close modal-dismiss" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</h4>
+		</header>
+		<?php echo form_open('fees/selectedFeesDiscount', array('class' => 'frm-submit' )); ?>
+		<div class="panel-body">
+			<div id="printResult" class="pt-sm pb-sm">
+				<div class="table-responsive">						
+					<table class="table table-bordered table-condensed text-dark" id="discountGive">
+
+					</table>
+				</div>
+			</div>
+		</div>
+		<footer class="panel-footer">
+			<div class="row">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-default" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">Fee Payment</button>
+				</div>
+			</div>
+		</footer>
+		<?php echo form_close();?>
+	</section>
+</div>
+
 <script type="text/javascript">
 	var branchID = "<?php echo $basic['branch_id']; ?>";
 	var studentID = "<?php echo $basic['id']; ?>";
@@ -769,6 +802,57 @@ if ($extINTL == true) {
 						});
 					});
                 	mfp_modal('#modal');
+                	$btn.button('reset');
+                }
+            });
+        }
+	});
+
+	$('#giveDiscount').on('click', function(e) {
+		var $btn = $(this);
+		$btn.button('loading');
+		var arrayData = [];
+		$("#invoiceSummary tbody input[name='cb_invoice']:checked").each(function() {
+			var allocationID = $(this).data("allocation-id");
+			var feeTypeID = $(this).data("fee-type-id");
+			var feeAmount = $(this).val();
+            array = {};
+            array ["feeAmount"] = feeAmount;
+            array ["allocationID"] = allocationID;
+            array ["feeTypeID"] = feeTypeID;
+            arrayData.push(array);
+		});
+        if (arrayData.length === 0) {
+            alert("No Rows Selected.");
+            $btn.button('reset');
+        } else {
+            $.ajax({
+                url: base_url + "fees/selectedFeesCollectDis",
+                type: 'POST',
+                data: {
+                	'data': JSON.stringify(arrayData),
+                	'branch_id': branchID,
+                	'student_id' : studentID,
+                },
+                dataType: "html",
+                async: false,
+                cache: false,
+                success: function (response) {
+                    $("#discountGive").html(response);
+                },
+                complete: function () {
+					$(".selectTwo").each(function() {
+						var $this = $(this);
+						$this.themePluginSelect2({});
+					});
+					$(".datepicker").each(function() {
+						var $this = $(this);
+						$this.themePluginDatePicker({
+							"todayHighlight" : true,
+							"endDate" : "today"
+						});
+					});
+                	mfp_modal('#Discountmodal');
                 	$btn.button('reset');
                 }
             });

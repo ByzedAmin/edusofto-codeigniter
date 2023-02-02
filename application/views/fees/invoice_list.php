@@ -81,6 +81,7 @@
 								<th><?=translate('section')?></th>
 								<th><?=translate('register_no')?></th>
 								<th><?=translate('roll')?></th>
+								<th><?=translate('father_name')?></th>
 								<th><?=translate('mobile_no')?></th>
 								<th><?=translate('fee_group')?></th>
 								<th><?=translate('status')?></th>
@@ -103,6 +104,7 @@
 								<td><?php echo $row['section_name'];?></td>
 								<td><?php echo $row['register_no'];?></td>
 								<td><?php echo $row['roll'];?></td>
+								<td><?php echo $row['father_name'];?></td>
 								<td><?php echo $row['mobileno'];?></td>
 								<td><?php 
 								foreach ($row['feegroup'] as $key => $value) {

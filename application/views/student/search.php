@@ -16,7 +16,9 @@
 						<th><?=translate('register_no')?></th>
 						<th><?=translate('roll')?></th>
 						<th><?=translate('age')?></th>
-						<th><?=translate('guardian_name')?></th>
+						<th><?=translate('father_name')?></th>
+						<th><?=translate('mohter_name')?></th>
+						<th><?=translate('mobile_no')?></th>
 						<th><?=translate('class')?></th>
 						<th><?=translate('section')?></th>
 						<th><?=translate('email')?></th>
@@ -50,7 +52,10 @@
 							}
 							?>
 						</td>
-						<td><?php echo !empty($row->parent_name) ? $row->parent_name : 'N/A';?></td>
+						<!-- <td><?php echo !empty($row->parent_name) ? $row->parent_name : 'N/A';?></td> -->
+						<td><?php echo $row->father_name;?></td>
+						<td><?php echo $row->mother_name;?></td>
+						<td><?php echo $row->mobileno;?></td>
 						<td><?php echo $row->class_name;?></td>
 						<td><?php echo $row->section_name;?></td>
 						<td><?php echo $row->email;?></td>
@@ -58,12 +63,19 @@
 						<?php if (get_permission('student', 'is_edit')): ?>
 							<!-- update link -->
 							<a href="<?php echo base_url('student/profile/' . $row->student_id);?>" class="btn btn-default icon btn-circle" data-toggle="tooltip" data-original-title="<?=translate('details')?>">
-								<i class="far fa-arrow-alt-circle-right"></i>
+								<i class="far fa-arrow-alt-circle-right"></i> <?=translate('details')?>
 							</a>
-						<?php endif; if (get_permission('student', 'is_delete')): ?>
+							<!-- pay fees -->
+							<!-- collect payment -->
+							<?php if (get_permission('collect_fees', 'is_add')) { ?>
+								<a href="<?php echo base_url('fees/invoice/' . $row->student_id);?>" class="btn btn-default btn-circle">
+									<i class="far fa-arrow-alt-circle-right"></i> <?=translate('collect')?>
+								</a>
+							<?php } ?>
 							<!-- delete link -->
+						<!-- <?php endif; if (get_permission('student', 'is_delete')): ?>
 							<?php echo btn_delete('student/delete_data/' . $row->id . '/' . $row->student_id);?>
-						<?php endif; ?>
+						<?php endif; ?> -->
 						</td>
 					</tr>
 					<?php endforeach;?>

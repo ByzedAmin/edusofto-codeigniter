@@ -230,12 +230,13 @@ class Fees_model extends MY_Model
 
     public function getInvoiceList($class_id = '', $section_id = '', $branch_id = '')
     {
-        $this->db->select('e.student_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name');
+        $this->db->select('e.student_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name,pa.father_name');
         $this->db->from('fee_allocation as fa');
         $this->db->join('enroll as e', 'e.student_id = fa.student_id and e.session_id = fa.session_id', 'inner');
         $this->db->join('student as s', 's.id = e.student_id', 'left');
         $this->db->join('class as c', 'c.id = e.class_id', 'left');
         $this->db->join('section as se', 'se.id = e.section_id', 'left');
+        $this->db->join('parent as pa', 'pa.id = s.parent_id', 'left');
         $this->db->where('fa.branch_id', $branch_id);
         $this->db->where('fa.session_id', get_session_id());
         $this->db->where('e.class_id', $class_id);
