@@ -22,6 +22,8 @@ class Home extends Frontend_Controller
         $this->load->model('email_model');
         $this->load->model('testimonial_model');
         $this->load->model('gallery_model');
+        $this->load->model('application_model');
+        $this->load->model('attendance_model');
         $this->load->library('mailer');
     }
 
@@ -451,6 +453,47 @@ class Home extends Frontend_Controller
         $this->load->view('home/layout/index', $this->data);
     }
 
+    //custom attentdence
+
+    public function student_attendence()
+    {
+        $branchID = $this->home_model->getDefaultBranch();
+        
+        if ($_POST) {
+            $this->data['class_id'] = $this->input->post('class_id');
+            $this->data['section_id'] = $this->input->post('section_id');
+            $this->data['session_id'] = $this->input->post('session_id');
+            $this->data['month'] = date('m', strtotime($this->input->post('timestamp')));
+            $this->data['year'] = date('Y', strtotime($this->input->post('timestamp')));
+            $this->data['days'] = cal_days_in_month(CAL_GREGORIAN, $this->data['month'], $this->data['year']);
+            $this->data['studentlist'] = $this->attendance_model->getHomeStudentList($branchID, $this->data['class_id'], $this->data['section_id'],$this->data['session_id']);
+
+        }
+        $this->data['branch_id'] = $branchID;
+        $this->data['title'] = translate('student_attendance');
+        $this->data['main_contents'] = $this->load->view('home/student_attendence', $this->data, true);
+        $this->data['main_menu'] = 'attendance_report';
+        $this->load->view('home/layout/index', $this->data);
+    }
+
+    public function employee_attendence()
+    {
+        $branchID = $this->home_model->getDefaultBranch();
+        
+        if ($_POST) {
+            $this->data['branch_id'] = $this->home_model->getDefaultBranch();
+            $this->data['role_id'] = $this->input->post('staff_role');
+            $this->data['month'] = date('m', strtotime($this->input->post('timestamp')));
+            $this->data['year'] = date('Y', strtotime($this->input->post('timestamp')));
+            $this->data['days'] = cal_days_in_month(CAL_GREGORIAN, $this->data['month'], $this->data['year']);
+            $this->data['stafflist'] = $this->attendance_model->getStaffList($this->data['branch_id'], $this->data['role_id']);
+        }
+        $this->data['title'] = translate('employee_attendance');
+        $this->data['main_contents'] = $this->load->view('home/employee_attendence', $this->data, true);
+        $this->data['main_menu'] = 'attendance_report';
+        $this->load->view('home/layout/index', $this->data);
+    }
+    //end custom attentdence
     public function examResultsPrintFn()
     {
         $this->load->model('exam_model');

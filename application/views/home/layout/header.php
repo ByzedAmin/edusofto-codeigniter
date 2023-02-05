@@ -129,6 +129,15 @@
 
             </ul>
           </li>
+          <li class="nav-item dropdown">
+                <a title="Attendence" class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Attendence                </a>
+                <ul class="dropdown-menu">
+                                      <li><a title="Student Attendence" class="dropdown-item text-white" href="home/student_attendence">Student Attendence</a></li>
+                                      <li><a title="Employee" class="dropdown-item text-white" href="home/employee_attendence">Employee Attendence</a></li>
+                  
+                </ul>
+              </li>
           <li class="nav-item">
             <a title="নোটিশ" class="nav-link text-white" href="home/notice/<?php echo $cms_setting['url_alias']; ?>">নোটিশ</a>
           </li>
@@ -136,7 +145,11 @@
             <li class="nav-item">
               <a title="লগইন" target="_blank" class="nav-link text-white" href="<?php echo base_url('authentication') . "/index/" . $cms_setting['url_alias']; ?>">লগইন</a>
             </li>
-          <?php }  ?>
+          <?php }else{   ?>
+            <li class="nav-item">
+            <a title="ড্যাশবোর্ড" target="_blank" class="nav-link text-white" href="<?php echo base_url('dashboard'); ?>">ড্যাশবোর্ড</a>
+          </li>
+         <?php }  ?>
 
         </ul>
       </div>

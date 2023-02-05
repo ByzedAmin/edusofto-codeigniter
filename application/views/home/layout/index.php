@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
+<?php if (($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'student_attendence') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'employee_attendence')) { ?>
+<?php $this->load->view('layout/header.php');?>
+<?php } ?>
 <head>
     <base href="<?php echo base_url(); ?>">
     <meta charset="UTF-8" />
@@ -33,7 +35,7 @@
     </script>
   </head>
 
-<?php if (($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'admit_card') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'admission') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'contact') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'certificates') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'exam_results')) { ?>
+<?php if (($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'student_attendence') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'admit_card') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'admission') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'contact') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'certificates') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'exam_results') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'employee_attendence')) { ?>
 
   <head>
     <meta charset="UTF-8">
@@ -44,8 +46,11 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo base_url('uploads/frontend/images/' . $cms_setting['fav_icon']); ?>">
     <title><?php echo $page_data['page_title'] . " - " . $cms_setting['application_title']; ?></title>
-    <!-- Bootstrap -->
+    <?php if (($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'student_attendence') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'employee_attendence')) { ?>
+    <?php }else{ ?>
+      <!-- Bootstrap -->
     <link href="<?php echo base_url() ?>assets/frontend/css/bootstrap.min.css" rel="stylesheet">
+    <?php } ?>
     <!-- Template CSS Files  -->
     <link rel="stylesheet" href="<?php echo base_url('assets/vendor/font-awesome/css/all.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/frontend/plugins/animate.min.css'); ?>">
@@ -90,6 +95,12 @@
       <?php $this->load->view('home/layout/header'); ?>
       <?php echo $main_contents; ?>
       <?php $this->load->view('home/layout/footer'); ?>
+
+   
+  <?php if (($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'student_attendence') || ($this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'employee_attendence')) { ?>
+   <!-- JS Script -->
+   <?php $this->load->view('layout/script.php');?>
+<?php } ?>
 </body>
 
 </html>

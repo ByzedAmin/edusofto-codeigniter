@@ -106,21 +106,16 @@ $date = $year . '-' . $month . '-' . $i;
 										$date = date('Y-m-d', strtotime($year . '-' . $month . '-' . $i));
 										$getAttendance = $this->db->get_where('staff_attendance', array('staff_id' => $staffID,'date' => $date))->row_array();
 										$status = $getAttendance['status'];
-										echo '<td class="center"><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="' . $getAttendance['remark'] . '">';
-										if ($status == 'P'){
-											$total_present++;
-											echo '<i class="far fa-check-circle hidden-print text-success"></i><span class="visible-print">P</span>';
-										}
-										if($status == 'A'){
-											$total_absent++;
-											echo '<i class="far fa-times-circle hidden-print text-danger"></i><span class="visible-print">A</span>';
-										}
-										if($status == 'H')
-											echo '<i class="fas fa-hospital-symbol hidden-print text-info"></i><span class="visible-print">H</span>';
-										if($status == 'L'){
-											$total_late++;
-											echo '<i class="far fa-clock hidden-print text-tertiary"></i><span class="visible-print">L</span>';
-										}
+										echo '<td class="center"><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="' . $getAttendance['remark'] . '">'; ?>
+										<?php if ($getAttendance['status'] == 'A') { $total_absent++; ?>
+											<i class="far fa-times-circle text-danger"></i><span class="visible-print">A<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
+										<?php } if ($getAttendance['status'] == 'P') { $total_present++; ?>
+																			<i class="far fa-check-circle text-success"></i><span class="visible-print">P<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
+										<?php } if ($getAttendance['status'] == 'L') { $total_late++; ?>
+																			<i class="far fa-clock text-info"></i><span class="visible-print">L<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
+										<?php } if ($getAttendance['status'] == 'H'){ ?>
+																			<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
+										<?php } ?> <?php
 										echo '</span></td>';
 									}
 								?>
