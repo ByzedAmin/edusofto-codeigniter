@@ -1,1 +1,65 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$active_group = 'default';
+$query_builder = TRUE;
+
+
+$servername = "localhost";
+$username = "root";
+$password = "bishwajit";
+$database = "edusofto-laravel";
+
+$nHost = null;
+$nUser = null;
+$nPassword = null;
+$nDatabase = null;
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $domain = $_SERVER['HTTP_HOST'];
+    $stmt = $conn->prepare('SELECT * FROM schools WHERE domain = "'.$domain.'" limit 1');
+    $stmt->execute();
+    $result = $stmt->fetch();
+
+    if($result){
+        $nHost = $result['host'];
+        $nUser = $result['username'];
+        $nPassword = $result['password'];
+        $nDatabase = $result['database'];
+    }else{
+        redirect('https://app.edusofto.com.bd');
+        die();
+    }
+
+    $conn = null;
+
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    die();
+}
+
+$db['default'] = array(
+    'dsn'	=> '',
+    'hostname' => $nHost,
+    'username' => $nUser,
+    'password' => $nPassword,
+    'database' => $nDatabase,
+    'dbdriver' => 'mysqli',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'development'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);

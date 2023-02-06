@@ -13,6 +13,9 @@
                         <a href="#bkash" data-toggle="tab">bKash Config</a>
                     </li>
                     <li>
+                        <a href="#bkash_pay_bill" data-toggle="tab">bKash Pay Bill</a>
+                    </li>
+                    <li>
                         <a href="#stripe" data-toggle="tab">Stripe Config</a>
                     </li>
                     <li>
@@ -129,6 +132,34 @@
                                         <i></i> bKash Sandbox
                                     </label>
                                 </div>
+                            </div>
+                        </div>
+                        <footer class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-offset-3">
+                                    <button type="submit" class="btn btn btn-default btn-block" data-loading-text="<i class='fas fa-spinner fa-spin'></i> Processing">
+                                        <i class="fas fa-plus-circle"></i> <?=translate('save');?>
+                                    </button>
+                                </div>
+                            </div>
+                        </footer>
+                        <?php echo form_close();?>
+                    </div>
+                    <div class="tab-pane box" id="bkash_pay_bill">
+                        <?php echo form_open('settings/bkash_pay_bill_save', array('class' => 'form-horizontal frm-submit-msg'));?>
+                        <input type="hidden" name="branch_id" value="<?=$branch_id?>">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">bKash Pay Bill Username</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="bkash_pay_bill_username" value="<?=$config['bkash_pay_bill_username']?>">
+                                <span class="error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">bKash Pay Bill Password</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="bkash_pay_bill_password" value="<?=$config['bkash_pay_bill_password']?>">
+                                <span class="error"></span>
                             </div>
                         </div>
                         <footer class="panel-footer">
@@ -454,6 +485,16 @@
                             <label class="i-checks">
                                 <input type="checkbox" name="bkash_status" id="bkash_status" <?=($config['bkash_status'] == 1 ? 'checked' : ''); ?>>
                                 <i></i> bKash
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="checkbox-replace">
+                            <label class="i-checks">
+                                <input type="checkbox" name="bkash_pay_bill_status" id="bkash_pay_bill_status" <?=($config['bkash_pay_bill_status'] == 1 ? 'checked' : ''); ?>>
+                                <i></i> bKash Pay Bill
                             </label>
                         </div>
                     </div>

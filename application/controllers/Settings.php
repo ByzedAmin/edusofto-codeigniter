@@ -318,6 +318,39 @@ class Settings extends Admin_Controller
         echo json_encode($array);
     }
 
+    public function bkash_pay_bill_save()
+    {
+        if (!get_permission('payment_settings', 'is_add')) {
+            ajax_access_denied();
+        }
+        $branchID = $this->application_model->get_branch_id();
+
+        $this->form_validation->set_rules('bkash_pay_bill_username', 'bKash Pay Bill Username', 'trim|required');
+        $this->form_validation->set_rules('bkash_pay_bill_password', 'bKash Pay Bill Password', 'trim|required');
+        if ($this->form_validation->run() !== false) {
+            $arrayBkash = array(
+                'bkash_pay_bill_username' => $this->input->post('bkash_pay_bill_username'),
+                'bkash_pay_bill_password' => $this->input->post('bkash_pay_bill_password'),
+            );
+            $this->db->where('branch_id', $branchID);
+            $q = $this->db->get('payment_config');
+
+            if ($q->num_rows() == 0) {
+                $arrayBkash['branch_id'] = $branchID;
+                $this->db->insert('payment_config', $arrayBkash);
+            } else {
+                $this->db->where('id', $q->row()->id);
+                $this->db->update('payment_config', $arrayBkash);
+            }
+            $message = translate('the_configuration_has_been_updated');
+            $array = array('status' => 'success', 'message' => $message);
+        } else {
+            $error = $this->form_validation->error_array();
+            $array = array('status' => 'fail', 'error' => $error);
+        }
+        echo json_encode($array);
+    }
+
     public function stripe_save()
     {
         if (!get_permission('payment_settings', 'is_add')) {
@@ -453,6 +486,7 @@ class Settings extends Admin_Controller
         $branchID = $this->application_model->get_branch_id();
         $paypal_status = isset($_POST['paypal_status']) ? 1 : 0;
         $bkash_status = isset($_POST['bkash_status']) ? 1 : 0;
+        $bkash_pay_bill_status = isset($_POST['bkash_pay_bill_status']) ? 1 : 0;
         $stripe_status = isset($_POST['stripe_status']) ? 1 : 0;
         $payumoney_status = isset($_POST['payumoney_status']) ? 1 : 0;
         $paystack_status = isset($_POST['paystack_status']) ? 1 : 0;
@@ -464,6 +498,7 @@ class Settings extends Admin_Controller
         $arrayData = array(
             'paypal_status' => $paypal_status,
             'bkash_status' => $bkash_status,
+            'bkash_pay_bill_status' => $bkash_pay_bill_status,
             'stripe_status' => $stripe_status,
             'payumoney_status' => $payumoney_status,
             'paystack_status' => $paystack_status,

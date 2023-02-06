@@ -455,7 +455,7 @@ $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array();
 
-if($config['csrf_protection'] == TRUE && isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'],'feespayment/') !== FALSE || strpos($_SERVER['REQUEST_URI'],'admissionpayment/') !== FALSE || strpos($_SERVER['REQUEST_URI'],'onlineexam_payment/') !== FALSE)){
+if($config['csrf_protection'] == TRUE && isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'],'feespayment/') !== FALSE || strpos($_SERVER['REQUEST_URI'],'admissionpayment/') !== FALSE || strpos($_SERVER['REQUEST_URI'],'onlineexam_payment/') !== FALSE || strpos($_SERVER['REQUEST_URI'],'api/') !== FALSE)){
     $config['csrf_protection'] = FALSE;
 }
 

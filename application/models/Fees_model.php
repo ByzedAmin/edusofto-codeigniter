@@ -32,14 +32,14 @@ class Fees_model extends MY_Model
         }
     }
 
-    public function feeFineCalculation($allocationID, $typeID)
+    public function feeFineCalculation($allocationID, $typeID, $sessionID = null)
     {
         $this->db->select('fd.amount,fd.due_date,f.*');
         $this->db->from('fee_allocation as a');
         $this->db->join('fee_groups_details as fd', 'fd.fee_groups_id = a.group_id and fd.fee_type_id = ' . $this->db->escape($typeID), 'left');
         $this->db->join('fee_fine as f', 'f.group_id = fd.fee_groups_id and f.type_id = fd.fee_type_id', 'inner');
         $this->db->where('a.id', $allocationID);
-        $this->db->where('f.session_id', get_session_id());
+        $this->db->where('f.session_id', $sessionID ?? get_session_id());
         $getDB = $this->db->get()->row_array();
         if (is_array($getDB) && count($getDB)) {
             $dueDate = $getDB['due_date'];
@@ -74,7 +74,7 @@ class Fees_model extends MY_Model
         FROM enroll as e INNER JOIN student as s ON e.student_id = s.id LEFT JOIN login_credential as l ON l.user_id = s.id AND l.role = '7' LEFT JOIN
         fee_allocation as fa ON fa.student_id=e.student_id AND fa.group_id = " . $this->db->escape($groupID) . " AND
         fa.session_id= " . $this->db->escape(get_session_id()) . " WHERE e.class_id = " . $this->db->escape($classID) .
-        " AND e.branch_id = " . $this->db->escape($branchID) . " AND e.session_id = " . $this->db->escape(get_session_id());
+            " AND e.branch_id = " . $this->db->escape($branchID) . " AND e.session_id = " . $this->db->escape(get_session_id());
         if ($sectionID != 'all') {
             $sql .= " AND e.section_id =" . $this->db->escape($sectionID);
         }
@@ -94,7 +94,7 @@ class Fees_model extends MY_Model
         $sql = "SELECT IFNULL(SUM(fee_payment_history.amount), 0) as amount, IFNULL(SUM(fee_payment_history.discount), 0) as discount, IFNULL(SUM(fee_payment_history.fine), 0) as fine FROM
         fee_payment_history LEFT JOIN fee_allocation ON fee_payment_history.allocation_id = fee_allocation.id WHERE
         fee_allocation.student_id = " . $this->db->escape($studentID) . " AND fee_allocation.session_id = " . $this->db->escape(get_session_id());
-        
+
         $paid = $this->db->query($sql)->row_array();
 
         if ($paid['amount'] == 0) {
@@ -236,7 +236,7 @@ class Fees_model extends MY_Model
     {
         $sql = "SELECT IFNULL(SUM(h.amount), '0') as total_amount, IFNULL(SUM(h.discount), '0') as total_discount, gd.amount as full_amount, gd.due_date, e.student_id, e.roll, s.first_name, s.last_name,
         s.register_no, s.mobileno, c.name as class_name, se.name as section_name FROM fee_allocation as fa LEFT JOIN fee_payment_history as h ON h.allocation_id = fa.id and h.type_id = " .
-        $this->db->escape($fee_feetype_id) . " INNER JOIN fee_groups_details as gd ON gd.fee_groups_id = fa.group_id and gd.fee_type_id = " . $this->db->escape($fee_feetype_id) . " INNER JOIN
+            $this->db->escape($fee_feetype_id) . " INNER JOIN fee_groups_details as gd ON gd.fee_groups_id = fa.group_id and gd.fee_type_id = " . $this->db->escape($fee_feetype_id) . " INNER JOIN
         enroll as e ON e.student_id = fa.student_id LEFT JOIN student as s ON s.id = e.student_id LEFT JOIN class as c ON c.id = e.class_id LEFT JOIN section as se ON se.id = e.section_id WHERE
         fa.group_id = " . $this->db->escape($feegroup_id) . " AND fa.session_id = " . $this->db->escape(get_session_id()) . " AND e.class_id = " . $this->db->escape($class_id);
 
@@ -522,9 +522,9 @@ class Fees_model extends MY_Model
         $fee_group_id = 0;
 
         $arrayType = array(
-            'name' => $type_name, 
-            'branch_id' => $branchID, 
-            'system' => 1, 
+            'name' => $type_name,
+            'branch_id' => $branchID,
+            'system' => 1,
         );
         $fee_type_exists  = $this->checkExistsData('fees_type', $arrayType);
         if (!$fee_type_exists) {
@@ -536,10 +536,10 @@ class Fees_model extends MY_Model
         }
 
         $arrayGroup = array(
-            'name' => $group_name, 
-            'branch_id' => $branchID, 
-            'session_id' => $sessionID, 
-            'system' => 1, 
+            'name' => $group_name,
+            'branch_id' => $branchID,
+            'session_id' => $sessionID,
+            'system' => 1,
         );
         $fee_group_exists  = $this->checkExistsData('fee_groups', $arrayGroup);
         if (!$fee_group_exists) {
@@ -550,7 +550,7 @@ class Fees_model extends MY_Model
         }
 
         $arrayGroupsDetails = array(
-            'fee_groups_id' => $fee_group_id, 
+            'fee_groups_id' => $fee_group_id,
             'fee_type_id' => $fee_type_id,
         );
         $fee_group_details_exists = $this->checkExistsData('fee_groups_details', $arrayGroupsDetails);
@@ -558,10 +558,10 @@ class Fees_model extends MY_Model
             $arrayGroupsDetails['amount'] = 0;
             $arrayGroupsDetails['due_date'] = $data['due_date'];
             $this->db->insert('fee_groups_details', $arrayGroupsDetails);
-        } 
+        }
 
         $arrayAllocation = array(
-            'student_id' => $data['student_id'], 
+            'student_id' => $data['student_id'],
             'group_id' => $fee_group_id,
             'branch_id' => $branchID,
             'session_id' => $sessionID,
