@@ -10,7 +10,9 @@
 
   <!-- navbar area start -->
   <div class="navbar-content-wrapper mb-2">
+    
     <nav class="navbar navbar-expand-lg justify-content-end p-0">
+    <span style="margin-right: 68%;font-weight: 600;color: white;" class="d-block d-sm-none">Menu</span>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon" style="background: none; vertical-align: center;"> <i class="fa fa-bars"></i></span>
       </button>
@@ -131,10 +133,10 @@
           </li>
           <li class="nav-item dropdown">
                 <a title="Attendence" class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Attendence                </a>
+                  ডিজিটাল হাজিরা                </a>
                 <ul class="dropdown-menu">
-                                      <li><a title="Student Attendence" class="dropdown-item text-white" href="home/student_attendence">Student Attendence</a></li>
-                                      <li><a title="Employee" class="dropdown-item text-white" href="home/employee_attendence">Employee Attendence</a></li>
+                                      <li><a title="Student Attendence" class="dropdown-item text-white" href="home/student_attendence">শিক্ষার্থী হাজিরা</a></li>
+                                      <li><a title="Employee" class="dropdown-item text-white" href="home/employee_attendence">শিক্ষক-কর্মচারী হাজিরা</a></li>
                   
                 </ul>
               </li>

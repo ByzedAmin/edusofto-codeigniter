@@ -80,6 +80,24 @@ class Home_model extends MY_Model
         return $result;
     }
 
+    public function get_student_list($start = '', $branch_id = '',$id){
+        $this->db->select('e.*,s.photo, CONCAT_WS(" ", s.first_name, s.last_name) as fullname,s.register_no,s.parent_id,s.email,s.blood_group,s.birthday,l.active,c.name as class_name,se.name as section_name');
+        $this->db->from('enroll as e');
+        $this->db->join('student as s', 'e.student_id = s.id', 'inner');
+        $this->db->join('login_credential as l', 'l.user_id = s.id and l.role = 7', 'inner');
+        $this->db->join('class as c', 'e.class_id = c.id', 'left');
+        $this->db->join('section as se', 'e.section_id=se.id', 'left');
+        $this->db->where('e.class_id', $id);
+        $this->db->where('e.branch_id', $branch_id);
+        $this->db->where('e.session_id', get_session_id());
+        $this->db->order_by('s.id', 'ASC');
+        if ($start != '') {
+            $this->db->limit(4, $start);
+        }
+        $result = $this->db->get()->result_array();
+        return $result;
+    }
+
     public function get_teacher_departments($branch_id)
     {
         $this->db->select('staff_department.id as department_id,staff_department.name as department_name');

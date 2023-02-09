@@ -84,7 +84,8 @@
 								"P" 	=> translate('present'),
 								"A" 	=> translate('absent'),
 								"H" 	=> translate('holiday'),
-								"L" 	=> translate('late')
+								"L" 	=> translate('late'),
+								"B" 	=> translate('bunk')
 							);
 							echo form_dropdown("mark_all_everyone", $array, set_value('mark_all_everyone'), "class='form-control' 
 							onchange='selAtten_all(this.value)' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
@@ -138,6 +139,10 @@
 										<div class="radio-custom radio-inline mt-xs">
 											<input type="radio" value="L" <?=($row['att_status'] == 'L' ? 'checked' : '')?> name="attendance[<?=$key?>][status]" id="lstatus_<?=$key?>">
 											<label for="lstatus_<?=$key?>"><?=translate('late')?></label>
+										</div>
+										<div class="radio-custom radio-inline radio-warning mt-xs">
+											<input type="radio" value="B" <?=($row['att_status'] == 'B' ? 'checked' : '')?> name="attendance[<?=$key?>][status]" id="bstatus_<?=$key?>">
+											<label for="bstatus_<?=$key?>"><?=translate('bunk')?></label>
 										</div>
 									</td>
 									<td>

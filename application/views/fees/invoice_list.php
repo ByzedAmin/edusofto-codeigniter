@@ -136,7 +136,7 @@
 								<?php } ?>
 
 									<!-- delete link -->
-									<a class="btn btn-danger icon btn-circle" onclick="confirm_modal('<?=base_url('fees/invoice_delete/' . $row['student_id'])?>')"><i class="fas fa-trash-alt"></i></a>
+									<!-- <a class="btn btn-danger icon btn-circle" onclick="confirm_modal('<?=base_url('fees/invoice_delete/' . $row['student_id'])?>')"><i class="fas fa-trash-alt"></i></a> -->
 								</td>
 							</tr>
 							<?php  endforeach; ?>

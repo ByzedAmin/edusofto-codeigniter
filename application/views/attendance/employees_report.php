@@ -68,6 +68,7 @@
 								<td>Absent : <i class="far fa-times-circle hidden-print text-danger"></i><span class="visible-print">A</span></td>
 								<td>Holiday : <i class="fas fa-hospital-symbol hidden-print text-info"></i><span class="visible-print">H</span></td>
 								<td>Late : <i class="far fa-clock hidden-print text-tertiary"></i><span class="visible-print">L</span></td>
+								<td>Half Holiday : <i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B</span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -115,7 +116,10 @@ $date = $year . '-' . $month . '-' . $i;
 																			<i class="far fa-clock text-info"></i><span class="visible-print">L<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
 										<?php } if ($getAttendance['status'] == 'H'){ ?>
 																			<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
-										<?php } ?> <?php
+										<?php } if ($getAttendance['status'] == 'B'){ ?>
+																			<i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
+										<?php } ?>
+										 <?php
 										echo '</span></td>';
 									}
 								?>

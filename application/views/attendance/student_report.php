@@ -85,6 +85,7 @@
 								<td><strong>Absent : </strong> <i class="far fa-times-circle hidden-print text-danger"></i><span class="visible-print">A</span></td>
 								<td><strong>Holiday : </strong> <i class="fas fa-hospital-symbol hidden-print text-info"></i><span class="visible-print">H</span></td>
 								<td><strong>Late : </strong> <i class="far fa-clock hidden-print text-tertiary"></i><span class="visible-print">L</span></td>
+								<td><strong>Bunk : </strong> <i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B</span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -134,7 +135,10 @@ $atten = $this->attendance_model->get_attendance_by_date($studentID, $date);
 									<i class="far fa-clock text-info"></i><span class="visible-print">L<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } if ($atten['status'] == 'H'){ ?>
 									<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
+<?php } if ($atten['status'] == 'B'){ ?>
+									<i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } ?>
+
 								</span>
 <?php } ?>
 							</td>

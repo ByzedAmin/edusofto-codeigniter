@@ -973,11 +973,23 @@ class Fees extends Admin_Controller
         if ($this->input->post('search')) {
             $classID = $this->input->post('class_id');
             $paymentVia = $this->input->post('payment_via');
+            $collect_by = $this->input->post('collect_by');
             $daterange = explode(' - ', $this->input->post('daterange'));
             $start = date("Y-m-d", strtotime($daterange[0]));
             $end = date("Y-m-d", strtotime($daterange[1]));
-            $this->data['invoicelist'] = $this->fees_model->getStuPaymentHistory($classID, "", $paymentVia, $start, $end, $branchID);
+            $this->data['invoicelist'] = $this->fees_model->getStuPaymentHistory($classID, "", $paymentVia,$collect_by, $start, $end, $branchID);
         }
+        $this->db->select('h.collect_by');
+        $this->db->from('fee_payment_history as h');
+        // $this->db->join('fee_allocation as fa', 'fa.id = h.allocation_id', 'inner');
+        // $this->db->join('enroll as e', 'e.student_id = fa.student_id', 'inner');
+        $this->db->distinct();
+        $this->data['collect_by'] = $this->db->get()->result_array();
+        // $this->db->where('e.branch_id', $branchID);
+
+
+        
+
         $this->data['branch_id'] = $branchID;
         $this->data['title'] = translate('all_receipts_report');
         $this->data['sub_page'] = 'fees/all_receipts_report';

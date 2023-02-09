@@ -40,6 +40,28 @@ $currency_symbol = $global_config['currency_symbol'];
 					</div>
 					<div class="col-md-<?php echo $widget; ?> mb-sm">
 						<div class="form-group">
+							<label class="control-label"><?=translate('collect_by'); ?> <span class="required">*</span></label>
+							<select name="collect_by" id="collect_by" class="form-control">
+								<option value="">All</option>
+								<?php  foreach ($collect_by as $key => $value) { ?>
+									<?= $r = $this->db->where('id', $value['collect_by'])->get('staff')->row_array(); ?>
+									<option value="<?php echo $r['id']; ?>" <?php if($r['id']==set_value('collect_by')){?> selected <?php }?> ><?php echo $r['name']; ?></option>
+								<?php } ?>
+							</select>
+							<!-- <?php
+								$arrayVia = array(
+									'' => translate('select'),
+									'all' => translate('both'),
+									'online' => "Online",
+									'cash' => "Cash",
+								);
+								echo form_dropdown("payment_via", $collect_by, set_value('payment_via'), "class='form-control' required
+								data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
+							?> -->
+						</div>
+					</div>
+					<div class="col-md-<?php echo $widget; ?> mb-sm">
+						<div class="form-group">
 							<label class="control-label"><?php echo translate('date'); ?> <span class="required">*</span></label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fas fa-calendar-check"></i></span>
@@ -78,6 +100,7 @@ $currency_symbol = $global_config['currency_symbol'];
 								<th><?=translate('collect_by')?></th>
 								<th><?=translate('payment_via')?></th>
 								<th><?=translate('fees_type')?></th>
+								<th><?=translate('invoice_no')?></th>
 								<th><?=translate('amount')?></th>
 								<th><?=translate('discount')?></th>
 								<th><?=translate('fine')?></th>
@@ -116,7 +139,8 @@ $currency_symbol = $global_config['currency_symbol'];
 								} ?></td>
 								<td><?php echo $row['pay_via'];?></td>
 								<td><?php echo $row['type_name'];?></td>
-								<td><?php echo $currency_symbol . $total_amount;?></td>
+								<td><?php echo '#'.str_pad($row['inv_no'], 4, '0', STR_PAD_LEFT);?></td>
+								<td><?php echo $currency_symbol . $total_amount;?></td>	
 								<td><?php echo $currency_symbol . $row['discount'];?></td>
 								<td><?php echo $currency_symbol . $row['fine'];?></td>
 								<td><?php echo $currency_symbol . number_format($totalp, 2, '.', '');?></td>
@@ -126,6 +150,7 @@ $currency_symbol = $global_config['currency_symbol'];
 						</tbody>
 						<tfoot>
 							<tr>
+								<th></th>
 								<th></th>
 								<th></th>
 								<th></th>

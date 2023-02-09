@@ -155,4 +155,3 @@ function certificate_printElem(elem, html = false) {
     }, 500);
     return true;
 }
-

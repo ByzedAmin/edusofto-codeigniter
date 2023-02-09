@@ -153,7 +153,7 @@
 		$('#branch_id').on("change", function() {
 			var branchID = $(this).val();
 			getClassByBranch(branchID);
-			getIDCardTempleteByBranch(branchID, 'student', 'idcard');
+			getIDCardTempleteByBranch(branchID, 'student', 'sitplan');
 		});
 
         $('form.printIn').on('submit', function(e){

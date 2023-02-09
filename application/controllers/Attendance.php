@@ -75,6 +75,10 @@ class Attendance extends Admin_Controller
                 if ($attStatus == 'A') {
                     $this->sms_model->send_sms($arrayAttendance, 3);
                 }
+                // send student bunk then sms
+                if ($attStatus == 'B') {
+                    $this->sms_model->send_sms($arrayAttendance, 11);
+                }
             }
             set_alert('success', translate('information_has_been_updated_successfully'));
             redirect(current_url());

@@ -425,7 +425,12 @@ class Card_manage extends Admin_Controller
         $branchID = $this->application_model->get_branch_id();
         $userType = $this->input->post('user_type');
         $cardType = $this->input->post('card_type');
-        $cardType = $cardType == 'idcard' ? 1 : 2;
+        if($cardType=='sitplan'){
+            $cardType = $cardType == 'sitplan';
+        }else{
+            $cardType = $cardType == 'idcard' ? 1 : 2;
+        }
+        
         if ($userType == 'student') {
             $userType = 1;
         }
@@ -433,9 +438,17 @@ class Card_manage extends Admin_Controller
             $userType = 2;
         }
         if (!empty($branchID)) {
-            $this->db->select('id,name');
-            $this->db->where(array('branch_id' => $branchID, 'user_type' => $userType, 'card_type' => $cardType));
-            $result = $this->db->get('card_templete')->result_array();
+            if($cardType=='sitplan'){
+                $cardType = $cardType == 'sitplan' ? 1 : 2;
+                $this->db->select('id,name');
+                $this->db->where(array('branch_id' => $branchID, 'user_type' => $userType, 'card_type' => $cardType));
+                $result = $this->db->get('sit_plan_templete')->result_array();
+            }else{
+                $this->db->select('id,name');
+                $this->db->where(array('branch_id' => $branchID, 'user_type' => $userType, 'card_type' => $cardType));
+                $result = $this->db->get('card_templete')->result_array();
+            }
+           
             if (count($result)) {
                 $html .= '<option value="">' . translate('select') . '</option>';
                 foreach ($result as $row) {

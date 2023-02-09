@@ -107,6 +107,16 @@ class Home extends Frontend_Controller
         $this->load->view('home/layout/index', $this->data);
     }
 
+    public function studentView($id){
+        $branchID = $this->home_model->getDefaultBranch();
+        $this->data['branchID'] = $branchID;
+        $this->data['page_data'] = $this->home_model->get('front_cms_teachers', array('branch_id' => $branchID), true);
+        $this->data['departments'] = $this->home_model->get_teacher_departments($branchID);
+        $this->data['students'] = $this->home_model->get_student_list("", $branchID,$id);
+        $this->data['main_contents'] = $this->load->view('home/students', $this->data, true);
+        $this->load->view('home/layout/index', $this->data);
+    }
+
     public function admission()
     {
         if (!$this->data['cms_setting']['online_admission']) {

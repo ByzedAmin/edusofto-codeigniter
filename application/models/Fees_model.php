@@ -304,9 +304,9 @@ class Fees_model extends MY_Model
         return $this->db->get()->row_array();
     }
 
-    public function getStuPaymentHistory($classID = '', $SectionID = '', $paymentVia = '', $start = '', $end = '', $branchID = '', $onlyFine = false)
+    public function getStuPaymentHistory($classID = '', $SectionID = '', $paymentVia = '', $collect_by='', $start = '', $end = '', $branchID = '', $onlyFine = false)
     {
-        $this->db->select('h.*,ft.name as type_name,e.student_id,e.session_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name,pt.name as pay_via');
+        $this->db->select('h.*,ft.name as type_name,e.student_id,e.session_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name,pt.name as pay_via,fa.id as inv_no');
         $this->db->from('fee_payment_history as h');
         $this->db->join('fee_allocation as fa', 'fa.id = h.allocation_id', 'inner');
         $this->db->join('fees_type as ft', 'ft.id = h.type_id', 'left');
@@ -319,6 +319,7 @@ class Fees_model extends MY_Model
         $this->db->where('e.session_id', get_session_id());
         $this->db->where('h.date  >=', $start);
         $this->db->where('h.date <=', $end);
+        // $this->db->where('h.collect_by', $collect_by);
         $this->db->where('e.branch_id', $branchID);
         if ($onlyFine == true) {
             $this->db->where('h.fine !=', 0);
@@ -328,6 +329,9 @@ class Fees_model extends MY_Model
         }
         if (!empty($SectionID)) {
             $this->db->where('e.section_id', $SectionID);
+        }
+        if (!empty($collect_by)) {
+            $this->db->where('h.collect_by', $collect_by);
         }
         if ($paymentVia != 'all') {
             if ($paymentVia == 'online') {
