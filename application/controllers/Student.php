@@ -31,7 +31,7 @@ class Student extends Admin_Controller
     }
 
     /* student form validation rules */
-    protected function student_validation($roll,$class_id,$section_id,$year_id)
+    protected function student_validation($roll,$class_id,$section_id,$year_id,$save)
     {
         $branchID = $this->application_model->get_branch_id();
         $getBranch = $this->getBranchDetails();
@@ -72,11 +72,24 @@ class Student extends Admin_Controller
             }
         } else {
             if (isset($validArr['roll'])) {
-                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required|callback_unique_roll');
+                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required');
             } else {
-                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+                $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric');
             }
         }
+        // if ($roll_row == 0) {
+        //     if (isset($validArr['roll'])) {
+        //         $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required|callback_unique_roll');
+        //     } else {
+        //         $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+        //     }
+        // } else {
+        //     if (isset($validArr['roll'])) {
+        //         $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|required');
+        //     } else {
+        //         $this->form_validation->set_rules('roll', translate('roll'), 'trim|numeric|callback_unique_roll');
+        //     }
+        // }
         
         
         if (isset($validArr['last_name'])) {
@@ -192,7 +205,7 @@ class Student extends Admin_Controller
             $section_id = $this->input->post('section_id');
             $group_id = $this->input->post('group_id');
             $year_id = $this->input->post('year_id');
-            $this->student_validation($roll,$class_id,$section_id,$year_id);
+            $this->student_validation($roll,$class_id,$section_id,$year_id,$save=1);
             if (!isset($_POST['guardian_chk'])) {
 
                 // system fields validation rules
@@ -567,7 +580,7 @@ class Student extends Admin_Controller
             $section_id = $this->input->post('section_id');
             $group_id = $this->input->post('group_id');
             $year_id = $this->input->post('year_id');
-            $this->student_validation($roll,$class_id,$section_id,$year_id);
+            $this->student_validation($roll,$class_id,$section_id,$year_id,$save=0);
             $this->form_validation->set_rules('parent_id', translate('guardian'), 'required');
             if ($this->form_validation->run() == true) {
                 $post = $this->input->post();

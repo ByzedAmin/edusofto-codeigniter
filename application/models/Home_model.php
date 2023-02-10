@@ -89,7 +89,6 @@ class Home_model extends MY_Model
         $this->db->join('section as se', 'e.section_id=se.id', 'left');
         $this->db->where('e.class_id', $id);
         $this->db->where('e.branch_id', $branch_id);
-        $this->db->where('e.session_id', get_session_id());
         $this->db->order_by('s.id', 'ASC');
         if ($start != '') {
             $this->db->limit(4, $start);
