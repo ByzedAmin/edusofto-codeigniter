@@ -109,9 +109,12 @@ class Fees_model extends MY_Model
 
     public function getInvoiceDetails($studentID = '')
     {
-        $sql = "SELECT `fee_allocation`.`group_id`,`fee_allocation`.`prev_due`,`fee_allocation`.`id` as `allocation_id`, `fees_type`.`name`, `fees_type`.`system`, `fee_groups_details`.`amount`, `fee_groups_details`.`due_date`, `fee_groups_details`.`fee_type_id` FROM `fee_allocation` LEFT JOIN
+        $today = new DateTime();
+        $compare = $today->format('Y-m-d');
+        $sql = "SELECT `fee_allocation`.`group_id`,`fee_allocation`.`prev_due`,`fee_allocation`.`id` as `allocation_id`, `fees_type`.`name`, `fees_type`.`system`, `fee_groups_details`.`amount`, `fee_groups_details`.`due_date`,`fee_groups_details`.`start_date`, `fee_groups_details`.`fee_type_id` FROM `fee_allocation` LEFT JOIN
         `fee_groups_details` ON `fee_groups_details`.`fee_groups_id` = `fee_allocation`.`group_id` LEFT JOIN `fees_type` ON `fees_type`.`id` = `fee_groups_details`.`fee_type_id` WHERE
         `fee_allocation`.`student_id` = " . $this->db->escape($studentID) . " AND `fee_allocation`.`session_id` = " . $this->db->escape(get_session_id());
+        // `fee_allocation`.`student_id` = " . $this->db->escape($studentID) . " AND `fee_allocation`.`session_id` = " . $this->db->escape(get_session_id()."AND `fee_groups_details`.`start_date` >".$compare);
         // `fee_allocation`.`student_id` = " . $this->db->escape($studentID) . " AND `fee_allocation`.`session_id` = " . $this->db->escape(get_session_id()) . " ORDER BY `fee_allocation`.`group_id` ASC";
         $student = array();
         $r = $this->db->query($sql)->result_array();

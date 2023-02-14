@@ -1161,6 +1161,17 @@ class Fees extends Admin_Controller
                     );
                     $this->db->insert('fee_payment_history', $arrayFees);
                 }
+                 // send payment confirmation sms
+                 $discount = $this->db->where(['id'=>$row['fee_type_id']])->get('fees_type')->row_array();
+                if (isset($_POST['guardian_sms'])) {
+                    $arrayData = array(
+                        'student_id' => $this->input->post('student_id'),
+                        'amount' => ($totalBalance + $totalFine),
+                        'paid_date' => $date,
+                        'fee_type' => $discount['name'],
+                    );
+                    $this->sms_model->send_sms($arrayData, 2);
+                }
             }
 
             // transaction voucher save function
@@ -1173,15 +1184,7 @@ class Fees extends Admin_Controller
                 $this->fees_model->saveTransaction($arrayTransaction);
             }
 
-            // send payment confirmation sms
-            if (isset($_POST['guardian_sms'])) {
-                $arrayData = array(
-                    'student_id' => $this->input->post('student_id'),
-                    'amount' => ($totalBalance + $totalFine),
-                    'paid_date' => $date,
-                );
-                $this->sms_model->send_sms($arrayData, 2);
-            }
+           
             set_alert('success', translate('information_has_been_saved_successfully'));
             $array = array('status' => 'success');
         } else {

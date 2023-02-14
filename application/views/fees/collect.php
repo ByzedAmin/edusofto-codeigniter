@@ -126,6 +126,7 @@ if ($extINTL == true) {
 										</th>
 										<th id="cell-count" class="text-weight-semibold hidden-print">#</th>
 										<th id="cell-item" class="text-weight-semibold"><?=translate("fees_type")?></th>
+										<th id="cell-id" class="text-weight-semibold"><?=translate("start_date")?></th>
 										<th id="cell-id" class="text-weight-semibold"><?=translate("due_date")?></th>
 										<th id="cell-price" class="text-weight-semibold"><?=translate("status")?></th>
 										<th id="cell-price" class="text-weight-semibold"><?=translate("amount")?></th>
@@ -148,7 +149,11 @@ if ($extINTL == true) {
 										$typeData = array('' => translate('select'));
 										
 										$allocations = $this->fees_model->getInvoiceDetails($basic['id']);
+										$today = new DateTime();
+										$compare = $today->format('Y-m-d');
+										print_r($compare);
 										foreach ($allocations as $row) {
+											if($row['start_date']<=$compare){
 											$deposit = $this->fees_model->getStudentFeeDeposit($row['allocation_id'], $row['fee_type_id']);
 											$type_discount = $deposit['total_discount'];
 											$type_fine = $deposit['total_fine'];
@@ -182,6 +187,7 @@ if ($extINTL == true) {
 										</td>
 										<td class="hidden-print"><?php echo $count++;?></td>
 										<td class="text-dark"><?=$row['name']?></td>
+										<td><?=_d($row['start_date'])?></td>
 										<td><?=_d($row['due_date'])?></td>
 										<td><?php 
 											$status = 0;
@@ -204,6 +210,7 @@ if ($extINTL == true) {
 										<td><?php echo $currency_symbol . $type_amount;?></td>
 										<td class="text-center"><?php echo $currency_symbol . number_format($balance, 2, '.', '');?></td>
 									</tr>
+									<?php } ?>
 									<?php } ?>
 								</tbody>
 							</table>

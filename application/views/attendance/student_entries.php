@@ -83,9 +83,9 @@
 								"" => translate('not_selected'),
 								"P" 	=> translate('present'),
 								"A" 	=> translate('absent'),
-								"H" 	=> translate('holiday'),
 								"L" 	=> translate('late'),
-								"B" 	=> translate('bunk')
+								"B" 	=> translate('bunk'),
+								"H" 	=> translate('holiday'),
 							);
 							echo form_dropdown("mark_all_everyone", $array, set_value('mark_all_everyone'), "class='form-control' 
 							onchange='selAtten_all(this.value)' data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
@@ -130,12 +130,6 @@
 											<input type="radio" value="A" <?=($row['att_status'] == 'A' ? 'checked' : '')?> name="attendance[<?=$key?>][status]" id="astatus_<?=$key?>">
 											<label for="astatus_<?=$key?>"><?=translate('absent')?></label>
 										</div>
-
-										<div class="radio-custom radio-info radio-inline mt-xs">
-											<input type="radio" value="H" <?=($row['att_status'] == 'H' ? 'checked' : '')?> name="attendance[<?=$key?>][status]" id="hstatus_<?=$key?>">
-											<label for="hstatus_<?=$key?>"><?=translate('holiday')?></label>
-										</div>
-
 										<div class="radio-custom radio-inline mt-xs">
 											<input type="radio" value="L" <?=($row['att_status'] == 'L' ? 'checked' : '')?> name="attendance[<?=$key?>][status]" id="lstatus_<?=$key?>">
 											<label for="lstatus_<?=$key?>"><?=translate('late')?></label>
@@ -143,6 +137,10 @@
 										<div class="radio-custom radio-inline radio-warning mt-xs">
 											<input type="radio" value="B" <?=($row['att_status'] == 'B' ? 'checked' : '')?> name="attendance[<?=$key?>][status]" id="bstatus_<?=$key?>">
 											<label for="bstatus_<?=$key?>"><?=translate('bunk')?></label>
+										</div>
+										<div class="radio-custom radio-info radio-inline mt-xs">
+											<input type="radio" value="H" <?=($row['att_status'] == 'H' ? 'checked' : '')?> name="attendance[<?=$key?>][status]" id="hstatus_<?=$key?>">
+											<label for="hstatus_<?=$key?>"><?=translate('holiday')?></label>
 										</div>
 									</td>
 									<td>

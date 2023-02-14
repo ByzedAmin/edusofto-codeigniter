@@ -194,7 +194,7 @@ class Migration_Version_530 extends CI_Migration
 		$this->db->query("TRUNCATE TABLE `sms_template`;");
 		$this->db->query("INSERT INTO `sms_template` (`id`, `name`, `tags`) VALUES
 						(1, 'admission', '{name}, {class}, {section}, {admission_date}, {roll}, {register_no}'),
-						(2, 'fee_collection', '{name}, {class}, {section}, {admission_date}, {roll}, {register_no}, {paid_amount}, {paid_date} '),
+						(2, 'fee_collection', '{name}, {class}, {section}, {admission_date}, {roll}, {register_no}, {paid_amount}, {paid_date}, {fee_type}'),
 						(3, 'attendance', '{name}, {class}, {section}, {admission_date}, {roll}, {register_no}'),
 						(4, 'exam_attendance', '{name}, {class}, {section}, {admission_date}, {roll}, {register_no}, {exam_name}, {term_name}, {subject}'),
 						(5, 'exam_results', '{name}, {class}, {section}, {admission_date}, {roll}, {register_no}, {exam_name}, {term_name}, {subject}, {marks}'),

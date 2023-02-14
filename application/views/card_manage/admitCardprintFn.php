@@ -12,6 +12,8 @@
 			<?php } ?>
 			padding: <?=$template['top_space'] . 'px ' . $template['right_space'] . 'px ' . $template['bottom_space'] . 'px ' . $template['left_space'] . 'px'?>;
 			font-family: Arial;
+			float: left;
+			margin: 12px;
 		}
 		@media print {
 			.certificate {
@@ -44,5 +46,5 @@ if (count($user_array)) {
 <div class="certificate">
 	<?=$this->card_manage_model->admitCardTagsReplace($userID, $template, $print_date, $exam_id)?>
 </div>
-<div class="pagebreak"> </div> 
+<!-- <div class="pagebreak"> </div>  -->
 <?php } } ?>

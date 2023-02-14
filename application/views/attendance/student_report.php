@@ -83,9 +83,9 @@
 							<tr>
 								<td><strong>Present :</strong> <i class="far fa-check-circle hidden-print text-success"></i><span class="visible-print">P</span></td>
 								<td><strong>Absent : </strong> <i class="far fa-times-circle hidden-print text-danger"></i><span class="visible-print">A</span></td>
-								<td><strong>Holiday : </strong> <i class="fas fa-hospital-symbol hidden-print text-info"></i><span class="visible-print">H</span></td>
 								<td><strong>Late : </strong> <i class="far fa-clock hidden-print text-tertiary"></i><span class="visible-print">L</span></td>
 								<td><strong>Bunk : </strong> <i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B</span></td>
+								<td><strong>Holiday : </strong> <i class="fas fa-hospital-symbol hidden-print text-info"></i><span class="visible-print">H</span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -107,6 +107,7 @@ $date = $year . '-' . $month . '-' . $i;
 									<td class="text-center text-success">Total<br>Present</td>
 									<td class="text-center text-danger">Total<br>Absent</td>
 									<td class="text-center text-tertiary">Total<br>Late</td>
+									<td class="text-center text-tertiary">Total<br>Bunk</td>
 								</tr>
 							</thead>
 							<tbody>
@@ -115,6 +116,7 @@ foreach ($studentlist as $row):
 $total_present = 0;
 $total_absent = 0;
 $total_late = 0;
+$total_bunk = 0;
 $studentID = $row['student_id'];
 ?>
 								<tr>
@@ -133,10 +135,11 @@ $atten = $this->attendance_model->get_attendance_by_date($studentID, $date);
 									<i class="far fa-check-circle text-success"></i><span class="visible-print">P<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } if ($atten['status'] == 'L') { $total_late++; ?>
 									<i class="far fa-clock text-info"></i><span class="visible-print">L<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
+
+<?php } if ($atten['status'] == 'B'){ $total_bunk++; ?>
+									<i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } if ($atten['status'] == 'H'){ ?>
 									<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
-<?php } if ($atten['status'] == 'B'){ ?>
-									<i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B<?php if($atten['remark']) { ?> / <?php } ?></span><br/><span><?php echo $atten['remark'] ; ?></span>
 <?php } ?>
 
 								</span>
@@ -146,6 +149,7 @@ $atten = $this->attendance_model->get_attendance_by_date($studentID, $date);
 									<td class="center"><?=html_escape($total_present)?></td>
 									<td class="center"><?=html_escape($total_absent)?></td>
 									<td class="center"><?=html_escape($total_late)?></td>
+									<td class="center"><?=html_escape($total_bunk)?></td>
 									<?php endforeach; ?>
 								</tr>
 							</tbody>

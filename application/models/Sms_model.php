@@ -35,6 +35,7 @@ class Sms_model extends CI_Model
 
             if ($id == 2) {
                 $text = str_replace('{paid_amount}', $data['amount'], $text);
+                $text = str_replace('{fee_type}', $data['fee_type'], $text);
                 $text = str_replace('{paid_date}', _d($data['paid_date']), $text);
             }
 

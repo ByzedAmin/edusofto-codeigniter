@@ -90,6 +90,7 @@ $date = $year . '-' . $month . '-' . $i;
 								<td class="text-center text-success">Total<br>Present</td>
 								<td class="text-center text-danger">Total<br>Absent</td>
 								<td class="text-center text-tertiary">Total<br>Late</td>
+								<td class="text-center text-tertiary">Total<br>Half Holiday</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -103,6 +104,7 @@ $date = $year . '-' . $month . '-' . $i;
 									$total_present = 0;
 									$total_absent = 0;
 									$total_late = 0;
+									$half_holiday = 0;
 									for ($i = 1; $i <= $days; $i++) {
 										$date = date('Y-m-d', strtotime($year . '-' . $month . '-' . $i));
 										$getAttendance = $this->db->get_where('staff_attendance', array('staff_id' => $staffID,'date' => $date))->row_array();
@@ -114,10 +116,11 @@ $date = $year . '-' . $month . '-' . $i;
 																			<i class="far fa-check-circle text-success"></i><span class="visible-print">P<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
 										<?php } if ($getAttendance['status'] == 'L') { $total_late++; ?>
 																			<i class="far fa-clock text-info"></i><span class="visible-print">L<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
-										<?php } if ($getAttendance['status'] == 'H'){ ?>
-																			<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
-										<?php } if ($getAttendance['status'] == 'B'){ ?>
+										
+										<?php } if ($getAttendance['status'] == 'B'){ $half_holiday++; ?>
 																			<i class="fas fa-bold text-warning" style='font-size:11px'></i><span class="visible-print">B<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
+													<?php } if ($getAttendance['status'] == 'H'){ ?>
+													<i class="fas fa-hospital-symbol text-tertiary"></i><span class="visible-print">H<?php if($getAttendance['remark']) { ?> / <?php } ?></span><br/><span><?php echo $getAttendance['remark'] ; ?></span>
 										<?php } ?>
 										 <?php
 										echo '</span></td>';
@@ -126,6 +129,7 @@ $date = $year . '-' . $month . '-' . $i;
 								<td class="center"><?=$total_present?></td>
 								<td class="center"><?=$total_absent?></td>
 								<td class="center"><?=$total_late?></td>
+								<td class="center"><?=$half_holiday?></td>
 								<?php endforeach; ?>
 							</tr>
 						</tbody>

@@ -81,6 +81,7 @@ class Home_model extends MY_Model
     }
 
     public function get_student_list($start = '', $branch_id = '',$id){
+        $session_id = intval(get_session_id());
         $this->db->select('e.*,s.photo, CONCAT_WS(" ", s.first_name, s.last_name) as fullname,s.register_no,s.parent_id,s.email,s.blood_group,s.birthday,l.active,c.name as class_name,se.name as section_name');
         $this->db->from('enroll as e');
         $this->db->join('student as s', 'e.student_id = s.id', 'inner');
@@ -89,6 +90,7 @@ class Home_model extends MY_Model
         $this->db->join('section as se', 'e.section_id=se.id', 'left');
         $this->db->where('e.class_id', $id);
         $this->db->where('e.branch_id', $branch_id);
+        $this->db->where('e.session_id', $session_id);
         $this->db->order_by('s.id', 'ASC');
         if ($start != '') {
             $this->db->limit(4, $start);
