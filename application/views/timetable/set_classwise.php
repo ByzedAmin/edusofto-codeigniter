@@ -73,8 +73,32 @@
 		<?php if(!empty($branch_id) && !empty($class_id) && !empty($day)):?>
 		<section class="panel appear-animation" data-appear-animation="<?php echo $global_config['animations']?>" data-appear-animation-delay="100">
 			<?php echo form_open("timetable/class_save", array('class' => 'frm-submit-msg')); ?>
-			<header class="panel-heading">
+			<header class="panel-heading" style="display: flex;">
 				<h4 class="panel-title"><i class="far fa-clock"></i> <?=translate('add') . " " . translate('schedule')?></h4>
+				<div class="form-check" style="margin-left: 10px;font-size: 18px;">
+						<input type="checkbox" name="daywise[]" id="day" value="sunday" />
+						<label class="form-check-label">Sunday</label>
+				</div>
+				<div class="form-check" style="margin-left: 10px;font-size: 18px;">
+						<input type="checkbox" name="daywise[]" id="day" value="monday" />
+						<label class="form-check-label">Monday</label>
+				</div>
+				<div class="form-check" style="margin-left: 10px;font-size: 18px;">
+						<input type="checkbox" name="daywise[]" id="day" value="tuesday" />
+						<label class="form-check-label">Tuesday</label>
+				</div>
+				<div class="form-check" style="margin-left: 10px;font-size: 18px;">
+						<input type="checkbox" name="daywise[]" id="day" value="wednesday" />
+						<label class="form-check-label">Wednesday</label>
+				</div>
+				<div class="form-check" style="margin-left: 10px;font-size: 18px;">
+						<input type="checkbox" name="daywise[]" id="day" value="thursday" />
+						<label class="form-check-label">Thursday</label>
+				</div>
+				<div class="form-check" style="margin-left: 10px;font-size: 18px;">
+						<input type="checkbox" name="daywise[]" id="day" value="friday" />
+						<label class="form-check-label">Friday</label>
+				</div>
 			</header>
 			<div class="panel-body" >
 				<div class="table-responsive">
@@ -223,7 +247,6 @@
 				</div>
 				<input type="hidden" name="class_id" id="classID" value="<?=$class_id?>" />
 				<input type="hidden" name="section_id" id="sectionID" value="<?=$section_id?>" />
-				<input type="hidden" name="day" id="day" value="<?=$day?>" />
 				<input type="hidden" name="branch_id" id="branchID" value="<?=$branch_id?>" />
 				<button type="button" class="btn btn-default mt-xs mb-md" onclick="append_timetable_entry()">
 					<i class="fas fa-plus-circle"></i> <?=translate('add_more')?>

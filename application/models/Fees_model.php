@@ -89,13 +89,27 @@ class Fees_model extends MY_Model
         fee_groups_details.fee_groups_id = fee_allocation.group_id LEFT JOIN fees_type ON fees_type.id = fee_groups_details.fee_type_id WHERE
         fee_allocation.student_id = " . $this->db->escape($studentID) . " AND fee_allocation.session_id = " . $this->db->escape(get_session_id());
         $balance = $this->db->query($sql)->row_array();
-        $invNo = str_pad($balance['inv_no'], 4, '0', STR_PAD_LEFT);
+       
+        $invNoShow = str_pad($balance['inv_no'], 4, '0', STR_PAD_LEFT);
+         //custom
+         $this->db->where(array('invoice' => $invNoShow));
+         $invoice_row = $this->db->get('fee_payment_history')->num_rows();
+         //custom
+        if($invoice_row==0){
+            $invNo = str_pad($balance['inv_no'], 4, '0', STR_PAD_LEFT).'/1';
+        }else{
+            $invoice_row = $invoice_row +1;
+            $invNo = str_pad($balance['inv_no'], 4, '0', STR_PAD_LEFT).'/'.$invoice_row;
+        }
+        
 
         $sql = "SELECT IFNULL(SUM(fee_payment_history.amount), 0) as amount, IFNULL(SUM(fee_payment_history.discount), 0) as discount, IFNULL(SUM(fee_payment_history.fine), 0) as fine FROM
         fee_payment_history LEFT JOIN fee_allocation ON fee_payment_history.allocation_id = fee_allocation.id WHERE
         fee_allocation.student_id = " . $this->db->escape($studentID) . " AND fee_allocation.session_id = " . $this->db->escape(get_session_id());
         
         $paid = $this->db->query($sql)->row_array();
+
+        
 
         if ($paid['amount'] == 0) {
             $status = 'unpaid';
@@ -104,7 +118,7 @@ class Fees_model extends MY_Model
         } elseif ($paid['amount'] > 1) {
             $status = 'partly';
         }
-        return array('status' => $status, 'invoice_no' => $invNo);
+        return array('status' => $status, 'invoice_no_show' => $invNoShow,'invoice_no' => $invNo);
     }
 
     public function getInvoiceDetails($studentID = '')
@@ -277,7 +291,9 @@ class Fees_model extends MY_Model
 
     public function getDueReport($class_id = '', $section_id = '')
     {
-        $this->db->select('fa.id as allocation_id,sum(gd.amount) as total_fees,e.student_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name');
+        $today = new DateTime();
+		$compare = $today->format('Y-m-d');
+        $this->db->select('fa.id as allocation_id,sum(gd.amount) as total_fees,e.student_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name,gd.start_date');
         $this->db->from('fee_allocation as fa');
         $this->db->join('fee_groups_details as gd', 'gd.fee_groups_id = fa.group_id', 'left');
         $this->db->join('enroll as e', 'e.student_id = fa.student_id', 'inner');
@@ -286,6 +302,7 @@ class Fees_model extends MY_Model
         $this->db->join('section as se', 'se.id = e.section_id', 'left');
         $this->db->where('fa.session_id', get_session_id());
         $this->db->where('e.class_id', $class_id);
+        $this->db->where('gd.start_date <=', $compare);
         if (!empty($section_id)) {
             $this->db->where('e.section_id', $section_id);
         }
@@ -309,7 +326,7 @@ class Fees_model extends MY_Model
 
     public function getStuPaymentHistory($classID = '', $SectionID = '', $paymentVia = '', $collect_by='', $start = '', $end = '', $branchID = '', $onlyFine = false)
     {
-        $this->db->select('h.*,ft.name as type_name,e.student_id,e.session_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name,pt.name as pay_via,fa.id as inv_no');
+        $this->db->select('h.*,ft.name as type_name,ft.id as fees_type_id,e.student_id,e.session_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name,pt.name as pay_via,fa.id as inv_no');
         $this->db->from('fee_payment_history as h');
         $this->db->join('fee_allocation as fa', 'fa.id = h.allocation_id', 'inner');
         $this->db->join('fees_type as ft', 'ft.id = h.type_id', 'left');

@@ -1,6 +1,7 @@
 <?php
 $widget = (is_superadmin_loggedin() ? 4 : 6);
 $currency_symbol = $global_config['currency_symbol'];
+$getSchool = $this->db->where(array('id' => set_value('branch_id')))->get('branch')->row_array();
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -105,7 +106,10 @@ $currency_symbol = $global_config['currency_symbol'];
 			</header>
 			<div class="panel-body">
 				<div class="mb-md mt-md">
-					<div class="export_title"><?=translate('student_fees_reports')?></div>
+					<div class="export_title"><?=translate('student_fees_reports')?>
+						<br><?=$getSchool['school_name']?>
+						<br><?=$getSchool['address']?>
+					</div>
 					<table class="table table-bordered table-condensed mb-none tbr-top" id="rowGroup">
 						<thead>
 							<tr>

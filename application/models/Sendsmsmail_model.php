@@ -158,11 +158,15 @@ class Sendsmsmail_model extends CI_Model
             return $this->msg91->send($sendTo, $message);
         }
         if ($smsGateway == 'mydokani') {
-            // $this->load->library("bulk");
-            // return $this->bulk->send($sendTo, $message);
+            $this->load->library("bulk");
+            return $this->bulk->send($sendTo, $message);
             //start sms function
-                $msg = $this->sendSingleMessage($sendTo, $message);
+                // $msg = $this->sendSingleMessage($sendTo, $message);
             //end sms
+        }
+        if ($smsGateway == 'bulksmsbd') {
+            $this->load->library("bulksmsbd");
+            return $this->bulksmsbd->send($sendTo, $message);;
         }
         if ($smsGateway == 'textlocal') {
             $this->load->library("textlocal");

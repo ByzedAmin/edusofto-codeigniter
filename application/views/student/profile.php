@@ -901,6 +901,12 @@ if (empty($student['previous_details'])) {
 										<td><?php echo $getParent['mother_name']?></td>
 									</tr>
 									<tr>
+										<th><?=translate('father_phone')?></th>
+										<td><?php echo $getParent['father_phone']?></td>
+										<th><?=translate('mother_phone')?></th>
+										<td><?php echo $getParent['mother_phone']?></td>
+									</tr>
+									<tr>
 										<th><?=translate('occupation')?></th>
 										<td><?php echo $getParent['occupation']?></td>
 										<th><?=translate('income')?></th>

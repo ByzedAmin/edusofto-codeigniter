@@ -98,7 +98,7 @@ class Ajax extends MY_Controller
         $table = $this->input->post('table');
         $branch_id = $this->application_model->get_branch_id();
         if (!empty($branch_id)) {
-            $result = $this->db->select('id,name','order')->where('branch_id', $branch_id)->get($table)->result_array();
+            $result = $this->db->select('id,name')->where('branch_id', $branch_id)->get($table)->result_array();
             if (count($result)) {
                 $html .= "<option value=''>" . translate('select') . "</option>";
                 foreach ($result as $row) {

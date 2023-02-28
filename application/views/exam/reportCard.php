@@ -290,7 +290,7 @@ if (count($student_array)) {
 					$percentage_grade = ($total_obtain_marks * 100) / $total_full_marks;
 					$grade = $this->exam_model->get_grade($percentage_grade, $getExam['branch_id']);
 					$total_grade_point += $grade['grade_point'];
-					
+					$count_list = count($getMarksList);
 					
 					?>
 					<?php if ($row['sub_mark']) {?>
@@ -415,6 +415,9 @@ if (count($student_array)) {
 			
 			$grade_total_point = $total2_grade_point+$t1_grade_point;
 			// print_r($count_list);
+			if($grade_total_point ==0){
+				$grade_total_point = $total_grade_point;
+			}
 			?>
 			<tr>
 				<td>GPA</td>

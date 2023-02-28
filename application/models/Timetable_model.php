@@ -14,49 +14,56 @@ class Timetable_model extends MY_Model
     // class wise information save
     public function classwise_save($data)
     {
+        // foreach($data['daywise'] as $data[''])
         $branchID   = $this->application_model->get_branch_id();
         $sectionID  = $data['section_id'];
         $classID    = $data['class_id'];
         $sessionID  = get_session_id();
         $day        = $data['day'];
         $arrayItems = $this->input->post('timetable');
-        if (!empty($arrayItems)) {
-            foreach ($arrayItems as $key => $value) {
-                if (!isset($value['break'])) {
-                    $subjectID  = $value['subject'];
-                    $teacherID  = $value['teacher'];
-                    $break      = false;
-                } else {
-                    $subjectID  = 0;
-                    $teacherID  = 0;
-                    $break      = true;
-                }
-                $timeStart = date("H:i:s", strtotime($value['time_start']));
-                $timeEnd = date("H:i:s", strtotime($value['time_end']));
-                $roomNumber = $value['class_room'];
-                if (!empty($timeStart) && !empty($timeEnd)) {
-                    $arrayRoutine = array(
-                        'class_id'      => $classID,
-                        'section_id'    => $sectionID,
-                        'subject_id'    => $subjectID,
-                        'teacher_id'    => $teacherID,
-                        'time_start'    => $timeStart,
-                        'time_end'      => $timeEnd,
-                        'class_room'    => $roomNumber,
-                        'session_id'    => $sessionID,
-                        'branch_id'     => $branchID,
-                        'break'         => $break,
-                        'day'           => $day,
-                    );
-                    if ($data['old_id'][$key] == 0) {
-                        $this->db->insert('timetable_class', $arrayRoutine);
-                    } else {
-                        $this->db->where('id', $data['old_id'][$key]);
-                        $this->db->update('timetable_class', $arrayRoutine);
+        $daywiseArrayItems = $this->input->post('daywise');
+        if($daywiseArrayItems){
+            foreach($daywiseArrayItems as $k=>$val){
+                if (!empty($arrayItems)) {
+                    foreach ($arrayItems as $key => $value) {
+                        if (!isset($value['break'])) {
+                            $subjectID  = $value['subject'];
+                            $teacherID  = $value['teacher'];
+                            $break      = false;
+                        } else {
+                            $subjectID  = 0;
+                            $teacherID  = 0;
+                            $break      = true;
+                        }
+                        $timeStart = date("H:i:s", strtotime($value['time_start']));
+                        $timeEnd = date("H:i:s", strtotime($value['time_end']));
+                        $roomNumber = $value['class_room'];
+                        if (!empty($timeStart) && !empty($timeEnd)) {
+                            $arrayRoutine = array(
+                                'class_id'      => $classID,
+                                'section_id'    => $sectionID,
+                                'subject_id'    => $subjectID,
+                                'teacher_id'    => $teacherID,
+                                'time_start'    => $timeStart,
+                                'time_end'      => $timeEnd,
+                                'class_room'    => $roomNumber,
+                                'session_id'    => $sessionID,
+                                'branch_id'     => $branchID,
+                                'break'         => $break,
+                                'day'           => $val,
+                            );
+                            if ($data['old_id'][$key] == 0) {
+                                $this->db->insert('timetable_class', $arrayRoutine);
+                            } else {
+                                $this->db->where('id', $data['old_id'][$key]);
+                                $this->db->update('timetable_class', $arrayRoutine);
+                            }
+                        }
                     }
                 }
             }
         }
+        
     
         $arrayI = (isset($data['i'])) ? $data['i'] : array();
         $preserve_array = (isset($data['old_id'])) ? $data['old_id'] : array();

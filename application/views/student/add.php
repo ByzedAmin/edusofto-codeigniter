@@ -502,11 +502,25 @@ endif;
 								<span class="error"></span>
 							</div>
 						</div>
+						<div class="col-md-<?php echo $div ?> mb-sm">
+							<div class="form-group">
+								<label class="control-label"><?=translate('father_phone')?></label>
+								<input type="text" class="form-control" name="father_phone" value="<?=set_value('father_phone')?>" />
+								<span class="error"></span>
+							</div>
+						</div>
 						<?php } if ($mother_name['status']) { ?>
 						<div class="col-md-<?php echo $div ?> mb-sm">
 							<div class="form-group">
 								<label class="control-label"><?=translate('mother_name')?><?php echo $mother_name['required'] == 1 ? ' <span class="required">*</span>' : ''; ?></label>
 								<input type="text" class="form-control" name="mother_name" value="<?=set_value('mother_name')?>" />
+								<span class="error"></span>
+							</div>
+						</div>
+						<div class="col-md-<?php echo $div ?> mb-sm">
+							<div class="form-group">
+								<label class="control-label"><?=translate('mother_phone')?></label>
+								<input type="text" class="form-control" name="mother_phone" value="<?=set_value('mother_phone')?>" />
 								<span class="error"></span>
 							</div>
 						</div>

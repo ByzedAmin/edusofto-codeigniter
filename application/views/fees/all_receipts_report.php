@@ -1,6 +1,7 @@
 <?php
 $widget = (is_superadmin_loggedin() ? 3 : 4);
 $currency_symbol = $global_config['currency_symbol'];
+$getSchool = $this->db->where(array('id' => set_value('branch_id')))->get('branch')->row_array();
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -87,7 +88,11 @@ $currency_symbol = $global_config['currency_symbol'];
 			</header>
 			<div class="panel-body">
 				<div class="mb-md mt-md">
-					<div class="export_title"><?=translate('fees_payment_history')?></div>
+						
+					<div class="export_title"><?=translate('fees_payment_history')?>
+					<br><?=$getSchool['school_name']?>
+					<br><?=$getSchool['address']?>
+					</div>
 					<table class="table table-bordered table-condensed table-hover mb-none tbr-top table-export">
 						<thead>
 							<tr>
@@ -104,6 +109,7 @@ $currency_symbol = $global_config['currency_symbol'];
 								<th><?=translate('amount')?></th>
 								<th><?=translate('discount')?></th>
 								<th><?=translate('fine')?></th>
+								<th><?=translate('due')?></th>
 								<th><?=translate('total')?></th>
 							</tr>
 						</thead>
@@ -123,6 +129,10 @@ $currency_symbol = $global_config['currency_symbol'];
 								// $totalp = ($row['amount'] + $row['fine']) - $row['discount'];
 								$total += $totalp;
 								$total_amount = $row['amount'] + $row['discount'];
+								$due_fees = $this->db->where(array('fee_type_id'=>$row['fees_type_id']))->get('fee_groups_details')->row_array();
+								
+								$due_amount = $due_fees['amount']-$total_amount;
+								$total_due += $due_amount;
 								?>
 							<tr>
 								<td><?php echo $count++; ?></td>
@@ -139,10 +149,11 @@ $currency_symbol = $global_config['currency_symbol'];
 								} ?></td>
 								<td><?php echo $row['pay_via'];?></td>
 								<td><?php echo $row['type_name'];?></td>
-								<td><?php echo '#'.str_pad($row['inv_no'], 4, '0', STR_PAD_LEFT);?></td>
+								<td><?php echo '#'.$row['invoice_no'];?></td>
 								<td><?php echo $currency_symbol . $total_amount;?></td>	
 								<td><?php echo $currency_symbol . $row['discount'];?></td>
 								<td><?php echo $currency_symbol . $row['fine'];?></td>
+								<td><?php echo $currency_symbol . $due_amount;?></td>
 								<td><?php echo $currency_symbol . number_format($totalp, 2, '.', '');?></td>
 						
 							</tr>
@@ -163,6 +174,7 @@ $currency_symbol = $global_config['currency_symbol'];
 								<th><?php echo ($currency_symbol . number_format($totalamount, 2, '.', '')); ?></th>
 								<th><?php echo ($currency_symbol . number_format($totaldiscount, 2, '.', '')); ?></th>
 								<th><?php echo ($currency_symbol . number_format($totalfine, 2, '.', '')); ?></th>
+								<th><?php echo ($currency_symbol . number_format($total_due, 2, '.', '')); ?></th>
 								<th><?php echo ($currency_symbol . number_format($total, 2, '.', '')); ?></th>
 							</tr>
 						</tfoot>

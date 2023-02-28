@@ -104,7 +104,20 @@
 							</div>
 						</div>
 					</div>
-
+					<div class="row">
+						<div class="col-md-6 mb-sm">
+							<div class="form-group">
+								<label class="control-label"><?=translate('father_phone')?></label>
+								<input class="form-control" name="father_phone" type="text" value="<?=set_value('father_phone', $parent['father_phone'])?>" autocomplete="off" />
+							</div>
+						</div>
+						<div class="col-md-6 mb-sm">
+							<div class="form-group">
+								<label class="control-label"><?=translate('mother_phone')?></label>
+								<input type="text" class="form-control" name="mother_phone" value="<?=set_value('mother_phone', $parent['mother_phone'])?>" autocomplete="off" />
+							</div>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-4 mb-sm">
 							<div class="form-group">

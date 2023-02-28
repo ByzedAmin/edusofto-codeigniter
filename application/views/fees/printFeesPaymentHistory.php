@@ -25,4 +25,12 @@ if ($extINTL == true) {
 			</li>
 		</ul>
 	</div>
+	<div class="col-lg-5 pull-right">
+		<h5 class="mt-none mb-none text-dark">Invoice No #</h5>
+		<?php foreach($total_history as $value){ 
+			$invoice = $this->db->where(array('id' => $value['payment_id']))->get('fee_payment_history')->row_array();
+			?>
+		<span><?php echo $invoice['invoice_no'] ?>,</span>
+		<?php } ?>
+	</div>
 </div>

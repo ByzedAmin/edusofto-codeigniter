@@ -44,7 +44,7 @@ class Parents extends Admin_Controller
         // $this->form_validation->set_rules('twitter', 'Twitter', 'valid_url');
         // $this->form_validation->set_rules('linkedin', 'Linkedin', 'valid_url');
         if ($getBranch['grd_generate'] == 0 || isset($_POST['parent_id'])) {
-            $this->form_validation->set_rules('username', translate('username'), 'trim|required|callback_unique_username');
+            // $this->form_validation->set_rules('username', translate('username'), 'trim|required|callback_unique_username');
             if (!isset($_POST['parent_id'])) {
                 $this->form_validation->set_rules('password', translate('password'), 'trim|required|min_length[4]');
                 $this->form_validation->set_rules('retype_password', translate('retype_password'), 'trim|required|matches[password]');

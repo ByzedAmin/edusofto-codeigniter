@@ -221,6 +221,16 @@
 									<textarea name="note" class="question_note"><?php echo $questions['note'] ?></textarea>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('Image')?> </label>
+								
+								<div class="col-md-3">
+									<input type="file" name="image">
+								</div>
+								<div class="col-md-3">
+									<img src="<?=base_url('uploads/qn_image/'.$questions['image'])?>" alt="qn" width="80px">
+								</div>
+							</div>
 							<footer class="panel-footer">
 								<div class="row">
 									<div class="col-md-offset-3 col-md-2">
@@ -333,6 +343,16 @@
 									<textarea name="note" class="question_note"><?php echo $questions['note'] ?></textarea>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('Image')?> </label>
+								
+								<div class="col-md-3">
+									<input type="file" name="image">
+								</div>
+								<div class="col-md-3">
+									<img src="<?=base_url('uploads/qn_image/'.$questions['image'])?>" alt="qn" width="80px">
+								</div>
+							</div>
 							<footer class="panel-footer">
 								<div class="row">
 									<div class="col-md-offset-3 col-md-2">
@@ -406,6 +426,22 @@
 							      <span class="error"></span>
 							   </div>
 							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('note')?> </label>
+								<div class="col-md-6">
+									<textarea name="note" class="question_note"><?php echo $questions['note'] ?></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('Image')?> </label>
+								
+								<div class="col-md-3">
+									<input type="file" name="image">
+								</div>
+								<div class="col-md-3">
+									<img src="<?=base_url('uploads/qn_image/'.$questions['image'])?>" alt="qn" width="80px">
+								</div>
+							</div>
 							<footer class="panel-footer">
 								<div class="row">
 									<div class="col-md-offset-3 col-md-2">
@@ -475,6 +511,16 @@
 								<label class="col-md-3 control-label"><?=translate('note')?> </label>
 								<div class="col-md-6">
 									<textarea name="note" class="question_note"><?php echo $questions['note'] ?></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?=translate('Image')?> </label>
+								
+								<div class="col-md-3">
+									<input type="file" name="image">
+								</div>
+								<div class="col-md-3">
+									<img src="<?=base_url('uploads/qn_image/'.$questions['image'])?>" alt="qn" width="80px">
 								</div>
 							</div>
 							<footer class="panel-footer">

@@ -250,6 +250,15 @@ class Onlineexam_model extends MY_Model
         $subjectID = $this->input->post('subject_id');
         $groupID = $this->input->post('group_id');
         $note = $this->input->post('note');
+        if (isset($_FILES["image"]) && !empty($_FILES["image"]['name'])) {
+            $imageNmae = $_FILES['image']['name'];
+            $extension = pathinfo($imageNmae, PATHINFO_EXTENSION);
+            $newLogoName = "qnimg$branchID".time().date('md')."." . $extension;
+            $image_path = './uploads/qn_image/' . $newLogoName;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $image_path)) {
+                // $cms_setting['text_logo'] = $newLogoName;
+            }
+        }
 
         $questionsExam = array(
             'type' => $questionType,
@@ -262,6 +271,7 @@ class Onlineexam_model extends MY_Model
             'opt_4' => $this->tagRemove($this->input->post('option4', false)),
             'answer' => $answer,
             'note' => $note,
+            'image' => $newLogoName,
             'mark' => $this->input->post('mark'),
         );
 

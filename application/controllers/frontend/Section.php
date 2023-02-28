@@ -56,7 +56,7 @@ class Section extends Admin_Controller
             }
             $branchID = $this->frontend_model->getBranchID();
             $this->form_validation->set_rules('wel_title', 'Title', 'trim|required');
-            $this->form_validation->set_rules('subtitle', 'Subtitle', 'trim');
+            // $this->form_validation->set_rules('subtitle', 'Subtitle', 'trim');
             $this->form_validation->set_rules('description', 'Description', 'trim|required');
             $this->form_validation->set_rules('photo', 'Photo', 'trim|callback_check_image');
             if ($this->form_validation->run() == true) {
@@ -195,7 +195,7 @@ class Section extends Admin_Controller
             for ($i=1; $i < 5; $i++) { 
                 $this->form_validation->set_rules('widget_title_' . $i, 'Widget Title', 'trim|required');
                 $this->form_validation->set_rules('widget_icon_' . $i, 'Widget Icon', 'trim|required');
-                $this->form_validation->set_rules('statistics_type_' . $i, 'Statistics Type', 'trim');
+                // $this->form_validation->set_rules('statistics_type_' . $i, 'Statistics Type', 'trim');
             }
             if ($this->form_validation->run() == true) {
                 // save information in the database
@@ -236,8 +236,8 @@ class Section extends Admin_Controller
             $branchID = $this->frontend_model->getBranchID();
             $this->form_validation->set_rules('cta_title', 'Cta Title', 'trim|required');
             $this->form_validation->set_rules('mobile_no', 'Mobile No', 'trim|required');
-            $this->form_validation->set_rules('button_text', 'Button Text', 'trim');
-            $this->form_validation->set_rules('button_url', 'Button Url', 'trim');
+            // $this->form_validation->set_rules('button_text', 'Button Text', 'trim');
+            // $this->form_validation->set_rules('button_url', 'Button Url', 'trim');
             if ($this->form_validation->run() == true) {
                 $elements_data = array(
                     'mobile_no' => $this->input->post('mobile_no'),
@@ -520,8 +520,8 @@ class Section extends Admin_Controller
             }
             $branchID = $this->frontend_model->getBranchID();
             $this->form_validation->set_rules('cta_title', 'Cta Title', 'trim|required');
-            $this->form_validation->set_rules('button_text', 'Button Text', 'trim|required');
-            $this->form_validation->set_rules('button_url', 'Button Url', 'trim|required');
+            // $this->form_validation->set_rules('button_text', 'Button Text', 'trim|required');
+            // $this->form_validation->set_rules('button_url', 'Button Url', 'trim|required');
             if ($this->form_validation->run() == true) {
                 // save information in the database
                 $array_cta = array(
@@ -999,7 +999,7 @@ class Section extends Admin_Controller
             $this->form_validation->set_rules('page_title', 'Page Title', 'trim|required');
             $this->form_validation->set_rules('description', 'Description', 'required');
             $this->form_validation->set_rules('photo', 'Photo', 'trim|callback_check_image');
-            $this->form_validation->set_rules('templete_id', 'Default Template', 'trim|required');
+            // $this->form_validation->set_rules('templete_id', 'Default Template', 'trim|required');
             if ($this->form_validation->run() == true) {
                 // save information in the database
                 $arrayData = array(

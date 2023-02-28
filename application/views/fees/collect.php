@@ -47,7 +47,7 @@ if ($extINTL == true) {
 									</div>
 								</div>
 								<div class="col-md-6 text-right">
-									<h4 class="mt-none mb-none text-dark">Invoice No #<?=$invoice['invoice_no']?></h4>
+									<!-- <h4 class="mt-none mb-none text-dark">Invoice No #<?=$invoice['invoice_no']?></h4> -->
 									<p class="mb-none">
 										<span class="text-dark"><?=translate('date')?> : </span>
 										<span class="value"><?=_d(date('Y-m-d'))?></span>
@@ -151,7 +151,6 @@ if ($extINTL == true) {
 										$allocations = $this->fees_model->getInvoiceDetails($basic['id']);
 										$today = new DateTime();
 										$compare = $today->format('Y-m-d');
-										print_r($compare);
 										foreach ($allocations as $row) {
 											if($row['start_date']<=$compare){
 											$deposit = $this->fees_model->getStudentFeeDeposit($row['allocation_id'], $row['fee_type_id']);
@@ -273,7 +272,7 @@ if ($extINTL == true) {
 									</div>
 								</div>
 								<div class="col-md-6 text-right">
-									<h4 class="mt-none mb-none text-dark">Invoice No #<?php echo $invoice['invoice_no']?></h4>
+									<!-- <h4 class="mt-none mb-none text-dark">Invoice No #<?php echo $invoice['invoice_no']?></h4> -->
 									<p class="mb-none">
 										<span class="text-dark"><?=translate('date')?> : </span>
 										<span class="value"><?php echo _d(date('Y-m-d'));?></span>
@@ -704,6 +703,8 @@ if ($extINTL == true) {
 		<?php echo form_open('fees/selectedFeesPay', array('class' => 'frm-submit' )); ?>
 		<div class="panel-body">
 			<div id="printResult" class="pt-sm pb-sm">
+				<input type="hidden" value="<?=$invoice['invoice_no_show']?>" name="invoice">
+				<input type="hidden" value="<?=$invoice['invoice_no']?>" name="invoice_num">
 				<div class="table-responsive">						
 					<table class="table table-bordered table-condensed text-dark" id="feeCollect">
 
@@ -734,6 +735,8 @@ if ($extINTL == true) {
 		<?php echo form_open('fees/selectedFeesDiscount', array('class' => 'frm-submit' )); ?>
 		<div class="panel-body">
 			<div id="printResult" class="pt-sm pb-sm">
+			<input type="text" value="<?=$invoice['invoice_no_show']?>" name="invoice">
+			<input type="text" value="<?=$invoice['invoice_no']?>" name="invoice_num">
 				<div class="table-responsive">						
 					<table class="table table-bordered table-condensed text-dark" id="discountGive">
 

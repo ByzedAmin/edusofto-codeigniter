@@ -25,12 +25,13 @@
 		$getExam = $this->db->where(array('id' => $examID))->get('exam')->row_array();
 		$getSchool = $this->db->where(array('id' => $getExam['branch_id']))->get('branch')->row_array();
 		$schoolYear = get_type_name_by_id('schoolyear', $sessionID, 'school_year');
+		$branch_img = $this->db->where('id',$getExam['branch_id'])->get('branch')->row_array();
 		?>
 	<div class="mark-container">
 		<table border="0" style="margin-top: 20px; height: 100px;">
 			<tbody>
 				<tr>
-				<td style="width:40%;vertical-align: top;"><img style="max-width:225px;" src="<?=$this->application_model->getBranchImage($getExam['branch_id'], 'report-card-logo')?>"></td>
+				<td style="width:40%;vertical-align: top;"><img style="max-width:225px;" src="<?=base_url('uploads/app_image/'.$branch_img['report_card'])?>"></td>
 				<td style="width:60%;vertical-align: top;">
 					<table align="right" class="table-head text-right" >
 						<tbody>
@@ -259,6 +260,7 @@
 					$percentage_grade = ($total_obtain_marks * 100) / $total_full_marks;
 					$grade = $this->exam_model->get_grade($percentage_grade, $getExam['branch_id']);
 					$total_grade_point += $grade['grade_point'];
+					
 					?>
 
 					<?php if ($row['sub_mark']) {?>
@@ -267,7 +269,10 @@
 						<td valign="middle" rowspan="2"><?=number_format($grade['grade_point'], 2, '.', '')?></td>
 						<?php } ?>
 						<?php }else{ ?>
-					<?php if (empty($row['additional_subject_code'])) {?>
+					<?php if (empty($row['additional_subject_code'])) 
+					$count_list = count($getMarksList);
+					
+					{?>
 						<!--start 18-11-22 -->
 						<?php if($result1==1){ ?>
 							<td valign="middle"><?=$grade['name']?></td>
@@ -361,7 +366,9 @@
 				</tr>
 			<?php } 
 			$grade_total_point = $total2_grade_point+$t1_grade_point;
-			
+			if($grade_total_point ==0){
+				$grade_total_point = $total_grade_point;
+			}
 			?>
 
 			

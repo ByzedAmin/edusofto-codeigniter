@@ -13,6 +13,8 @@
                       <div class="teacher-info text-center">
                         <h4><a  style="font-size: 20px;font-weight: 600;"><?php echo $row['name']; ?></a></h4>
                         <h5><a><?php echo $row['qualification']; ?></a></h5>
+                        <h5><a><?php echo $row['department_name']; ?></a></h5>
+                        <h5><a><?php echo $row['designation_name']; ?></a></h5>
                       </div>
                     </div>
                  

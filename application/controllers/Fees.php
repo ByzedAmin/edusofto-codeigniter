@@ -1204,6 +1204,7 @@ class Fees extends Admin_Controller
             $this->data['total_paid'] = $paymentHistory['total_amount'];
             $this->data['total_discount'] = $paymentHistory['total_discount'];
             $this->data['total_fine'] = $paymentHistory['total_fine'];
+            $this->data['total_history'] =  $record_array;
             $this->load->view('fees/printFeesPaymentHistory', $this->data);
         }
     }
@@ -1272,7 +1273,8 @@ class Fees extends Admin_Controller
                 exit;
             }
         }
-
+        $invoice_no = $this->db->get('fee_payment_history')->result_array();
+        $invoice_no = count($invoice_no);
         if ($this->form_validation->run() !== false) {
             $studentID = $this->input->post('student_id');
             foreach ($items as $key => $value) {
@@ -1291,6 +1293,8 @@ class Fees extends Admin_Controller
                     'pay_via' => $payVia,
                     'remarks' => $value['remarks'],
                     'date' => $date,
+                    'invoice_no' => 1000+($invoice_no?$invoice_no:0),
+                    'invoice' => $this->input->post('invoice'),
                 );
                 $this->db->insert('fee_payment_history', $arrayFees);
 

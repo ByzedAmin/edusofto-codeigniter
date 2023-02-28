@@ -94,6 +94,7 @@ class Timetable extends Admin_Controller
         if ($_POST) {
             $this->data['class_id'] = $this->input->post('class_id');
             $this->data['day'] = $this->input->post('day');
+            $this->data['daywise'] = $this->input->post('daywise');
             $this->data['section_id'] = $this->input->post('section_id');
             $this->data['branch_id'] = $branchID;
             $this->data['exist_data'] = $this->timetable_model
@@ -160,6 +161,7 @@ class Timetable extends Admin_Controller
             }
 
             $items = $this->input->post('timetable');
+            $daywise = $this->input->post('daywise');
             $this->form_validation->set_rules('class_id', translate('class'), 'trim|required');
             if (!empty($items)) {
                 foreach ($items as $key => $value) {
@@ -278,10 +280,10 @@ class Timetable extends Admin_Controller
                             'exam_id' => $examID,
                             'class_id' => $classID,
                             'section_id' => $sectionID,
-                            'subject_id' => $value['subject_id'],
+                            'subject_id' => $this->input->post('subject_id')[$key],
                             'time_start' => $value['time_start'],
                             'time_end' => $value['time_end'],
-                            'hall_id' => $value['hall_id'],
+                            'hall_id' => $this->input->post('hall_id')[$key],
                             'exam_date' => $value['date'],
                             'mark_distribution' => json_encode($distribution),
                             'branch_id' => $branchID,

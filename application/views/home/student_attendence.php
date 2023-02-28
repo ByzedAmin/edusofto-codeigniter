@@ -127,6 +127,7 @@
 							<thead>
 								<tr>
 									<td><?=translate('student_name')?></td>
+									<td><?=translate('student_roll')?></td>
 <?php
 for($i = 1; $i <= $days; $i++){
 $date = $year . '-' . $month . '-' . $i;
@@ -148,6 +149,7 @@ $studentID = $row['student_id'];
 ?>
 								<tr>
 									<td><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></td>
+									<td><?php echo $row['roll']; ?></td>
 <?php
 for ($i = 1; $i <= $days; $i++) { 
 $date = date('Y-m-d', strtotime($year . '-' . $month . '-' . $i));

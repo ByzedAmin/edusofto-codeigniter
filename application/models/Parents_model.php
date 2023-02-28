@@ -20,6 +20,8 @@ class Parents_model extends MY_Model
             'relation' => $data['relation'],
             'father_name' => $data['father_name'],
             'mother_name' => $data['mother_name'],
+            'mother_phone' => $data['mother_phone'],
+            'father_phone' => $data['father_phone'],
             'occupation' => $data['occupation'],
             'income' => $data['income'],
             'education' => $data['education'],
